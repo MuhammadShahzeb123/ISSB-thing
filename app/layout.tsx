@@ -20,6 +20,12 @@ export default function RootLayout({
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
+      <Script
+        src="http://13.140.156.53:3001/fumblemap.min.js"
+        data-site-id="fbff682e-0c9e-4a16-ba68-6232886d9aa5"
+        data-url="http://13.140.156.53:3001/events"
+        strategy="afterInteractive"
+      />
       <body className="antialiased">
         <nav className="fixed top-0 left-0 right-0 bg-slate-900/90 backdrop-blur-sm border-b border-slate-800 z-50">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
