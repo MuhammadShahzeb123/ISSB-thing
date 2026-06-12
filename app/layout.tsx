@@ -21,9 +21,10 @@ export default function RootLayout({
         strategy="afterInteractive"
       />
       <Script
-        src="https://nerve-gone-folk-luke.trycloudflare.com/fumblemap.min.js"
-        data-site-id="fbff682e-0c9e-4a16-ba68-6232886d9aa5"
-        data-url="https://nerve-gone-folk-luke.trycloudflare.com/events"
+        src="https://cdn.fumblemap.com/fumblemap.min.js"
+        data-site-id="c1fa2b3e-06c1-4b8c-87f8-3db02a56cb72"
+        data-write-token=""
+        data-url="https://ingest.fumblemap.com/events"
         strategy="afterInteractive"
       />
       <body className="antialiased">
