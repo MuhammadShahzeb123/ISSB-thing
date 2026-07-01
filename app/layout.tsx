@@ -22,8 +22,8 @@ export default function RootLayout({
       />
       <Script
         src="https://cdn.fumblemap.com/fumblemap.min.js"
-        data-site-id="c1fa2b3e-06c1-4b8c-87f8-3db02a56cb72"
-        data-write-token=""
+        data-site-id="71b991d5-5862-4cfe-af3a-e9e8d7363c99"
+        data-write-token="5ee21b1da7884128c95329ba88aece6cbaa104f04687c58512d57f1ba80dd847"
         data-url="https://ingest.fumblemap.com/events"
         strategy="afterInteractive"
       />
