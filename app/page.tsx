@@ -1,111 +1,151 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { watWords, shuffleWords } from './words';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { getTimerForWord, shuffleWords, watWords } from './words';
 import type { Word } from './words';
 
+const TEST_SIZE = 200;
+
 function getRandomTime(): number {
-  return Math.floor(Math.random() * 5) + 6;
+  return Math.floor(Math.random() * 5) + 8;
 }
 
 export default function WATPage() {
   const [shuffledWords, setShuffledWords] = useState<Word[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLimit, setTimeLimit] = useState(10);
   const [isStarted, setIsStarted] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [sentences, setSentences] = useState<string[]>([]);
   const [currentSentence, setCurrentSentence] = useState('');
-  const [showWord, setShowWord] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const lastSessionIds = useRef<Set<number>>(new Set());
+  const isSaving = useRef(false);
 
   const startTest = useCallback(() => {
-    const shuffled = shuffleWords(watWords);
-    setShuffledWords(shuffled);
+    let shuffled = shuffleWords(watWords);
+    let attempts = 0;
+
+    while (
+      lastSessionIds.current.size > 0 &&
+      shuffled.slice(0, TEST_SIZE).every((word) => lastSessionIds.current.has(word.id)) &&
+      attempts < 8
+    ) {
+      shuffled = shuffleWords(watWords);
+      attempts += 1;
+    }
+
+    const session = shuffled.slice(0, TEST_SIZE);
+    lastSessionIds.current = new Set(session.map((word) => word.id));
+    const firstTime = getRandomTime();
+
+    setShuffledWords(session);
     setCurrentIndex(0);
     setSentences([]);
+    setCurrentSentence('');
     setIsFinished(false);
     setIsStarted(true);
-    setShowWord(true);
-    setTimeLeft(getRandomTime());
+    setTimeLimit(firstTime);
+    setTimeLeft(firstTime);
+    isSaving.current = false;
   }, []);
 
   useEffect(() => {
     if (!isStarted || isFinished) return;
 
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) return 0;
-        return prev - 1;
-      });
+    const interval = window.setInterval(() => {
+      setTimeLeft((previous) => Math.max(previous - 1, 0));
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => window.clearInterval(interval);
   }, [isStarted, isFinished]);
 
-  useEffect(() => {
-    if (timeLeft === 0 && !isFinished) {
-      saveAndNext();
-    }
-  }, [timeLeft, isFinished]);
-
-  useEffect(() => {
-    if (isStarted && !isFinished && shuffledWords.length > 0) {
-      setTimeLeft(getRandomTime());
-      setCurrentSentence('');
-      setShowWord(true);
-      setTimeout(() => {
-        setShowWord(false);
-        setTimeout(() => {
-          textareaRef.current?.focus();
-        }, 300);
-      }, 1000);
-    }
-  }, [currentIndex, isStarted, isFinished, shuffledWords]);
-
   const saveAndNext = useCallback(() => {
-    setSentences((prev) => [...prev, currentSentence.trim()]);
+    if (isSaving.current || !shuffledWords.length) return;
+    isSaving.current = true;
+
+    setSentences((previous) => {
+      const next = [...previous];
+      next[currentIndex] = currentSentence.trim();
+      return next;
+    });
+
     setCurrentSentence('');
 
     if (currentIndex >= shuffledWords.length - 1) {
       setIsFinished(true);
     } else {
-      setCurrentIndex((prev) => prev + 1);
+      const nextIndex = currentIndex + 1;
+      const nextTime = getTimerForWord(nextIndex);
+      setCurrentIndex(nextIndex);
+      setTimeLimit(nextTime);
+      setTimeLeft(nextTime);
     }
-  }, [currentSentence, currentIndex, shuffledWords.length]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
+    window.setTimeout(() => {
+      isSaving.current = false;
+    }, 0);
+  }, [currentIndex, currentSentence, shuffledWords.length]);
+
+  useEffect(() => {
+    if (timeLeft !== 0 || isFinished) return;
+    const timeout = window.setTimeout(saveAndNext, 0);
+    return () => window.clearTimeout(timeout);
+  }, [timeLeft, isFinished, saveAndNext]);
+
+  useEffect(() => {
+    if (isStarted && !isFinished && shuffledWords.length > 0) {
+      textareaRef.current?.focus();
+    }
+  }, [currentIndex, isFinished, isStarted, shuffledWords.length]);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
       saveAndNext();
     }
   };
 
   if (!isStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-        <div className="text-center max-w-2xl mx-auto">
-          <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">Word Association Test</h1>
-          <p className="text-slate-400 text-lg mb-8">
-            Practice for your ISSB with 200 real WAT words. Each word appears for 6-10 seconds.
-            Write a meaningful sentence using the word shown.
-          </p>
-          <div className="bg-slate-800/50 rounded-xl p-6 mb-8 border border-slate-700">
-            <h3 className="text-white font-semibold mb-4">Instructions:</h3>
-            <ul className="text-slate-400 text-left space-y-2">
-              <li>Each word appears for 6-10 seconds (random timing)</li>
-              <li>Write a complete, meaningful sentence using the word</li>
-              <li>Press Enter to save and move to next word</li>
-              <li>Keep sentences positive and officer-like</li>
-              <li>Your responses will be saved for review</li>
-            </ul>
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+        <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-3xl items-center justify-center">
+          <div className="w-full text-center">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">ISSB psychology practice</p>
+            <h1 className="mb-4 text-5xl font-bold tracking-tight text-white md:text-6xl">Word Association Test</h1>
+            <p className="mx-auto mb-8 max-w-2xl text-lg text-slate-400">
+              A fresh 200-word session from a larger pool. Each word stays on screen for 8–12 seconds so you can practise fast, natural sentence formation.
+            </p>
+            <div className="mb-8 grid gap-3 text-left sm:grid-cols-3">
+              {[
+                ['200', 'words per session'],
+                ['8–12s', 'random time per word'],
+                ['493', 'words in the pool'],
+              ].map(([value, label]) => (
+                <div key={label} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+                  <p className="text-2xl font-bold text-white">{value}</p>
+                  <p className="mt-1 text-sm text-slate-500">{label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mb-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 text-left">
+              <h2 className="mb-4 font-semibold text-white">Practice cues</h2>
+              <ul className="space-y-3 text-sm text-slate-400">
+                <li>• Read the word, form your own response, and write one natural sentence.</li>
+                <li>• Keep the response authentic and constructive; do not force a memorised line.</li>
+                <li>• Press Enter to submit early, or let the timer advance automatically.</li>
+                <li>• Review your responses at the end for clarity, grammar, and consistency.</li>
+              </ul>
+            </div>
+            <button
+              type="button"
+              onClick={startTest}
+              className="rounded-xl bg-cyan-500 px-10 py-4 text-lg font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400"
+            >
+              Start 200-word test
+            </button>
           </div>
-          <button
-            onClick={startTest}
-            className="px-12 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl rounded-lg transition-all duration-200 shadow-lg shadow-blue-600/25"
-          >
-            Start Practice
-          </button>
         </div>
       </div>
     );
@@ -113,28 +153,34 @@ export default function WATPage() {
 
   if (isFinished) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-white mb-2 text-center">Test Complete!</h2>
-          <p className="text-slate-400 text-center mb-8">{shuffledWords.length} words completed</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-8 text-center">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-400">Session complete</p>
+            <h2 className="mb-2 text-4xl font-bold text-white">Your WAT responses</h2>
+            <p className="text-slate-400">200 words completed. Look for natural, action-oriented responses rather than perfect phrases.</p>
+          </div>
           <div className="space-y-3">
-            {shuffledWords.map((word, i) => (
-              <div key={i} className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+            {shuffledWords.map((word, index) => (
+              <div key={word.id} className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
                 <div className="flex items-start gap-4">
-                  <span className="text-slate-500 font-mono text-sm min-w-[2rem]">{i + 1}.</span>
-                  <div className="flex-1">
-                    <span className="text-blue-400 font-bold text-xl">{word.word}</span>
-                    <p className="text-slate-300 mt-1">{sentences[i] || <span className="text-slate-600 italic">No response</span>}</p>
+                  <span className="min-w-8 font-mono text-sm text-slate-600">{index + 1}.</span>
+                  <div className="min-w-0 flex-1">
+                    <span className="font-bold text-cyan-300">{word.word}</span>
+                    <p className="mt-1 text-slate-300">
+                      {sentences[index] || <span className="italic text-slate-600">No response</span>}
+                    </p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
           <button
+            type="button"
             onClick={startTest}
-            className="w-full mt-8 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-all"
+            className="mt-8 w-full rounded-xl bg-cyan-500 px-8 py-4 font-bold text-slate-950 transition hover:bg-cyan-400"
           >
-            Practice Again
+            Start a different 200-word session
           </button>
         </div>
       </div>
@@ -142,70 +188,62 @@ export default function WATPage() {
   }
 
   const currentWord = shuffledWords[currentIndex];
+  const progress = ((currentIndex + 1) / shuffledWords.length) * 100;
+  const timerProgress = (timeLeft / timeLimit) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
-        <div className="flex justify-between items-center mb-6">
-          <span className="text-slate-400">Word {currentIndex + 1} / {shuffledWords.length}</span>
-          <div className="flex items-center gap-3">
-            <span className="text-slate-400">Time</span>
-            <div className="relative w-16 h-16">
-              <svg className="w-16 h-16 transform -rotate-90">
-                <circle cx="32" cy="32" r="28" stroke="#334155" strokeWidth="4" fill="none" />
-                <circle
-                  cx="32" cy="32" r="28"
-                  stroke={timeLeft <= 2 ? '#ef4444' : '#3b82f6'}
-                  strokeWidth="4"
-                  fill="none"
-                  strokeDasharray={`${2 * Math.PI * 28}`}
-                  strokeDashoffset={`${2 * Math.PI * 28 * (1 - timeLeft / 10)}`}
-                  className="transition-all duration-1000"
-                />
-              </svg>
-              <span className={`absolute inset-0 flex items-center justify-center text-xl font-bold ${timeLeft <= 2 ? 'text-red-500' : 'text-white'}`}>
-                {timeLeft}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative">
-          <div className={`bg-slate-800/50 rounded-2xl p-12 mb-6 border border-slate-700 transition-all duration-500 ${showWord ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-            <div className="text-center">
-              <h2 className="text-6xl font-bold text-white tracking-wide">{currentWord.word}</h2>
-              <p className="text-slate-500 mt-4">Write your sentence below</p>
-            </div>
-          </div>
-
-          {!showWord && (
-            <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
-              <textarea
-                ref={textareaRef}
-                value={currentSentence}
-                onChange={(e) => setCurrentSentence(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={`Write a sentence with "${currentWord.word}"...`}
-                className="w-full bg-transparent text-white text-2xl placeholder-slate-600 outline-none resize-none min-h-[100px]"
-                autoFocus
-              />
-              <div className="flex justify-between items-center mt-4 pt-4 border-t border-slate-700">
-                <span className="text-slate-500 text-sm">Press Enter to save & next</span>
-                <span className="text-slate-500">{currentSentence.length} chars</span>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-3xl items-center">
+        <div className="w-full">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-sm text-slate-500">Word {currentIndex + 1} of {shuffledWords.length}</p>
+              <div className="mt-2 h-1.5 w-48 overflow-hidden rounded-full bg-slate-800 sm:w-64">
+                <div className="h-full rounded-full bg-cyan-500 transition-all" style={{ width: progress + '%' }} />
               </div>
             </div>
-          )}
-        </div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-slate-500">Time left</span>
+              <div className={timeLeft <= 2 ? 'relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-red-500 text-red-400' : 'relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-cyan-500 text-white'}>
+                <span className="text-xl font-bold">{timeLeft}</span>
+                <span className="absolute -bottom-5 text-[10px] text-slate-600">{timeLimit}s window</span>
+              </div>
+            </div>
+          </div>
 
-        <div className="flex justify-center gap-2 mt-6">
-          {shuffledWords.map((_, i) => (
-            <div
-              key={i}
-              className={`w-2 h-2 rounded-full transition-all ${
-                i === currentIndex ? 'bg-blue-500 w-4' : i < currentIndex ? 'bg-green-500' : 'bg-slate-700'
-              }`}
+          <div className="mb-5 rounded-3xl border border-cyan-900/60 bg-cyan-950/20 p-10 text-center shadow-2xl shadow-cyan-950/20 md:p-16">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">Respond naturally</p>
+            <h2 className="text-6xl font-black tracking-wide text-white md:text-8xl">{currentWord.word}</h2>
+            <p className="mt-5 text-sm text-slate-500">Make a sentence before the countdown ends.</p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
+            <textarea
+              ref={textareaRef}
+              value={currentSentence}
+              onChange={(event) => setCurrentSentence(event.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={'Write a sentence with “' + currentWord.word + '”...'}
+              className="min-h-32 w-full resize-none bg-transparent text-xl leading-relaxed text-white outline-none placeholder:text-slate-700"
+              autoFocus
             />
-          ))}
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-4">
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-slate-500">Press Enter to save & next</span>
+                <span className="text-xs text-slate-600">{currentSentence.length} chars</span>
+              </div>
+              <button
+                type="button"
+                onClick={saveAndNext}
+                className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+              >
+                Save & next
+              </button>
+            </div>
+          </div>
+          <div className="mt-6 h-1 overflow-hidden rounded-full bg-slate-800">
+            <div className={timeLeft <= 2 ? 'h-full bg-red-500 transition-all duration-1000' : 'h-full bg-emerald-500 transition-all duration-1000'} style={{ width: timerProgress + '%' }} />
+          </div>
         </div>
       </div>
     </div>

@@ -178,7 +178,7 @@ export default function PictureTestPage() {
   const [currentDescription, setCurrentDescription] = useState('');
   const [timeLeft, setTimeLeft] = useState(60);
   const [showImage, setShowImage] = useState(true);
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const startTest = useCallback(() => {
     const shuffled = shuffleArray(pictures);
@@ -205,20 +205,6 @@ export default function PictureTestPage() {
     return () => clearInterval(interval);
   }, [isStarted, isFinished]);
 
-  useEffect(() => {
-    if (timeLeft === 0 && !isFinished) {
-      saveAndNext();
-    }
-  }, [timeLeft, isFinished]);
-
-  useEffect(() => {
-    if (isStarted && !isFinished && shuffledPictures.length > 0) {
-      setTimeout(() => {
-        textareaRef.current?.focus();
-      }, 300);
-    }
-  }, [currentIndex, isStarted, isFinished, shuffledPictures]);
-
   const saveAndNext = useCallback(() => {
     setDescriptions((prev) => [...prev, currentDescription.trim()]);
     setCurrentDescription('');
@@ -232,6 +218,21 @@ export default function PictureTestPage() {
       setTimeout(() => setShowImage(false), 2500);
     }
   }, [currentDescription, currentIndex, shuffledPictures.length]);
+
+  useEffect(() => {
+    if (timeLeft !== 0 || isFinished) return;
+    const timeout = window.setTimeout(saveAndNext, 0);
+    return () => window.clearTimeout(timeout);
+  }, [timeLeft, isFinished, saveAndNext]);
+
+  useEffect(() => {
+    if (isStarted && !isFinished && shuffledPictures.length > 0) {
+      const timeout = window.setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 300);
+      return () => window.clearTimeout(timeout);
+    }
+  }, [currentIndex, isStarted, isFinished, shuffledPictures]);
 
   const handleSkip = () => {
     setShowImage(false);

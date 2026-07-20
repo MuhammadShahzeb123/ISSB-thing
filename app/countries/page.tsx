@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-const countries: { country: string; capital: string; continent: string }[] = [
+type Country = { country: string; capital: string; continent: string };
+
+const countries: Country[] = [
   { country: "Afghanistan", capital: "Kabul", continent: "Asia" },
   { country: "Albania", capital: "Tirana", continent: "Europe" },
   { country: "Algeria", capital: "Algiers", continent: "Africa" },
@@ -202,132 +204,355 @@ const countries: { country: string; capital: string; continent: string }[] = [
   { country: "Zimbabwe", capital: "Harare", continent: "Africa" },
 ];
 
-type SortKey = 'country' | 'capital' | 'continent';
+const mapNameAliases: Record<string, string> = {
+  'Brunei Darussalam': 'Brunei',
+  "Cote d'Ivoire": 'Ivory Coast',
+  "Côte d'Ivoire": 'Ivory Coast',
+  'Dem. Rep. Korea': 'North Korea',
+  'Lao PDR': 'Laos',
+  'Macedonia': 'North Macedonia',
+  'Republic of Congo': 'Congo (Republic)',
+  'Republic of Korea': 'South Korea',
+  'Swaziland': 'Eswatini',
+  'The Gambia': 'Gambia',
+  'Timor-Leste': 'East Timor',
+};
+
+function normalizeMapName(name: string): string {
+  const alias = mapNameAliases[name] ?? (name.toLowerCase().includes('ivoire') ? 'Ivory Coast' : name);
+  return alias
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+}
+
+function countryForMapLabel(label: string): Country | undefined {
+  const normalized = normalizeMapName(label);
+  return countries.find((country) => normalizeMapName(country.country) === normalized);
+}
+
+interface WorldAtlasProps {
+  selectedCountry: Country | null;
+  visibleCountries: Country[];
+  onHover: (country: Country | null) => void;
+  onSelect: (country: Country) => void;
+}
+
+function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: WorldAtlasProps) {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [svgMarkup, setSvgMarkup] = useState('');
+  const visibleNames = useMemo(
+    () => new Set(visibleCountries.map((country) => country.country)),
+    [visibleCountries],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch('/world.svg')
+      .then((response) => response.text())
+      .then((markup) => {
+        if (!cancelled) setSvgMarkup(markup);
+      })
+      .catch(() => {
+        if (!cancelled) setSvgMarkup('');
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!svgMarkup || !mapRef.current) return;
+
+    const paths = Array.from(mapRef.current.querySelectorAll<SVGPathElement>('path'));
+    const cleanups: Array<() => void> = [];
+
+    paths.forEach((path) => {
+      const classLabel = (path.getAttribute('class') ?? '')
+        .replace(/\b(world-map-country|is-muted|is-selected)\b/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      const label =
+        path.dataset.country ??
+        path.getAttribute('name') ??
+        classLabel;
+      const country = countryForMapLabel(label);
+
+      if (!country) return;
+
+      path.dataset.country = country.country;
+      path.classList.add('world-map-country');
+      path.setAttribute('role', 'button');
+      path.setAttribute('tabindex', '0');
+      path.setAttribute('aria-label', country.country + ', capital ' + country.capital);
+
+      const isVisible = () => visibleNames.has(country.country);
+      const handleHover = () => {
+        if (isVisible()) onHover(country);
+      };
+      const handleLeave = () => onHover(null);
+      const handleSelect = () => {
+        if (isVisible()) onSelect(country);
+      };
+      const handleKeyDown = (event: Event) => {
+        const keyboardEvent = event as KeyboardEvent;
+        if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
+          keyboardEvent.preventDefault();
+          handleSelect();
+        }
+      };
+
+      path.addEventListener('pointerenter', handleHover);
+      path.addEventListener('pointerleave', handleLeave);
+      path.addEventListener('focus', handleHover);
+      path.addEventListener('blur', handleLeave);
+      path.addEventListener('click', handleSelect);
+      path.addEventListener('keydown', handleKeyDown);
+
+      cleanups.push(() => {
+        path.removeEventListener('pointerenter', handleHover);
+        path.removeEventListener('pointerleave', handleLeave);
+        path.removeEventListener('focus', handleHover);
+        path.removeEventListener('blur', handleLeave);
+        path.removeEventListener('click', handleSelect);
+        path.removeEventListener('keydown', handleKeyDown);
+      });
+    });
+
+    paths.forEach((path) => {
+      const countryName = path.dataset.country;
+      path.classList.toggle('is-muted', Boolean(countryName && !visibleNames.has(countryName)));
+      path.classList.toggle('is-selected', countryName === selectedCountry?.country);
+    });
+
+    return () => cleanups.forEach((cleanup) => cleanup());
+  }, [onHover, onSelect, selectedCountry, svgMarkup, visibleNames]);
+
+  return (
+    <div className="world-map-shell" ref={mapRef} aria-label="Interactive world map">
+      {svgMarkup ? (
+        <div dangerouslySetInnerHTML={{ __html: svgMarkup }} />
+      ) : (
+        <div className="flex min-h-[280px] items-center justify-center text-sm text-slate-500">
+          Loading the atlas...
+        </div>
+      )}
+      <p className="world-map-attribution">Map data: SimpleMaps.com · MIT License</p>
+    </div>
+  );
+}
 
 export default function CountriesPage() {
   const [search, setSearch] = useState('');
-  const [sortKey, setSortKey] = useState<SortKey>('country');
-  const [sortAsc, setSortAsc] = useState(true);
   const [filterContinent, setFilterContinent] = useState('All');
+  const [hoveredCountry, setHoveredCountry] = useState<Country | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(
+    countries.find((country) => country.country === 'Pakistan') ?? countries[0],
+  );
+  const [recallCountry, setRecallCountry] = useState<Country | null>(null);
+  const [isRevealed, setIsRevealed] = useState(false);
 
   const continents = useMemo(() => {
-    const set = new Set(countries.map(c => c.continent));
+    const set = new Set(countries.map((country) => country.continent));
     return ['All', ...Array.from(set).sort()];
   }, []);
 
   const filtered = useMemo(() => {
-    let result = countries;
+    let result = [...countries];
 
     if (filterContinent !== 'All') {
-      result = result.filter(c => c.continent === filterContinent);
+      result = result.filter((country) => country.continent === filterContinent);
     }
 
     if (search.trim()) {
-      const q = search.toLowerCase();
+      const query = search.toLowerCase();
       result = result.filter(
-        c => c.country.toLowerCase().includes(q) || c.capital.toLowerCase().includes(q)
+        (country) =>
+          country.country.toLowerCase().includes(query) ||
+          country.capital.toLowerCase().includes(query),
       );
     }
 
-    result.sort((a, b) => {
-      const valA = a[sortKey].toLowerCase();
-      const valB = b[sortKey].toLowerCase();
-      if (valA < valB) return sortAsc ? -1 : 1;
-      if (valA > valB) return sortAsc ? 1 : -1;
-      return 0;
-    });
-
     return result;
-  }, [search, sortKey, sortAsc, filterContinent]);
+  }, [search, filterContinent]);
 
-  const handleSort = (key: SortKey) => {
-    if (sortKey === key) {
-      setSortAsc(!sortAsc);
-    } else {
-      setSortKey(key);
-      setSortAsc(true);
-    }
-  };
+  const displayedCountry = hoveredCountry ?? selectedCountry;
 
-  const sortIcon = (key: SortKey) => {
-    if (sortKey !== key) return '↕';
-    return sortAsc ? '↑' : '↓';
-  };
+  const selectCountry = useCallback((country: Country) => {
+    setSelectedCountry(country);
+    setRecallCountry(country);
+    setIsRevealed(false);
+  }, []);
+
+  const nextRecall = useCallback(() => {
+    if (!filtered.length) return;
+    const next = filtered[Math.floor(Math.random() * filtered.length)];
+    setRecallCountry(next);
+    setIsRevealed(false);
+    setSelectedCountry(next);
+  }, [filtered]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-white mb-2 text-center">Countries & Capitals</h1>
-        <p className="text-slate-400 text-center mb-6">{countries.length} countries listed. Click column headers to sort.</p>
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 text-center">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-400">
+            Active recall atlas
+          </p>
+          <h1 className="mb-2 text-4xl font-bold tracking-tight text-white md:text-5xl">
+            World Capitals Map
+          </h1>
+          <p className="mx-auto max-w-2xl text-slate-400">
+            Hover a country to bring its capital into view. Click to pin it, then use the recall card
+            to test yourself before revealing the answer.
+          </p>
+        </div>
 
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="mb-5 flex flex-col gap-4 md:flex-row">
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by country or capital..."
-            className="flex-1 px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 outline-none focus:border-blue-500 transition-colors"
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Find a country or capital..."
+            className="flex-1 rounded-xl border border-slate-700 bg-slate-800/60 px-4 py-3 text-white outline-none transition-colors placeholder:text-slate-500 focus:border-cyan-500"
           />
           <select
             value={filterContinent}
-            onChange={(e) => setFilterContinent(e.target.value)}
-            className="px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white outline-none focus:border-blue-500 transition-colors"
+            onChange={(event) => setFilterContinent(event.target.value)}
+            className="rounded-xl border border-slate-700 bg-slate-800/60 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-500"
           >
-            {continents.map(c => (
-              <option key={c} value={c}>{c}</option>
+            {continents.map((continent) => (
+              <option key={continent} value={continent}>
+                {continent}
+              </option>
             ))}
           </select>
         </div>
 
-        <p className="text-slate-500 text-sm mb-4">Showing {filtered.length} results</p>
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <section className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-800/50 shadow-2xl shadow-cyan-950/10">
+            <div className="flex flex-col gap-2 border-b border-slate-700 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="font-semibold text-white">Explore the atlas</h2>
+                <p className="text-sm text-slate-500">
+                  {filtered.length} of {countries.length} countries in view
+                </p>
+              </div>
+              <span className="w-fit rounded-full border border-cyan-900/70 bg-cyan-950/40 px-3 py-1 text-xs text-cyan-300">
+                Hover or focus · click to pin
+              </span>
+            </div>
+            <WorldAtlas
+              selectedCountry={selectedCountry}
+              visibleCountries={filtered}
+              onHover={setHoveredCountry}
+              onSelect={selectCountry}
+            />
+          </section>
 
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-slate-700">
-                  <th
-                    onClick={() => handleSort('country')}
-                    className="px-6 py-4 text-left text-blue-400 font-semibold cursor-pointer hover:bg-slate-700/50 transition-colors select-none"
-                  >
-                    Country {sortIcon('country')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('capital')}
-                    className="px-6 py-4 text-left text-blue-400 font-semibold cursor-pointer hover:bg-slate-700/50 transition-colors select-none"
-                  >
-                    Capital {sortIcon('capital')}
-                  </th>
-                  <th
-                    onClick={() => handleSort('continent')}
-                    className="px-6 py-4 text-left text-blue-400 font-semibold cursor-pointer hover:bg-slate-700/50 transition-colors select-none"
-                  >
-                    Continent {sortIcon('continent')}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((item, i) => (
-                  <tr
-                    key={item.country}
-                    className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors"
-                  >
-                    <td className="px-6 py-3 text-white font-medium">{item.country}</td>
-                    <td className="px-6 py-3 text-emerald-400">{item.capital}</td>
-                    <td className="px-6 py-3 text-slate-400">{item.continent}</td>
-                  </tr>
-                ))}
-                {filtered.length === 0 && (
-                  <tr>
-                    <td colSpan={3} className="px-6 py-12 text-center text-slate-500">
-                      No countries found matching your search.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          <aside className="flex flex-col gap-5">
+            <div className="rounded-2xl border border-cyan-900/60 bg-cyan-950/25 p-5">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
+                Selected country
+              </p>
+              {displayedCountry ? (
+                <>
+                  <div className="mb-4 flex items-start justify-between gap-3">
+                    <h2 className="text-2xl font-bold text-white">{displayedCountry.country}</h2>
+                    <span className="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-400">
+                      {displayedCountry.continent}
+                    </span>
+                  </div>
+                  <p className="mb-1 text-sm text-slate-500">Capital</p>
+                  <p className="text-xl font-semibold text-emerald-300">{displayedCountry.capital}</p>
+                </>
+              ) : (
+                <p className="text-slate-400">Choose a country on the map.</p>
+              )}
+            </div>
+
+            <div className="rounded-2xl border border-amber-900/50 bg-amber-950/20 p-5">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
+                Recall drill
+              </p>
+              <p className="mb-4 text-sm text-slate-400">
+                Look at the country, say the capital out loud, then reveal it.
+              </p>
+              {recallCountry ? (
+                <>
+                  <p className="mb-3 text-lg font-semibold text-white">{recallCountry.country}</p>
+                  <div className="mb-4 min-h-12 rounded-xl border border-slate-700 bg-slate-900/60 p-3">
+                    {isRevealed ? (
+                      <span className="font-semibold text-emerald-300">{recallCountry.capital}</span>
+                    ) : (
+                      <span className="text-sm text-slate-600">Answer hidden until you commit</span>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsRevealed((current) => !current)}
+                      className="flex-1 rounded-lg bg-amber-500 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-amber-400"
+                    >
+                      {isRevealed ? 'Hide answer' : 'Reveal capital'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={nextRecall}
+                      className="rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-400"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={nextRecall}
+                  className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-amber-400"
+                >
+                  Start recall
+                </button>
+              )}
+            </div>
+          </aside>
         </div>
+
+        <section className="mt-5 rounded-2xl border border-slate-700 bg-slate-800/40 p-5">
+          <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-semibold text-white">Quick study queue</h2>
+              <p className="text-sm text-slate-500">
+                Use this only when a small country is hard to locate on the map.
+              </p>
+            </div>
+            <span className="text-xs text-slate-500">
+              Showing first {Math.min(filtered.length, 14)} matches
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {filtered.slice(0, 14).map((country) => (
+              <button
+                type="button"
+                key={country.country}
+                onClick={() => selectCountry(country)}
+                className={
+                  selectedCountry?.country === country.country
+                    ? 'rounded-full border border-cyan-500 bg-cyan-950/50 px-3 py-2 text-sm text-cyan-200 transition'
+                    : 'rounded-full border border-slate-700 bg-slate-900/40 px-3 py-2 text-sm text-slate-400 transition hover:border-slate-500 hover:text-white'
+                }
+              >
+                {country.country}
+              </button>
+            ))}
+            {!filtered.length && (
+              <p className="text-sm text-slate-500">No countries found. Try a different search.</p>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
