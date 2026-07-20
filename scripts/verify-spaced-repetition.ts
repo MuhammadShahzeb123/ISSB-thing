@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { scheduleReview, buildSession, type CardState } from '../app/lib/spacedRepetition';
+import { scheduleReview, buildSession, type CardState } from '../app/lib/spacedRepetition.ts';
 
 const now = 1_700_000_000_000;
 
