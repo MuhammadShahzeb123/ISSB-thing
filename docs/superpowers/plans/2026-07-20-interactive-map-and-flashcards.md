@@ -125,16 +125,23 @@ const MIN_EASE_FACTOR = 1.3;
 const LAPSE_INTERVAL_MS = 10 * 60 * 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+// Ease factor is rounded to 2 decimal places on every update so repeated
+// +/-0.15 adjustments don't accumulate IEEE-754 floating point noise
+// (e.g. 2.8 + 0.15 is 2.9499999999999997, not 2.95).
+function roundEase(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
 export function scheduleReview(previous: CardState | undefined, rating: Rating, now: number): CardState {
   const state = previous ?? NEW_CARD_STATE;
 
   if (rating === 'again') {
-    const easeFactor = Math.max(MIN_EASE_FACTOR, state.easeFactor - 0.2);
+    const easeFactor = Math.max(MIN_EASE_FACTOR, roundEase(state.easeFactor - 0.2));
     return { easeFactor, intervalDays: 0, repetitions: 0, dueAt: now + LAPSE_INTERVAL_MS };
   }
 
   const easeDelta = rating === 'hard' ? -0.15 : 0.15;
-  const easeFactor = Math.max(MIN_EASE_FACTOR, state.easeFactor + easeDelta);
+  const easeFactor = Math.max(MIN_EASE_FACTOR, roundEase(state.easeFactor + easeDelta));
   const repetitions = state.repetitions + 1;
 
   let intervalDays: number;
