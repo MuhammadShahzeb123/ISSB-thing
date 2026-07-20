@@ -211,10 +211,13 @@ const mapNameAliases: Record<string, string> = {
   "Cote d'Ivoire": 'Ivory Coast',
   "Côte d'Ivoire": 'Ivory Coast',
   'Dem. Rep. Korea': 'North Korea',
+  'Democratic Republic of the Congo': 'Congo (DRC)',
+  'Federated States of Micronesia': 'Micronesia',
   'Lao PDR': 'Laos',
   'Macedonia': 'North Macedonia',
   'Republic of Congo': 'Congo (Republic)',
   'Republic of Korea': 'South Korea',
+  'Russian Federation': 'Russia',
   'Swaziland': 'Eswatini',
   'The Gambia': 'Gambia',
   'Timor-Leste': 'East Timor',
@@ -234,6 +237,24 @@ function countryForMapLabel(label: string): Country | undefined {
   return countries.find((country) => normalizeMapName(country.country) === normalized);
 }
 
+// The SVG labels a country either with a `name="..."` attribute or by putting
+// the country name in `class="..."`. Read whichever is present, ignoring the
+// styling classes we add ourselves so this stays correct if it runs again.
+function labelForPath(path: SVGPathElement): string {
+  const name = path.getAttribute('name');
+  if (name) return name;
+  return (path.getAttribute('class') ?? '')
+    .replace(/\b(world-map-country|is-muted|is-selected)\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function countryForPath(path: SVGPathElement): Country | undefined {
+  return countryForMapLabel(path.dataset.country ?? labelForPath(path));
+}
+
+const countryByName = new Map(countries.map((country) => [country.country, country]));
+
 interface WorldAtlasProps {
   selectedCountry: Country | null;
   visibleCountries: Country[];
@@ -245,14 +266,26 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
   const shellRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef<ReactZoomPanPinchRef>(null);
-  const hoveredPathRef = useRef<SVGPathElement | null>(null);
-  const hoveredCountryRef = useRef<Country | null>(null);
   const [svgMarkup, setSvgMarkup] = useState('');
-  const [tooltip, setTooltip] = useState<{ country: Country; x: number; y: number } | null>(null);
+  const [tooltip, setTooltip] = useState<{ country: Country; x: number; y: number; below: boolean } | null>(null);
   const visibleNames = useMemo(
     () => new Set(visibleCountries.map((country) => country.country)),
     [visibleCountries],
   );
+
+  // The map's interaction listeners are bound ONCE (in the delegation effect
+  // below) and must read the latest props at event time rather than closing
+  // over stale values. Mirroring them into refs is what keeps hover, click, and
+  // filtering working on every country — not just the first one after a
+  // re-render, which was the previous bug.
+  const visibleNamesRef = useRef(visibleNames);
+  const onHoverRef = useRef(onHover);
+  const onSelectRef = useRef(onSelect);
+  useEffect(() => {
+    visibleNamesRef.current = visibleNames;
+    onHoverRef.current = onHover;
+    onSelectRef.current = onSelect;
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -271,99 +304,137 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
     };
   }, []);
 
-  const positionTooltip = useCallback((path: SVGPathElement, country: Country) => {
-    const shell = shellRef.current;
-    if (!shell) return;
-    const pathRect = path.getBoundingClientRect();
-    const shellRect = shell.getBoundingClientRect();
-    setTooltip({
-      country,
-      x: pathRect.left + pathRect.width / 2 - shellRect.left,
-      y: pathRect.top + pathRect.height / 2 - shellRect.top,
-    });
-  }, []);
-
-  const repositionTooltip = useCallback(() => {
-    const path = hoveredPathRef.current;
-    const country = hoveredCountryRef.current;
-    if (path && country) positionTooltip(path, country);
-  }, [positionTooltip]);
-
+  // Inject the SVG imperatively and tag every recognized country path: cache
+  // its canonical name on the node, mark it interactive, and add a11y metadata.
+  //
+  // The markup is set via `innerHTML` (not React's `dangerouslySetInnerHTML`) on
+  // purpose: once React owns this subtree, any later re-render can reset it back
+  // to the raw SVG string, wiping the `data-country` tags and classes added
+  // below. That reset was the root cause of the map going inert after the first
+  // hover. Owning the subtree ourselves keeps the decoration alive for good.
   useEffect(() => {
-    if (!svgMarkup || !mapRef.current) return;
+    const container = mapRef.current;
+    if (!svgMarkup || !container) return;
 
-    const paths = Array.from(mapRef.current.querySelectorAll<SVGPathElement>('path'));
-    const cleanups: Array<() => void> = [];
+    if (container.innerHTML !== svgMarkup) {
+      container.innerHTML = svgMarkup;
+    }
 
-    paths.forEach((path) => {
-      const classLabel = (path.getAttribute('class') ?? '')
-        .replace(/\b(world-map-country|is-muted|is-selected)\b/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-      const label =
-        path.dataset.country ??
-        path.getAttribute('name') ??
-        classLabel;
-      const country = countryForMapLabel(label);
-
+    container.querySelectorAll<SVGPathElement>('path').forEach((path) => {
+      const country = countryForPath(path);
       if (!country) return;
-
       path.dataset.country = country.country;
       path.classList.add('world-map-country');
       path.setAttribute('role', 'button');
       path.setAttribute('tabindex', '0');
-      path.setAttribute('aria-label', country.country + ', capital ' + country.capital);
-
-      const isVisible = () => visibleNames.has(country.country);
-      const handleHover = () => {
-        if (!isVisible()) return;
-        hoveredPathRef.current = path;
-        hoveredCountryRef.current = country;
-        onHover(country);
-        positionTooltip(path, country);
-      };
-      const handleLeave = () => {
-        hoveredPathRef.current = null;
-        hoveredCountryRef.current = null;
-        onHover(null);
-        setTooltip(null);
-      };
-      const handleSelect = () => {
-        if (isVisible()) onSelect(country);
-      };
-      const handleKeyDown = (event: Event) => {
-        const keyboardEvent = event as KeyboardEvent;
-        if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
-          keyboardEvent.preventDefault();
-          handleSelect();
-        }
-      };
-
-      path.addEventListener('pointerenter', handleHover);
-      path.addEventListener('pointerleave', handleLeave);
-      path.addEventListener('focus', handleHover);
-      path.addEventListener('blur', handleLeave);
-      path.addEventListener('click', handleSelect);
-      path.addEventListener('keydown', handleKeyDown);
-
-      cleanups.push(() => {
-        path.removeEventListener('pointerenter', handleHover);
-        path.removeEventListener('pointerleave', handleLeave);
-        path.removeEventListener('focus', handleHover);
-        path.removeEventListener('blur', handleLeave);
-        path.removeEventListener('click', handleSelect);
-        path.removeEventListener('keydown', handleKeyDown);
-      });
+      path.setAttribute('aria-label', `${country.country}, capital ${country.capital}`);
     });
+  }, [svgMarkup]);
 
-    paths.forEach((path) => {
-      const countryName = path.dataset.country;
-      path.classList.toggle('is-muted', Boolean(countryName && !visibleNames.has(countryName)));
-      path.classList.toggle('is-selected', countryName === selectedCountry?.country);
+  // Reflect the active filter and selection onto the paths. Kept separate from
+  // the event wiring so filtering or selecting never tears down the listeners.
+  useEffect(() => {
+    const container = mapRef.current;
+    if (!svgMarkup || !container) return;
+
+    container.querySelectorAll<SVGPathElement>('path').forEach((path) => {
+      const name = path.dataset.country;
+      if (!name) return;
+      path.classList.toggle('is-muted', !visibleNames.has(name));
+      path.classList.toggle('is-selected', name === selectedCountry?.country);
     });
+  }, [svgMarkup, visibleNames, selectedCountry]);
 
-    return () => cleanups.forEach((cleanup) => cleanup());
-  }, [onHover, onSelect, positionTooltip, selectedCountry, svgMarkup, visibleNames]);
+  // A single set of delegated listeners on the stable container element.
+  // Because they live on the container (not on individual paths) and read live
+  // state from refs, they survive every re-render and keep responding to hover
+  // indefinitely. The tooltip follows the cursor, PostHog-style.
+  useEffect(() => {
+    const container = mapRef.current;
+    const shell = shellRef.current;
+    if (!svgMarkup || !container || !shell) return;
+
+    let activeName: string | null = null;
+
+    const hitFor = (target: EventTarget | null): Country | null => {
+      const path = (target as Element | null)?.closest?.('path') as SVGPathElement | null;
+      const name = path?.dataset.country;
+      if (!name || !visibleNamesRef.current.has(name)) return null;
+      return countryByName.get(name) ?? null;
+    };
+
+    const showTooltip = (country: Country, x: number, y: number, height: number) => {
+      setTooltip({ country, x, y, below: y < height * 0.22 });
+    };
+
+    const clear = () => {
+      if (activeName !== null) {
+        activeName = null;
+        onHoverRef.current(null);
+      }
+      setTooltip(null);
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      const country = hitFor(event.target);
+      if (!country) {
+        clear();
+        return;
+      }
+      if (country.country !== activeName) {
+        activeName = country.country;
+        onHoverRef.current(country);
+      }
+      const rect = shell.getBoundingClientRect();
+      showTooltip(country, event.clientX - rect.left, event.clientY - rect.top, rect.height);
+    };
+
+    const handleClick = (event: MouseEvent) => {
+      const country = hitFor(event.target);
+      if (country) onSelectRef.current(country);
+    };
+
+    const handleFocusIn = (event: FocusEvent) => {
+      const country = hitFor(event.target);
+      if (!country) return;
+      const path = (event.target as Element | null)?.closest?.('path') as SVGPathElement | null;
+      if (!path) return;
+      activeName = country.country;
+      onHoverRef.current(country);
+      const rect = shell.getBoundingClientRect();
+      const pathRect = path.getBoundingClientRect();
+      showTooltip(
+        country,
+        pathRect.left + pathRect.width / 2 - rect.left,
+        pathRect.top - rect.top,
+        rect.height,
+      );
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const country = hitFor(event.target);
+      if (!country) return;
+      event.preventDefault();
+      onSelectRef.current(country);
+    };
+
+    container.addEventListener('pointermove', handlePointerMove);
+    container.addEventListener('pointerleave', clear);
+    container.addEventListener('click', handleClick);
+    container.addEventListener('focusin', handleFocusIn);
+    container.addEventListener('focusout', clear);
+    container.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      container.removeEventListener('pointermove', handlePointerMove);
+      container.removeEventListener('pointerleave', clear);
+      container.removeEventListener('click', handleClick);
+      container.removeEventListener('focusin', handleFocusIn);
+      container.removeEventListener('focusout', clear);
+      container.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [svgMarkup]);
 
   return (
     <div className="world-map-shell" ref={shellRef} aria-label="Interactive world map">
@@ -375,10 +446,9 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
             maxScale={8}
             wheel={{ step: 0.15 }}
             doubleClick={{ mode: 'zoomIn' }}
-            onTransform={repositionTooltip}
           >
             <TransformComponent wrapperClass="world-map-transform-wrapper" contentClass="world-map-transform-content">
-              <div ref={mapRef} dangerouslySetInnerHTML={{ __html: svgMarkup }} />
+              <div ref={mapRef} className="world-map-canvas" />
             </TransformComponent>
           </TransformWrapper>
           <div className="world-map-zoom-controls">
@@ -387,9 +457,12 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
             <button type="button" onClick={() => transformRef.current?.resetTransform()} aria-label="Reset zoom">Reset</button>
           </div>
           {tooltip && (
-            <div className="world-map-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
+            <div
+              className={tooltip.below ? 'world-map-tooltip is-below' : 'world-map-tooltip'}
+              style={{ left: tooltip.x, top: tooltip.y }}
+            >
               <p className="world-map-tooltip-country">{tooltip.country.country}</p>
-              <p className="world-map-tooltip-capital">{tooltip.country.capital}</p>
+              <p className="world-map-tooltip-capital">Capital &middot; {tooltip.country.capital}</p>
             </div>
           )}
         </>

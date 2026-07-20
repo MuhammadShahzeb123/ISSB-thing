@@ -78,14 +78,20 @@ body {
 .world-map-tooltip {
   position: absolute;
   z-index: 30;
-  transform: translate(-50%, -120%);
+  /* Anchored to the cursor point; sits just above it by default. */
+  transform: translate(-50%, calc(-100% - 14px));
   pointer-events: none;
+  max-width: 240px;
   padding: 0.4rem 0.65rem;
   border-radius: 0.6rem;
   border: 1px solid rgba(34, 211, 238, 0.5);
   background: rgba(8, 15, 30, 0.92);
   box-shadow: 0 8px 20px rgba(2, 6, 23, 0.45);
-  white-space: nowrap;
+}
+
+/* Flips below the cursor when hovering near the top edge so it never clips. */
+.world-map-tooltip.is-below {
+  transform: translate(-50%, 14px);
 }
 
 .world-map-tooltip-country {
