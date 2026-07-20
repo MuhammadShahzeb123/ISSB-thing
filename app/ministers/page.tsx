@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import SpacedRepetitionDeck from '@/app/components/SpacedRepetitionDeck';
 
 interface Minister {
   name: string;
@@ -60,15 +61,24 @@ const armedForces = [
   { name: "Lt. Gen. Muhammad Asim Malik", role: "Director General ISI", branch: "Pakistan Army" },
 ];
 
+type Tab = 'top' | 'ministers' | 'forces';
+type ViewMode = 'list' | 'study';
+
 export default function MinistersPage() {
   const [search, setSearch] = useState('');
-  const [activeTab, setActiveTab] = useState<'top' | 'ministers' | 'forces'>('ministers');
+  const [activeTab, setActiveTab] = useState<Tab>('ministers');
+  const [viewMode, setViewMode] = useState<Record<Tab, ViewMode>>({ top: 'list', ministers: 'list', forces: 'list' });
 
   const filteredMinisters = ministers.filter(m =>
     m.name.toLowerCase().includes(search.toLowerCase()) ||
     m.portfolio.toLowerCase().includes(search.toLowerCase()) ||
     m.party.toLowerCase().includes(search.toLowerCase())
   );
+  const ministersStudyPool = search.trim() ? filteredMinisters : ministers;
+
+  const setTabView = (tab: Tab, mode: ViewMode) => {
+    setViewMode((current) => ({ ...current, [tab]: mode }));
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
@@ -96,7 +106,24 @@ export default function MinistersPage() {
           ))}
         </div>
 
-        {activeTab === 'top' && (
+        <div className="flex justify-center gap-2 mb-6">
+          <button
+            type="button"
+            onClick={() => setTabView(activeTab, 'list')}
+            className={viewMode[activeTab] === 'list' ? 'rounded-lg bg-slate-700 px-4 py-2 text-sm font-semibold text-white' : 'rounded-lg px-4 py-2 text-sm text-slate-500 transition hover:text-white'}
+          >
+            List
+          </button>
+          <button
+            type="button"
+            onClick={() => setTabView(activeTab, 'study')}
+            className={viewMode[activeTab] === 'study' ? 'rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white' : 'rounded-lg px-4 py-2 text-sm text-slate-500 transition hover:text-white'}
+          >
+            Study cards
+          </button>
+        </div>
+
+        {activeTab === 'top' && viewMode.top === 'list' && (
           <div className="space-y-4">
             {topOfficials.map((person, i) => (
               <div key={i} className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 hover:border-blue-500/30 transition-all">
@@ -117,7 +144,24 @@ export default function MinistersPage() {
           </div>
         )}
 
-        {activeTab === 'ministers' && (
+        {activeTab === 'top' && viewMode.top === 'study' && (
+          <SpacedRepetitionDeck
+            key="ministers-top"
+            storageKey="issb-sm2-ministers-top"
+            items={topOfficials}
+            getId={(person) => person.role}
+            accentColor="violet"
+            renderFront={(person) => person.role}
+            renderBack={(person) => (
+              <>
+                <p className="text-xl font-semibold text-white">{person.name}</p>
+                {person.party !== 'N/A' && <p className="mt-2 text-sm text-slate-400">{person.party}</p>}
+              </>
+            )}
+          />
+        )}
+
+        {activeTab === 'ministers' && viewMode.ministers === 'list' && (
           <>
             <input
               type="text"
@@ -161,7 +205,29 @@ export default function MinistersPage() {
           </>
         )}
 
-        {activeTab === 'forces' && (
+        {activeTab === 'ministers' && viewMode.ministers === 'study' && (
+          <div>
+            <p className="mb-5 text-center text-sm text-slate-500">
+              Studying {ministersStudyPool.length === ministers.length ? 'all federal ministers' : ministersStudyPool.length + ' filtered ministers'}.
+            </p>
+            <SpacedRepetitionDeck
+              key="ministers-cabinet"
+              storageKey="issb-sm2-ministers-cabinet"
+              items={ministersStudyPool}
+              getId={(m) => m.portfolio}
+              accentColor="emerald"
+              renderFront={(m) => m.portfolio}
+              renderBack={(m) => (
+                <>
+                  <p className="text-xl font-semibold text-white">{m.name}</p>
+                  <p className="mt-2 text-sm text-slate-400">{m.party}{m.additional ? ' -- ' + m.additional : ''}</p>
+                </>
+              )}
+            />
+          </div>
+        )}
+
+        {activeTab === 'forces' && viewMode.forces === 'list' && (
           <div className="space-y-4">
             {armedForces.map((person, i) => (
               <div key={i} className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 hover:border-emerald-500/30 transition-all">
@@ -178,6 +244,23 @@ export default function MinistersPage() {
               </div>
             ))}
           </div>
+        )}
+
+        {activeTab === 'forces' && viewMode.forces === 'study' && (
+          <SpacedRepetitionDeck
+            key="ministers-forces"
+            storageKey="issb-sm2-ministers-forces"
+            items={armedForces}
+            getId={(person) => person.role}
+            accentColor="amber"
+            renderFront={(person) => person.role}
+            renderBack={(person) => (
+              <>
+                <p className="text-xl font-semibold text-white">{person.name}</p>
+                <p className="mt-2 text-sm text-slate-400">{person.branch}</p>
+              </>
+            )}
+          />
         )}
       </div>
     </div>

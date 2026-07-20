@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { TransformWrapper, TransformComponent, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
+import SpacedRepetitionDeck from '@/app/components/SpacedRepetitionDeck';
 
 type Country = { country: string; capital: string; continent: string };
 
@@ -240,8 +242,13 @@ interface WorldAtlasProps {
 }
 
 function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: WorldAtlasProps) {
+  const shellRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
+  const transformRef = useRef<ReactZoomPanPinchRef>(null);
+  const hoveredPathRef = useRef<SVGPathElement | null>(null);
+  const hoveredCountryRef = useRef<Country | null>(null);
   const [svgMarkup, setSvgMarkup] = useState('');
+  const [tooltip, setTooltip] = useState<{ country: Country; x: number; y: number } | null>(null);
   const visibleNames = useMemo(
     () => new Set(visibleCountries.map((country) => country.country)),
     [visibleCountries],
@@ -263,6 +270,24 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
       cancelled = true;
     };
   }, []);
+
+  const positionTooltip = useCallback((path: SVGPathElement, country: Country) => {
+    const shell = shellRef.current;
+    if (!shell) return;
+    const pathRect = path.getBoundingClientRect();
+    const shellRect = shell.getBoundingClientRect();
+    setTooltip({
+      country,
+      x: pathRect.left + pathRect.width / 2 - shellRect.left,
+      y: pathRect.top + pathRect.height / 2 - shellRect.top,
+    });
+  }, []);
+
+  const repositionTooltip = useCallback(() => {
+    const path = hoveredPathRef.current;
+    const country = hoveredCountryRef.current;
+    if (path && country) positionTooltip(path, country);
+  }, [positionTooltip]);
 
   useEffect(() => {
     if (!svgMarkup || !mapRef.current) return;
@@ -291,9 +316,18 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
 
       const isVisible = () => visibleNames.has(country.country);
       const handleHover = () => {
-        if (isVisible()) onHover(country);
+        if (!isVisible()) return;
+        hoveredPathRef.current = path;
+        hoveredCountryRef.current = country;
+        onHover(country);
+        positionTooltip(path, country);
       };
-      const handleLeave = () => onHover(null);
+      const handleLeave = () => {
+        hoveredPathRef.current = null;
+        hoveredCountryRef.current = null;
+        onHover(null);
+        setTooltip(null);
+      };
       const handleSelect = () => {
         if (isVisible()) onSelect(country);
       };
@@ -329,12 +363,36 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
     });
 
     return () => cleanups.forEach((cleanup) => cleanup());
-  }, [onHover, onSelect, selectedCountry, svgMarkup, visibleNames]);
+  }, [onHover, onSelect, positionTooltip, selectedCountry, svgMarkup, visibleNames]);
 
   return (
-    <div className="world-map-shell" ref={mapRef} aria-label="Interactive world map">
+    <div className="world-map-shell" ref={shellRef} aria-label="Interactive world map">
       {svgMarkup ? (
-        <div dangerouslySetInnerHTML={{ __html: svgMarkup }} />
+        <>
+          <TransformWrapper
+            ref={transformRef}
+            minScale={1}
+            maxScale={8}
+            wheel={{ step: 0.15 }}
+            doubleClick={{ mode: 'zoomIn' }}
+            onTransform={repositionTooltip}
+          >
+            <TransformComponent wrapperClass="world-map-transform-wrapper" contentClass="world-map-transform-content">
+              <div ref={mapRef} dangerouslySetInnerHTML={{ __html: svgMarkup }} />
+            </TransformComponent>
+          </TransformWrapper>
+          <div className="world-map-zoom-controls">
+            <button type="button" onClick={() => transformRef.current?.zoomIn()} aria-label="Zoom in">+</button>
+            <button type="button" onClick={() => transformRef.current?.zoomOut()} aria-label="Zoom out">−</button>
+            <button type="button" onClick={() => transformRef.current?.resetTransform()} aria-label="Reset zoom">Reset</button>
+          </div>
+          {tooltip && (
+            <div className="world-map-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
+              <p className="world-map-tooltip-country">{tooltip.country.country}</p>
+              <p className="world-map-tooltip-capital">{tooltip.country.capital}</p>
+            </div>
+          )}
+        </>
       ) : (
         <div className="flex min-h-[280px] items-center justify-center text-sm text-slate-500">
           Loading the atlas...
@@ -346,14 +404,14 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
 }
 
 export default function CountriesPage() {
+  const [mode, setMode] = useState<'explore' | 'study'>('explore');
   const [search, setSearch] = useState('');
   const [filterContinent, setFilterContinent] = useState('All');
   const [hoveredCountry, setHoveredCountry] = useState<Country | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(
     countries.find((country) => country.country === 'Pakistan') ?? countries[0],
   );
-  const [recallCountry, setRecallCountry] = useState<Country | null>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
+  const [studyPool, setStudyPool] = useState<Country[]>(countries);
 
   const continents = useMemo(() => {
     const set = new Set(countries.map((country) => country.continent));
@@ -383,16 +441,11 @@ export default function CountriesPage() {
 
   const selectCountry = useCallback((country: Country) => {
     setSelectedCountry(country);
-    setRecallCountry(country);
-    setIsRevealed(false);
   }, []);
 
-  const nextRecall = useCallback(() => {
-    if (!filtered.length) return;
-    const next = filtered[Math.floor(Math.random() * filtered.length)];
-    setRecallCountry(next);
-    setIsRevealed(false);
-    setSelectedCountry(next);
+  const openStudyMode = useCallback(() => {
+    setStudyPool(filtered.length ? filtered : countries);
+    setMode('study');
   }, [filtered]);
 
   return (
@@ -406,153 +459,126 @@ export default function CountriesPage() {
             World Capitals Map
           </h1>
           <p className="mx-auto max-w-2xl text-slate-400">
-            Hover a country to bring its capital into view. Click to pin it, then use the recall card
-            to test yourself before revealing the answer.
+            Hover or focus a country to see its capital. Scroll or use the zoom controls to get close
+            enough to click any country, no matter how small.
           </p>
         </div>
 
-        <div className="mb-5 flex flex-col gap-4 md:flex-row">
-          <input
-            type="text"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Find a country or capital..."
-            className="flex-1 rounded-xl border border-slate-700 bg-slate-800/60 px-4 py-3 text-white outline-none transition-colors placeholder:text-slate-500 focus:border-cyan-500"
-          />
-          <select
-            value={filterContinent}
-            onChange={(event) => setFilterContinent(event.target.value)}
-            className="rounded-xl border border-slate-700 bg-slate-800/60 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-500"
-          >
-            {continents.map((continent) => (
-              <option key={continent} value={continent}>
-                {continent}
-              </option>
-            ))}
-          </select>
+        <div className="mb-6 flex justify-center">
+          <div className="flex gap-2 rounded-xl border border-slate-800 bg-slate-900/60 p-1">
+            <button
+              type="button"
+              onClick={() => setMode('explore')}
+              className={mode === 'explore' ? 'rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950' : 'rounded-lg px-4 py-2 text-sm text-slate-400 transition hover:text-white'}
+            >
+              Explore map
+            </button>
+            <button
+              type="button"
+              onClick={openStudyMode}
+              className={mode === 'study' ? 'rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950' : 'rounded-lg px-4 py-2 text-sm text-slate-400 transition hover:text-white'}
+            >
+              Study cards
+            </button>
+          </div>
         </div>
 
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
-          <section className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-800/50 shadow-2xl shadow-cyan-950/10">
-            <div className="flex flex-col gap-2 border-b border-slate-700 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h2 className="font-semibold text-white">Explore the atlas</h2>
-                <p className="text-sm text-slate-500">
-                  {filtered.length} of {countries.length} countries in view
+        {mode === 'explore' ? (
+          <>
+            <div className="mb-5 flex flex-col gap-4 md:flex-row">
+              <input
+                type="text"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Find a country or capital..."
+                className="flex-1 rounded-xl border border-slate-700 bg-slate-800/60 px-4 py-3 text-white outline-none transition-colors placeholder:text-slate-500 focus:border-cyan-500"
+              />
+              <select
+                value={filterContinent}
+                onChange={(event) => setFilterContinent(event.target.value)}
+                className="rounded-xl border border-slate-700 bg-slate-800/60 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-500"
+              >
+                {continents.map((continent) => (
+                  <option key={continent} value={continent}>
+                    {continent}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
+              <section className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-800/50 shadow-2xl shadow-cyan-950/10">
+                <div className="flex flex-col gap-2 border-b border-slate-700 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h2 className="font-semibold text-white">Explore the atlas</h2>
+                    <p className="text-sm text-slate-500">
+                      {filtered.length} of {countries.length} countries in view
+                    </p>
+                  </div>
+                  <span className="w-fit rounded-full border border-cyan-900/70 bg-cyan-950/40 px-3 py-1 text-xs text-cyan-300">
+                    Hover or focus -- scroll to zoom -- click to pin
+                  </span>
+                </div>
+                <WorldAtlas
+                  selectedCountry={selectedCountry}
+                  visibleCountries={filtered}
+                  onHover={setHoveredCountry}
+                  onSelect={selectCountry}
+                />
+              </section>
+
+              <aside className="rounded-2xl border border-cyan-900/60 bg-cyan-950/25 p-5">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
+                  Selected country
                 </p>
-              </div>
-              <span className="w-fit rounded-full border border-cyan-900/70 bg-cyan-950/40 px-3 py-1 text-xs text-cyan-300">
-                Hover or focus · click to pin
-              </span>
-            </div>
-            <WorldAtlas
-              selectedCountry={selectedCountry}
-              visibleCountries={filtered}
-              onHover={setHoveredCountry}
-              onSelect={selectCountry}
-            />
-          </section>
-
-          <aside className="flex flex-col gap-5">
-            <div className="rounded-2xl border border-cyan-900/60 bg-cyan-950/25 p-5">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
-                Selected country
-              </p>
-              {displayedCountry ? (
-                <>
-                  <div className="mb-4 flex items-start justify-between gap-3">
-                    <h2 className="text-2xl font-bold text-white">{displayedCountry.country}</h2>
-                    <span className="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-400">
-                      {displayedCountry.continent}
-                    </span>
-                  </div>
-                  <p className="mb-1 text-sm text-slate-500">Capital</p>
-                  <p className="text-xl font-semibold text-emerald-300">{displayedCountry.capital}</p>
-                </>
-              ) : (
-                <p className="text-slate-400">Choose a country on the map.</p>
-              )}
-            </div>
-
-            <div className="rounded-2xl border border-amber-900/50 bg-amber-950/20 p-5">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
-                Recall drill
-              </p>
-              <p className="mb-4 text-sm text-slate-400">
-                Look at the country, say the capital out loud, then reveal it.
-              </p>
-              {recallCountry ? (
-                <>
-                  <p className="mb-3 text-lg font-semibold text-white">{recallCountry.country}</p>
-                  <div className="mb-4 min-h-12 rounded-xl border border-slate-700 bg-slate-900/60 p-3">
-                    {isRevealed ? (
-                      <span className="font-semibold text-emerald-300">{recallCountry.capital}</span>
-                    ) : (
-                      <span className="text-sm text-slate-600">Answer hidden until you commit</span>
-                    )}
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsRevealed((current) => !current)}
-                      className="flex-1 rounded-lg bg-amber-500 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-amber-400"
-                    >
-                      {isRevealed ? 'Hide answer' : 'Reveal capital'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={nextRecall}
-                      className="rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-400"
-                    >
-                      Next
-                    </button>
-                  </div>
-                </>
-              ) : (
+                {displayedCountry ? (
+                  <>
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <h2 className="text-2xl font-bold text-white">{displayedCountry.country}</h2>
+                      <span className="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-400">
+                        {displayedCountry.continent}
+                      </span>
+                    </div>
+                    <p className="mb-1 text-sm text-slate-500">Capital</p>
+                    <p className="text-xl font-semibold text-emerald-300">{displayedCountry.capital}</p>
+                  </>
+                ) : (
+                  <p className="text-slate-400">Choose a country on the map.</p>
+                )}
                 <button
                   type="button"
-                  onClick={nextRecall}
-                  className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-amber-400"
+                  onClick={openStudyMode}
+                  className="mt-6 w-full rounded-lg border border-cyan-800/60 px-3 py-2 text-sm font-semibold text-cyan-300 transition hover:border-cyan-400 hover:text-cyan-200"
                 >
-                  Start recall
+                  Study these on cards ---
                 </button>
-              )}
+              </aside>
             </div>
-          </aside>
-        </div>
-
-        <section className="mt-5 rounded-2xl border border-slate-700 bg-slate-800/40 p-5">
-          <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="font-semibold text-white">Quick study queue</h2>
-              <p className="text-sm text-slate-500">
-                Use this only when a small country is hard to locate on the map.
-              </p>
-            </div>
-            <span className="text-xs text-slate-500">
-              Showing first {Math.min(filtered.length, 14)} matches
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {filtered.slice(0, 14).map((country) => (
-              <button
-                type="button"
-                key={country.country}
-                onClick={() => selectCountry(country)}
-                className={
-                  selectedCountry?.country === country.country
-                    ? 'rounded-full border border-cyan-500 bg-cyan-950/50 px-3 py-2 text-sm text-cyan-200 transition'
-                    : 'rounded-full border border-slate-700 bg-slate-900/40 px-3 py-2 text-sm text-slate-400 transition hover:border-slate-500 hover:text-white'
-                }
-              >
-                {country.country}
+          </>
+        ) : (
+          <div>
+            <p className="mb-5 text-center text-sm text-slate-500">
+              Studying {studyPool.length === countries.length ? 'all countries' : studyPool.length + ' filtered countries'}.{' '}
+              <button type="button" onClick={() => setMode('explore')} className="text-cyan-400 underline-offset-2 hover:underline">
+                Back to the map
               </button>
-            ))}
-            {!filtered.length && (
-              <p className="text-sm text-slate-500">No countries found. Try a different search.</p>
-            )}
+            </p>
+            <SpacedRepetitionDeck
+              key="countries"
+              storageKey="issb-sm2-countries"
+              items={studyPool}
+              getId={(country) => country.country}
+              accentColor="cyan"
+              renderFront={(country) => country.country}
+              renderBack={(country) => (
+                <>
+                  <p className="text-xl font-semibold text-white">{country.capital}</p>
+                  <p className="mt-2 text-sm text-slate-400">{country.continent}</p>
+                </>
+              )}
+            />
           </div>
-        </section>
+        )}
       </div>
     </div>
   );
