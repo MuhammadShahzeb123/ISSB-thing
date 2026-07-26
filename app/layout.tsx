@@ -35,7 +35,7 @@ export default function RootLayout({
             <Link href="/" className="text-xl font-bold text-white">ISSB Prep</Link>
             <div className="flex gap-2 overflow-x-auto">
               <Link href="/" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">WAT</Link>
-              <Link href="/picturestest" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Picture Test</Link>
+              <Link href="/picturestest" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Psych Tests</Link>
               <Link href="/countries" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Countries</Link>
               <Link href="/study" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Memory Lab</Link>
               <Link href="/quiz" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Capitals Quiz</Link>
