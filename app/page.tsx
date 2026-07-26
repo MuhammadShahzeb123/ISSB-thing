@@ -7,7 +7,7 @@ import type { Word } from './words';
 const TEST_SIZE = 200;
 
 function getRandomTime(): number {
-  return Math.floor(Math.random() * 5) + 8;
+  return Math.floor(Math.random() * 3) + 7;
 }
 
 export default function WATPage() {
@@ -205,8 +205,8 @@ export default function WATPage() {
             <div className="flex items-center gap-3">
               <span className="text-sm text-slate-500">Time left</span>
               <div className={timeLeft <= 2 ? 'relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-red-500 text-red-400' : 'relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-cyan-500 text-white'}>
-                <span className="text-xl font-bold">{timeLeft}</span>
-                <span className="absolute -bottom-5 text-[10px] text-slate-600">{timeLimit}s window</span>
+                <span className="text-xl font-bold">10</span>
+                <span className="absolute -bottom-5 text-[10px] text-slate-600">10s window</span>
               </div>
             </div>
           </div>
