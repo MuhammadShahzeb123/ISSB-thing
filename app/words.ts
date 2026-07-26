@@ -512,5 +512,5 @@ export function shuffleWords(words: Word[]): Word[] {
 
 export function getTimerForWord(index: number): number {
   void index;
-  return Math.floor(Math.random() * 3) + 7;
+  return Math.floor(Math.random() * 4) + 7;
 }

@@ -7,7 +7,7 @@ import type { Word } from './words';
 const TEST_SIZE = 200;
 
 function getRandomTime(): number {
-  return Math.floor(Math.random() * 3) + 7;
+  return Math.floor(Math.random() * 4) + 7;
 }
 
 export default function WATPage() {
