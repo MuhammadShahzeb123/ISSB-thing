@@ -739,6 +739,7 @@ function SentenceCompletionTest({ onBack }: { onBack: () => void }) {
   }
 
   const current = shuffledSentences[currentIndex];
+  const progress = ((currentIndex + 1) / shuffledSentences.length) * 100;
   const accent = getCategoryAccent(current.category);
 
   return (
