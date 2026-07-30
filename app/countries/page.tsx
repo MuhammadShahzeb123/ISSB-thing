@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { TransformWrapper, TransformComponent, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 
 type Country = { country: string; capital: string; continent: string };
 
@@ -240,8 +241,11 @@ interface WorldAtlasProps {
 }
 
 function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: WorldAtlasProps) {
+  const shellRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
+  const transformRef = useRef<ReactZoomPanPinchRef>(null);
   const [svgMarkup, setSvgMarkup] = useState('');
+  const [tooltip, setTooltip] = useState<{ country: Country; x: number; y: number } | null>(null);
   const visibleNames = useMemo(
     () => new Set(visibleCountries.map((country) => country.country)),
     [visibleCountries],
@@ -262,6 +266,18 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  const positionTooltip = useCallback((path: SVGPathElement, country: Country) => {
+    const shell = shellRef.current;
+    if (!shell) return;
+    const pathRect = path.getBoundingClientRect();
+    const shellRect = shell.getBoundingClientRect();
+    setTooltip({
+      country,
+      x: pathRect.left + pathRect.width / 2 - shellRect.left,
+      y: pathRect.top + pathRect.height / 2 - shellRect.top,
+    });
   }, []);
 
   useEffect(() => {
@@ -291,9 +307,14 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
 
       const isVisible = () => visibleNames.has(country.country);
       const handleHover = () => {
-        if (isVisible()) onHover(country);
+        if (!isVisible()) return;
+        onHover(country);
+        positionTooltip(path, country);
       };
-      const handleLeave = () => onHover(null);
+      const handleLeave = () => {
+        onHover(null);
+        setTooltip(null);
+      };
       const handleSelect = () => {
         if (isVisible()) onSelect(country);
       };
@@ -329,12 +350,29 @@ function WorldAtlas({ selectedCountry, visibleCountries, onHover, onSelect }: Wo
     });
 
     return () => cleanups.forEach((cleanup) => cleanup());
-  }, [onHover, onSelect, selectedCountry, svgMarkup, visibleNames]);
+  }, [onHover, onSelect, positionTooltip, selectedCountry, svgMarkup, visibleNames]);
 
   return (
-    <div className="world-map-shell" ref={mapRef} aria-label="Interactive world map">
+    <div className="world-map-shell" ref={shellRef} aria-label="Interactive world map">
       {svgMarkup ? (
-        <div dangerouslySetInnerHTML={{ __html: svgMarkup }} />
+        <>
+          <TransformWrapper ref={transformRef} minScale={1} maxScale={8} wheel={{ step: 0.15 }} doubleClick={{ mode: 'zoomIn' }}>
+            <TransformComponent wrapperClass="world-map-transform-wrapper" contentClass="world-map-transform-content">
+              <div ref={mapRef} dangerouslySetInnerHTML={{ __html: svgMarkup }} />
+            </TransformComponent>
+          </TransformWrapper>
+          <div className="world-map-zoom-controls">
+            <button type="button" onClick={() => transformRef.current?.zoomIn()} aria-label="Zoom in">+</button>
+            <button type="button" onClick={() => transformRef.current?.zoomOut()} aria-label="Zoom out">−</button>
+            <button type="button" onClick={() => transformRef.current?.resetTransform()} aria-label="Reset zoom">Reset</button>
+          </div>
+          {tooltip && (
+            <div className="world-map-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
+              <p className="world-map-tooltip-country">{tooltip.country.country}</p>
+              <p className="world-map-tooltip-capital">{tooltip.country.capital}</p>
+            </div>
+          )}
+        </>
       ) : (
         <div className="flex min-h-[280px] items-center justify-center text-sm text-slate-500">
           Loading the atlas...
