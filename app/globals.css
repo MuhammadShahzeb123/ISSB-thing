@@ -25,6 +25,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.wat-shell {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(34, 211, 238, 0.16), transparent 28rem),
+    radial-gradient(circle at 88% 88%, rgba(59, 130, 246, 0.15), transparent 26rem),
+    linear-gradient(135deg, #020617 0%, #0f172a 48%, #071827 100%);
+}
+
 .world-map-shell {
   position: relative;
   overflow: hidden;

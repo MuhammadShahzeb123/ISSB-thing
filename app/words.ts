@@ -510,7 +510,3 @@ export function shuffleWords(words: Word[]): Word[] {
   return shuffled;
 }
 
-export function getTimerForWord(index: number): number {
-  void index;
-  return Math.floor(Math.random() * 4) + 7;
-}
