@@ -143,7 +143,7 @@ export default function RankStudyView({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+    <div className="neo-page neo-page--ranks min-h-screen p-4">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 text-center">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-amber-400">Spaced rank review</p>

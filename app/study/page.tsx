@@ -169,7 +169,7 @@ export default function StudyPage() {
 
   if (!isStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="neo-page neo-page--memory min-h-screen p-4">
         <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-4xl items-center justify-center">
           <div className="w-full text-center">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-violet-400">ISSB general knowledge</p>
@@ -218,7 +218,7 @@ export default function StudyPage() {
 
   if (sessionComplete) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="neo-page neo-page--memory min-h-screen p-4">
         <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-3xl items-center justify-center">
           <div className="w-full rounded-3xl border border-emerald-900/50 bg-emerald-950/15 p-8 text-center">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-400">Session complete</p>
@@ -235,7 +235,7 @@ export default function StudyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+    <div className="neo-page neo-page--memory min-h-screen p-4">
       <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-3xl items-center">
         <div className="w-full">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4">

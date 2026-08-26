@@ -29,24 +29,27 @@ export default function RootLayout({
         data-url="https://ingest.fumblemap.com/events"
         strategy="afterInteractive"
       />
-      <body className="antialiased">
-        <nav className="fixed top-0 left-0 right-0 bg-slate-900/90 backdrop-blur-sm border-b border-slate-800 z-50">
-          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold text-white">ISSB Prep</Link>
-            <div className="flex gap-2 overflow-x-auto">
-              <Link href="/" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">WAT</Link>
-              <Link href="/picturestest" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Psych Tests</Link>
-              <Link href="/countries" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Countries</Link>
-              <Link href="/study" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Memory Lab</Link>
-              <Link href="/quiz" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Capitals Quiz</Link>
-              <Link href="/ministers" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Ministers</Link>
-              <Link href="/ranks/army" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Army Ranks</Link>
-              <Link href="/ranks/airforce" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Air Force Ranks</Link>
-              <Link href="/ranks/navy" className="px-3 py-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800 text-sm whitespace-nowrap">Navy Ranks</Link>
+      <body className="neo-body">
+        <nav className="site-nav">
+          <div className="site-nav-inner">
+            <Link href="/" className="site-brand">
+              <span className="site-brand-mark">IP</span>
+              <span>ISSB <strong>PREP</strong></span>
+            </Link>
+            <div className="site-nav-links" aria-label="Primary navigation">
+              <Link href="/" className="site-nav-link">WAT</Link>
+              <Link href="/picturestest" className="site-nav-link">Psych Tests</Link>
+              <Link href="/countries" className="site-nav-link">Countries</Link>
+              <Link href="/study" className="site-nav-link">Memory Lab</Link>
+              <Link href="/quiz" className="site-nav-link">Capitals Quiz</Link>
+              <Link href="/ministers" className="site-nav-link">Ministers</Link>
+              <Link href="/ranks/army" className="site-nav-link">Army Ranks</Link>
+              <Link href="/ranks/airforce" className="site-nav-link">Air Force Ranks</Link>
+              <Link href="/ranks/navy" className="site-nav-link">Navy Ranks</Link>
             </div>
           </div>
         </nav>
-        <main className="pt-16">{children}</main>
+        <main className="site-main">{children}</main>
         <Analytics />
       </body>
     </html>

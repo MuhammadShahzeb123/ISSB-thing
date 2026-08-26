@@ -116,7 +116,7 @@ function TestHub({ onSelect }: { onSelect: (test: ActiveTest) => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+    <div className="neo-page neo-page--psych min-h-screen p-4">
       <div className="mx-auto max-w-4xl py-12">
         <div className="text-center mb-12">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400">ISSB psychology practice</p>
@@ -241,7 +241,7 @@ function PictureTest({ onBack }: { onBack: () => void }) {
 
   if (!isStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="neo-page neo-page--psych min-h-screen p-4">
         <div className="mx-auto max-w-3xl py-12">
           <button onClick={onBack} className="mb-8 text-sm text-slate-500 hover:text-white transition-colors">← Back to tests</button>
           <div className="text-center">
@@ -284,7 +284,7 @@ function PictureTest({ onBack }: { onBack: () => void }) {
 
   if (isFinished) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="neo-page neo-page--psych min-h-screen p-4">
         <div className="mx-auto max-w-4xl py-8">
           <div className="mb-8 text-center">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-400">Session complete</p>
@@ -326,7 +326,7 @@ function PictureTest({ onBack }: { onBack: () => void }) {
   const currentPic = shuffledPictures[currentIndex];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+    <div className="neo-page neo-page--psych min-h-screen p-4">
       <div className="mx-auto max-w-3xl py-8">
         <div className="flex justify-between items-center mb-6">
           <span className="text-slate-400 text-sm">Picture {currentIndex + 1} / {shuffledPictures.length}</span>
@@ -459,7 +459,7 @@ function SentenceStoryTest({ onBack }: { onBack: () => void }) {
 
   if (!isStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="neo-page neo-page--psych min-h-screen p-4">
         <div className="mx-auto max-w-3xl py-12">
           <button onClick={onBack} className="mb-8 text-sm text-slate-500 hover:text-white transition-colors">← Back to tests</button>
           <div className="text-center">
@@ -503,7 +503,7 @@ function SentenceStoryTest({ onBack }: { onBack: () => void }) {
 
   if (isFinished) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="neo-page neo-page--psych min-h-screen p-4">
         <div className="mx-auto max-w-4xl py-8">
           <div className="mb-8 text-center">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-amber-400">Session complete</p>
@@ -542,7 +542,7 @@ function SentenceStoryTest({ onBack }: { onBack: () => void }) {
   const progress = ((currentIndex + 1) / shuffledSentences.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+    <div className="neo-page neo-page--psych min-h-screen p-4">
       <div className="mx-auto max-w-3xl py-8">
         <div className="flex justify-between items-center mb-6">
           <div>
@@ -659,7 +659,7 @@ function SentenceCompletionTest({ onBack }: { onBack: () => void }) {
 
   if (!isStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="neo-page neo-page--psych min-h-screen p-4">
         <div className="mx-auto max-w-3xl py-12">
           <button onClick={onBack} className="mb-8 text-sm text-slate-500 hover:text-white transition-colors">← Back to tests</button>
           <div className="text-center">
@@ -703,7 +703,7 @@ function SentenceCompletionTest({ onBack }: { onBack: () => void }) {
 
   if (isFinished) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+      <div className="neo-page neo-page--psych min-h-screen p-4">
         <div className="mx-auto max-w-4xl py-8">
           <div className="mb-8 text-center">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-sky-400">Session complete</p>
@@ -743,7 +743,7 @@ function SentenceCompletionTest({ onBack }: { onBack: () => void }) {
   const accent = getCategoryAccent(current.category);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4">
+    <div className="neo-page neo-page--psych min-h-screen p-4">
       <div className="mx-auto max-w-3xl py-8">
         <div className="flex justify-between items-center mb-6">
           <div>

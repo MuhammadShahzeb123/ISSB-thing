@@ -121,7 +121,7 @@ export default function WATPage() {
 
   if (phase === 'setup') {
     return (
-      <main className="wat-shell min-h-screen px-4 py-10 sm:px-6">
+      <main className="neo-page neo-page--wat wat-shell min-h-screen px-4 py-10 sm:px-6">
         <div className="mx-auto grid min-h-[calc(100vh-9rem)] max-w-5xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <section>
             <p className="mb-5 text-xs font-bold uppercase tracking-[0.28em] text-cyan-300">ISSB psychology practice</p>
@@ -164,7 +164,7 @@ export default function WATPage() {
 
   if (phase === 'break') {
     return (
-      <main className="wat-shell min-h-screen px-4 py-10 sm:px-6">
+      <main className="neo-page neo-page--wat wat-shell min-h-screen px-4 py-10 sm:px-6">
         <div className="mx-auto flex min-h-[calc(100vh-9rem)] max-w-2xl items-center justify-center text-center">
           <section className="w-full rounded-[2rem] border border-amber-300/20 bg-slate-950/70 p-8 shadow-2xl shadow-amber-950/30 backdrop-blur sm:p-12">
             <p className="text-xs font-bold uppercase tracking-[0.28em] text-amber-300">Part {section} complete</p>
@@ -180,7 +180,7 @@ export default function WATPage() {
 
   if (phase === 'finished') {
     return (
-      <main className="wat-shell min-h-screen px-4 py-10 sm:px-6">
+      <main className="neo-page neo-page--wat wat-shell min-h-screen px-4 py-10 sm:px-6">
         <div className="mx-auto max-w-4xl">
           <header className="mb-8 rounded-[2rem] border border-emerald-300/20 bg-slate-950/70 p-8 text-center shadow-2xl shadow-emerald-950/20 backdrop-blur">
             <p className="text-xs font-bold uppercase tracking-[0.28em] text-emerald-300">Practice complete</p>
@@ -205,7 +205,7 @@ export default function WATPage() {
   const overallProgress = ((currentIndex + 1) / words.length) * 100;
   const clockProgress = (timeLeft / secondsPerWord) * 100;
   return (
-    <main className="wat-shell min-h-screen px-4 py-8 sm:px-6">
+    <main className="neo-page neo-page--wat wat-shell min-h-screen px-4 py-8 sm:px-6">
       <div className="mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-4xl items-center">
         <div className="w-full">
           <header className="mb-6 flex flex-wrap items-end justify-between gap-5">

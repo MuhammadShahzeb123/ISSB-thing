@@ -522,7 +522,7 @@ export default function CountriesPage() {
   }, [filtered]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
+    <div className="neo-page neo-page--atlas min-h-screen p-4">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 text-center">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-400">

@@ -250,7 +250,7 @@ export default function QuizPage() {
 
   if (!isStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+      <div className="neo-page neo-page--quiz min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-2xl mx-auto">
           <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">Capitals Quiz</h1>
           <p className="text-slate-400 text-lg mb-8">
@@ -307,7 +307,7 @@ export default function QuizPage() {
     });
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
+      <div className="neo-page neo-page--quiz min-h-screen p-4">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-2 text-center">Quiz Results</h2>
           <p className="text-slate-400 text-center mb-8">
@@ -370,7 +370,7 @@ export default function QuizPage() {
   const current = shuffled[currentIndex];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center p-4">
+    <div className="neo-page neo-page--quiz min-h-screen flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-2xl">
         <div className="flex justify-between items-center mb-6">
           <span className="text-slate-400">Question {currentIndex + 1} / {shuffled.length}</span>
