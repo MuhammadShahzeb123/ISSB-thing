@@ -8,10 +8,23 @@ export type WritingResponseRecord = {
   text: string;
 };
 
+export type WritingAssessmentType =
+  | "picture-association"
+  | "sentence-completion"
+  | "story-writing"
+  | "word-association";
+
 export type WritingAssessmentRequest = {
   version: typeof WRITING_ASSESSMENT_VERSION;
-  assessmentType: string;
+  assessmentType: WritingAssessmentType;
   responses: WritingResponseRecord[];
+};
+
+export type ResolvedWritingAssessmentRequest = Omit<
+  WritingAssessmentRequest,
+  "responses"
+> & {
+  responses: Array<WritingResponseRecord & { prompt: string }>;
 };
 
 export type WritingCriterionId =
@@ -51,7 +64,7 @@ export type WritingImprovement = {
 
 export type WritingAssessmentResult = {
   version: typeof WRITING_ASSESSMENT_VERSION;
-  assessmentType: string;
+  assessmentType: WritingAssessmentType;
   metrics: WritingMetrics;
   scores: WritingCriterionScore[];
   overallPracticeScore: number;

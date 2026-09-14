@@ -21,15 +21,13 @@ export default function HomePage() {
           </p>
         </header>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
           {siteNavigation.map((area) => (
             <Link
               key={area.slug}
               href={area.href}
               className={`border-2 border-slate-950 p-6 text-slate-950 shadow-[6px_6px_0_#171717] transition hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-blue-700 ${
-                area.slug === "general-knowledge"
-                  ? "bg-amber-100 lg:col-start-3"
-                  : "bg-white"
+                area.slug === "general-knowledge" ? "bg-amber-100" : "bg-white"
               }`}
             >
               <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-800">

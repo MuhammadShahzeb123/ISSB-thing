@@ -7,9 +7,11 @@ import {
 import {
   MAX_REQUEST_BYTES,
   RequestValidationError,
+  resolveRequestPrompts,
   validateRequestBody,
   validateRequestHeaders,
 } from "@/app/lib/writing-assessment/validation";
+import { writingPromptRegistry } from "@/app/lib/writing-assessment/promptRegistry";
 import {
   WRITING_ASSESSMENT_VERSION,
   WRITING_COACH_DISCLAIMER,
@@ -124,7 +126,10 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
-    const assessmentRequest = validateRequestBody(parsedBody);
+    const assessmentRequest = resolveRequestPrompts(
+      validateRequestBody(parsedBody),
+      writingPromptRegistry,
+    );
     const metrics = calculateWritingMetrics(assessmentRequest.responses);
     const coaching = await assessWritingWithGemma({
       apiKey: process.env.Gemma_API,

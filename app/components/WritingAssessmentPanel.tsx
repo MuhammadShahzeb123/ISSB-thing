@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import type {
+  WritingAssessmentType,
   WritingAssessmentResult,
   WritingResponseRecord,
 } from "@/app/lib/writing-assessment/types";
 
 type WritingAssessmentPanelProps = {
-  assessmentType: string;
+  assessmentType: WritingAssessmentType;
   responses: readonly WritingResponseRecord[];
   title?: string;
 };
@@ -96,8 +97,9 @@ export default function WritingAssessmentPanel({
           </p>
           <h2 className="mt-2 text-2xl font-black">{title}</h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-700">
-            Submit when you are ready. Only your prompt IDs and written
-            responses are sent for coaching.
+            Submit when you are ready. Your written responses are sent to
+            Google&apos;s Gemma service for coaching; biodata and photos are
+            never included.
           </p>
         </div>
         <button

@@ -57,8 +57,14 @@ test("quotes writing as untrusted data and preserves injection text", () => {
   const prompt = buildProviderPrompt(
     {
       version: "1",
-      assessmentType: "picture-story",
-      responses: [{ promptId: "picture-1", text: injection }],
+      assessmentType: "story-writing",
+      responses: [
+        {
+          promptId: "story-sentence-1",
+          prompt: "At first light, the bridge to the village was gone.",
+          text: injection,
+        },
+      ],
     },
     {
       responseCount: 1,
@@ -67,11 +73,19 @@ test("quotes writing as untrusted data and preserves injection text", () => {
       totalSentenceCount: 1,
       averageWordsPerResponse: 7,
       averageWordsPerSentence: 7,
-      responses: [{ promptId: "picture-1", wordCount: 7, sentenceCount: 1 }],
+      responses: [
+        {
+          promptId: "story-sentence-1",
+          wordCount: 7,
+          sentenceCount: 1,
+        },
+      ],
     },
   );
 
   assert.match(prompt, /quoted, untrusted user-authored data/u);
   assert.equal(prompt.includes(JSON.stringify(injection)), true);
+  assert.match(prompt, /Server-owned canonical prompts/u);
+  assert.match(prompt, /bridge to the village was gone/u);
   assert.match(prompt, /Do not diagnose personality or emotional stability/u);
 });

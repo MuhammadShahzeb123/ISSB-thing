@@ -1,4 +1,6 @@
 import type {
+  ResolvedWritingAssessmentRequest,
+  WritingAssessmentType,
   WritingAssessmentRequest,
   WritingResponseRecord,
 } from "./types";
@@ -10,8 +12,17 @@ export const MAX_TOTAL_TEXT_LENGTH = 12_000;
 
 const REQUEST_KEYS = ["assessmentType", "responses", "version"] as const;
 const RESPONSE_KEYS = ["promptId", "text"] as const;
-const ASSESSMENT_TYPE_PATTERN = /^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/;
 const PROMPT_ID_PATTERN = /^[A-Za-z0-9](?:[A-Za-z0-9._:-]{0,126}[A-Za-z0-9])?$/;
+const ASSESSMENT_TYPES = new Set<WritingAssessmentType>([
+  "picture-association",
+  "sentence-completion",
+  "story-writing",
+  "word-association",
+]);
+
+export type WritingPromptRegistry = Readonly<
+  Record<WritingAssessmentType, ReadonlyMap<string, string>>
+>;
 
 export class RequestValidationError extends Error {
   readonly code: string;
@@ -93,11 +104,11 @@ export function validateRequestBody(value: unknown): WritingAssessmentRequest {
 
   if (
     typeof value.assessmentType !== "string" ||
-    !ASSESSMENT_TYPE_PATTERN.test(value.assessmentType)
+    !ASSESSMENT_TYPES.has(value.assessmentType as WritingAssessmentType)
   ) {
     throw new RequestValidationError(
       "invalid_assessment_type",
-      "assessmentType must be a lowercase kebab-case identifier.",
+      "assessmentType is not supported.",
     );
   }
 
@@ -137,8 +148,29 @@ export function validateRequestBody(value: unknown): WritingAssessmentRequest {
 
   return {
     version: "1",
-    assessmentType: value.assessmentType,
+    assessmentType: value.assessmentType as WritingAssessmentType,
     responses,
+  };
+}
+
+export function resolveRequestPrompts(
+  request: WritingAssessmentRequest,
+  registry: WritingPromptRegistry,
+): ResolvedWritingAssessmentRequest {
+  const prompts = registry[request.assessmentType];
+
+  return {
+    ...request,
+    responses: request.responses.map((response, index) => {
+      const prompt = prompts.get(response.promptId);
+      if (!prompt) {
+        throw new RequestValidationError(
+          "unknown_prompt_id",
+          `Response ${index + 1} does not match a registered prompt for this assessment.`,
+        );
+      }
+      return { ...response, prompt };
+    }),
   };
 }
 

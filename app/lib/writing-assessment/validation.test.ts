@@ -2,19 +2,19 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 // @ts-expect-error Node's type-stripping test runner requires an explicit extension.
-import { RequestValidationError, validateRequestBody, validateRequestHeaders } from "./validation.ts";
+import { RequestValidationError, resolveRequestPrompts, validateRequestBody, validateRequestHeaders } from "./validation.ts";
 
 test("accepts the exact versioned request shape", () => {
   assert.deepEqual(
     validateRequestBody({
       version: "1",
       assessmentType: "word-association",
-      responses: [{ promptId: "word-1", text: "  We solve problems together.  " }],
+      responses: [{ promptId: "wat-1", text: "  We solve problems together.  " }],
     }),
     {
       version: "1",
       assessmentType: "word-association",
-      responses: [{ promptId: "word-1", text: "We solve problems together." }],
+      responses: [{ promptId: "wat-1", text: "We solve problems together." }],
     },
   );
 });
@@ -25,7 +25,7 @@ test("rejects extra fields and duplicate prompt IDs", () => {
       validateRequestBody({
         version: "1",
         assessmentType: "word-association",
-        responses: [{ promptId: "word-1", text: "Act." }],
+        responses: [{ promptId: "wat-1", text: "Act." }],
         userId: "not-allowed",
       }),
     RequestValidationError,
@@ -37,11 +37,40 @@ test("rejects extra fields and duplicate prompt IDs", () => {
         version: "1",
         assessmentType: "word-association",
         responses: [
-          { promptId: "word-1", text: "Act." },
-          { promptId: "word-1", text: "Help." },
+          { promptId: "wat-1", text: "Act." },
+          { promptId: "wat-1", text: "Help." },
         ],
       }),
     /unique promptId/u,
+  );
+});
+
+test("rejects unsupported assessment types and unregistered prompt IDs", () => {
+  assert.throws(
+    () =>
+      validateRequestBody({
+        version: "1",
+        assessmentType: "custom-rubric",
+        responses: [{ promptId: "wat-1", text: "Act." }],
+      }),
+    /not supported/u,
+  );
+
+  const request = validateRequestBody({
+    version: "1",
+    assessmentType: "word-association",
+    responses: [{ promptId: "wat-999", text: "Act." }],
+  });
+  const empty = new Map<string, string>();
+  assert.throws(
+    () =>
+      resolveRequestPrompts(request, {
+        "picture-association": empty,
+        "sentence-completion": empty,
+        "story-writing": empty,
+        "word-association": new Map([["wat-1", "AGREE"]]),
+      }),
+    /registered prompt/u,
   );
 });
 
