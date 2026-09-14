@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PracticeDisclaimer from "../components/PracticeDisclaimer";
 import { getPreparationArea } from "../lib/siteNavigation";
 
@@ -17,6 +18,21 @@ export default function DeputyPresidentInterviewOverviewPage() {
             current awareness so you can answer honestly and directly.
           </p>
         </section>
+        <div className="mt-8 grid gap-5">
+          {area.resources.map((resource) => (
+            <Link
+              className="border-2 border-slate-950 bg-white p-6 text-slate-950 shadow-[6px_6px_0_#171717] transition hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
+              href={resource.href}
+              key={resource.href}
+            >
+              <h2 className="text-xl font-black">{resource.label}</h2>
+              <p className="mt-3 leading-7 text-slate-700">{resource.description}</p>
+              <span className="mt-5 inline-block font-black uppercase tracking-wide text-blue-800">
+                Open resource →
+              </span>
+            </Link>
+          ))}
+        </div>
         <div className="mt-8">
           <PracticeDisclaimer />
         </div>

@@ -12,6 +12,8 @@ type WritingAssessmentPanelProps = {
   title?: string;
 };
 
+const MAX_COACHED_RESPONSES = 50;
+
 const CRITERION_LABELS: Record<
   WritingAssessmentResult["scores"][number]["criterion"],
   string
@@ -49,6 +51,7 @@ export default function WritingAssessmentPanel({
   const [result, setResult] = useState<WritingAssessmentResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const coachedResponses = responses.slice(0, MAX_COACHED_RESPONSES);
 
   const assessWriting = async () => {
     if (isLoading) return;
@@ -63,7 +66,7 @@ export default function WritingAssessmentPanel({
         body: JSON.stringify({
           version: "1",
           assessmentType,
-          responses,
+          responses: coachedResponses,
         }),
       });
       const payload: unknown = await response.json().catch(() => null);
@@ -100,7 +103,7 @@ export default function WritingAssessmentPanel({
         <button
           type="button"
           onClick={assessWriting}
-          disabled={isLoading || responses.length === 0}
+          disabled={isLoading || coachedResponses.length === 0}
           className="border-2 border-slate-950 bg-blue-700 px-4 py-3 text-sm font-black uppercase tracking-wide text-white shadow-[3px_3px_0_#171717] transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-400"
         >
           {isLoading
@@ -112,6 +115,13 @@ export default function WritingAssessmentPanel({
                 : "Get writing feedback"}
         </button>
       </div>
+
+      {responses.length > MAX_COACHED_RESPONSES ? (
+        <p className="mt-4 text-sm font-semibold text-slate-600">
+          Feedback uses the first {MAX_COACHED_RESPONSES} completed responses
+          from this session.
+        </p>
+      ) : null}
 
       {error ? (
         <p

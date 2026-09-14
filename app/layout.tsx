@@ -37,7 +37,7 @@ export default function RootLayout({
           </div>
         </nav>
         <main className="site-main">{children}</main>
-        <ThirdPartyScripts />
+        <ThirdPartyScripts excludedPathPrefixes={["/biodata", "/opi"]} />
       </body>
     </html>
   );

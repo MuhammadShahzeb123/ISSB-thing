@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useMemo } from "react";
+import WritingAssessmentPanel from "@/app/components/WritingAssessmentPanel";
 import { watContent } from "@/app/content/psychological-tests/wat";
 import type { WatPrompt } from "@/app/lib/psychological-tests/content";
 import {
@@ -47,6 +48,16 @@ export default function WatPractice() {
       session
         ? session.promptIds.filter((id) => session.answers[id]?.trim()).length
         : 0,
+    [session],
+  );
+  const completedResponses = useMemo(
+    () =>
+      session
+        ? session.promptIds.flatMap((promptId) => {
+            const text = session.answers[promptId]?.trim();
+            return text ? [{ promptId, text }] : [];
+          })
+        : [],
     [session],
   );
 
@@ -144,6 +155,15 @@ export default function WatPractice() {
               );
             })}
           </div>
+          {completedResponses.length > 0 ? (
+            <div className="mt-8">
+              <WritingAssessmentPanel
+                assessmentType="word-association"
+                responses={completedResponses}
+                title="WAT writing feedback"
+              />
+            </div>
+          ) : null}
           <button
             className="mt-8 border-2 border-slate-950 bg-white px-5 py-3 font-black shadow-[4px_4px_0_#171717]"
             onClick={reset}

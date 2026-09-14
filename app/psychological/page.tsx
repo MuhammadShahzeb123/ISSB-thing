@@ -24,6 +24,20 @@ const tests = [
     description:
       "Timed sentence completions using the current practice-only set until user-owned final prompts arrive.",
   },
+  {
+    href: "/opi",
+    title: "OPI self-reflection",
+    label: "Local-only and non-diagnostic",
+    description:
+      "Explore disclosed work-behaviour dimensions with a deterministic original practice bank.",
+  },
+  {
+    href: "/mechanical-aptitude",
+    title: "Mechanical Aptitude",
+    label: "100 original practice questions",
+    description:
+      "Practise mechanical reasoning across eight categories with explanations and accessible diagrams.",
+  },
 ] as const;
 
 export default function PsychologicalOverviewPage() {
@@ -38,13 +52,13 @@ export default function PsychologicalOverviewPage() {
             Psychological writing practice
           </h1>
           <p className="mt-5 max-w-3xl text-lg font-semibold leading-8 text-slate-700">
-            Direct routes for WAT, Story Writing, and Sentence Completion.
-            Sessions use absolute deadlines, stable prompt IDs, autosaved
-            drafts, and refresh-safe progress.
+            Direct routes for writing practice, local-only self-reflection, and
+            mechanical aptitude. Timed writing sessions use absolute deadlines,
+            stable prompt IDs, autosaved drafts, and refresh-safe progress.
           </p>
         </header>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {tests.map((test) => (
             <Link
               className="flex border-2 border-slate-950 bg-white p-6 text-slate-950 shadow-[6px_6px_0_#171717] transition hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-blue-700"

@@ -38,13 +38,28 @@ export const siteNavigation = [
     resources: [
       {
         label: "Word Association Test",
-        href: "/?practice=wat",
-        description: "Timed WAT practice using the existing word bank.",
+        href: "/psychological/wat",
+        description: "Timed WAT practice using the existing versioned word bank.",
       },
       {
-        label: "Picture stories",
-        href: "/picturestest",
-        description: "Use the existing picture-based story practice.",
+        label: "Story Writing",
+        href: "/psychological/story-writing",
+        description: "Practise picture association and opening-sentence stories.",
+      },
+      {
+        label: "Sentence Completion",
+        href: "/psychological/sentence-completion",
+        description: "Complete timed practice prompts with refresh-safe drafts.",
+      },
+      {
+        label: "OPI self-reflection",
+        href: "/opi",
+        description: "Use the local-only, non-diagnostic work-behaviour reflection module.",
+      },
+      {
+        label: "Mechanical Aptitude",
+        href: "/mechanical-aptitude",
+        description: "Practise original mechanical-reasoning questions and diagrams.",
       },
     ],
   },
@@ -62,7 +77,13 @@ export const siteNavigation = [
     href: "/deputy-president-interview",
     classification: "core-assessor-dimension",
     summary: "Organise your personal record, motivations, awareness, and interview responses.",
-    resources: [],
+    resources: [
+      {
+        label: "Biodata practice",
+        href: "/biodata",
+        description: "Privately organise and review your personal record in this browser.",
+      },
+    ],
   },
   {
     slug: "general-knowledge",

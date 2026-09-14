@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useMemo } from "react";
+import WritingAssessmentPanel from "@/app/components/WritingAssessmentPanel";
 import {
   storyPracticeTiming,
   storyWritingContent,
@@ -87,6 +88,36 @@ export default function StoryWritingPractice() {
       session
         ? session.promptIds.filter((id) => session.answers[id]?.trim()).length
         : 0,
+    [session],
+  );
+  const pictureResponses = useMemo(
+    () =>
+      session
+        ? session.promptIds.flatMap((promptId) => {
+            const prompt = storyWritingContent.prompts.find(
+              (item) => item.id === promptId,
+            );
+            const text = session.answers[promptId]?.trim();
+            return prompt?.kind === "picture" && prompt.imageUrl && text
+              ? [{ promptId, text }]
+              : [];
+          })
+        : [],
+    [session],
+  );
+  const sentenceStoryResponses = useMemo(
+    () =>
+      session
+        ? session.promptIds.flatMap((promptId) => {
+            const prompt = storyWritingContent.prompts.find(
+              (item) => item.id === promptId,
+            );
+            const text = session.answers[promptId]?.trim();
+            return prompt?.kind === "sentence" && text
+              ? [{ promptId, text }]
+              : [];
+          })
+        : [],
     [session],
   );
 
@@ -188,6 +219,24 @@ export default function StoryWritingPractice() {
               );
             })}
           </div>
+          {pictureResponses.length > 0 ? (
+            <div className="mt-8">
+              <WritingAssessmentPanel
+                assessmentType="picture-association"
+                responses={pictureResponses}
+                title="Picture association feedback"
+              />
+            </div>
+          ) : null}
+          {sentenceStoryResponses.length > 0 ? (
+            <div className="mt-8">
+              <WritingAssessmentPanel
+                assessmentType="story-writing"
+                responses={sentenceStoryResponses}
+                title="Story writing feedback"
+              />
+            </div>
+          ) : null}
           <button
             className="mt-8 border-2 border-slate-950 bg-white px-5 py-3 font-black shadow-[4px_4px_0_#171717]"
             onClick={reset}
