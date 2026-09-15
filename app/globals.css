@@ -101,6 +101,7 @@ a {
 
 .site-nav-links {
   display: flex;
+  flex: 1;
   min-width: 0;
   gap: 0.45rem;
   overflow-x: auto;
@@ -127,6 +128,12 @@ a {
   background: var(--paper-bright);
   outline: none;
   transform: translate(-2px, -2px);
+}
+
+.site-nav-link--separated {
+  margin-left: auto;
+  border-color: var(--ink);
+  background: var(--paper-bright);
 }
 
 .neo-page {
@@ -524,7 +531,7 @@ a {
   text-align: right;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .site-nav-inner {
     align-items: flex-start;
     flex-direction: column;
@@ -534,6 +541,10 @@ a {
 
   .site-nav-links {
     width: 100%;
+  }
+
+  .site-nav-link--separated {
+    margin-left: 0;
   }
 
   .site-main {

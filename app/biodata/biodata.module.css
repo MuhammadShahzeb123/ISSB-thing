@@ -1,0 +1,513 @@
+.page {
+  min-height: calc(100vh - 5.75rem);
+  padding: 3.5rem 1rem 5rem;
+  background:
+    linear-gradient(rgba(23, 23, 23, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 23, 23, 0.055) 1px, transparent 1px),
+    #f2ecdf;
+  background-size: 2rem 2rem;
+  color: #171717;
+}
+
+.page h1,
+.page h2 {
+  font-family: "Arial Black", Arial, Helvetica, sans-serif;
+  letter-spacing: -0.045em;
+}
+
+.hero,
+.main {
+  width: min(78rem, 100%);
+  margin: 0 auto;
+}
+
+.hero {
+  padding: 0.5rem 0 2rem;
+}
+
+.eyebrow,
+.sectionTag {
+  margin: 0 0 0.55rem;
+  color: #0057a8;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 11ch;
+  margin: 0;
+  font-size: clamp(2.7rem, 8vw, 6.5rem);
+  line-height: 0.9;
+}
+
+.heroText {
+  max-width: 48rem;
+  margin: 1.5rem 0 0;
+  color: #49453e;
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.privacyBanner {
+  margin-top: 2rem;
+  border: 3px solid #171717;
+  padding: 1rem 1.1rem;
+  background: #ffd447;
+  box-shadow: 6px 6px 0 #171717;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.workspace,
+.controls,
+.methodology {
+  border: 3px solid #171717;
+  background: #fffaf0;
+  box-shadow: 6px 6px 0 #171717;
+}
+
+.workspace {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.workspaceHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: start;
+  border-bottom: 3px solid #171717;
+  padding-bottom: 1.2rem;
+}
+
+.workspaceHeader h2,
+.controls h2,
+.methodology h2,
+.photoPanel h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.35rem);
+  line-height: 1;
+}
+
+.workspaceHeader p:last-child,
+.controls > p,
+.methodology > p,
+.photoPanel > div:first-child > p:last-child {
+  color: #635d52;
+  line-height: 1.6;
+}
+
+.viewSwitch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  border: 2px solid #171717;
+  background: #e5dccb;
+}
+
+.viewSwitch button {
+  border: 0;
+  padding: 0.65rem 0.85rem;
+  background: transparent;
+  color: #171717;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.viewSwitch button + button {
+  border-left: 2px solid #171717;
+}
+
+.viewSwitch .activeView {
+  background: #6fc8ff;
+}
+
+.status {
+  min-height: 1.5rem;
+  margin: 1rem 0;
+  color: #0057a8;
+  font-weight: 800;
+}
+
+.formGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.fieldCard {
+  position: relative;
+  border: 2px solid #171717;
+  padding: 1.2rem;
+  background: #fff;
+}
+
+.fieldNumber {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-bottom: 2px solid #171717;
+  border-left: 2px solid #171717;
+  padding: 0.35rem 0.5rem;
+  background: #b8e85c;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 900;
+}
+
+.fieldCard label {
+  display: block;
+  max-width: calc(100% - 3rem);
+  font-size: 1.15rem;
+  font-weight: 950;
+}
+
+.prompt {
+  margin: 0.55rem 0 0.85rem;
+  color: #49453e;
+  line-height: 1.55;
+}
+
+.fieldCard textarea {
+  display: block;
+  width: 100%;
+  min-height: 8rem;
+  resize: vertical;
+  border: 2px solid #171717;
+  border-radius: 0;
+  padding: 0.8rem;
+  background: #fffaf0;
+  color: #171717;
+  line-height: 1.5;
+}
+
+.fieldCard textarea:focus,
+.photoActions button:focus-visible,
+.primaryActions button:focus-visible,
+.controlStack button:focus-visible,
+.uploadButton:focus-within,
+.viewSwitch button:focus-visible {
+  outline: 4px solid #0057a8;
+  outline-offset: 3px;
+}
+
+.fieldCard textarea[aria-invalid="true"] {
+  border-color: #a61b13;
+  box-shadow: 0 0 0 2px #ff8177;
+}
+
+.fieldMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.55rem;
+  color: #635d52;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.fieldMeta span:last-child {
+  flex: 0 0 auto;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 900;
+}
+
+.error,
+.cameraError {
+  margin: 0.55rem 0 0;
+  color: #8b1710;
+  font-weight: 850;
+}
+
+.primaryActions,
+.photoActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.primaryActions {
+  margin-top: 1.25rem;
+}
+
+.primaryActions button,
+.photoActions button,
+.controlStack button,
+.uploadButton {
+  min-height: 2.8rem;
+  border: 2px solid #171717;
+  border-radius: 0;
+  padding: 0.7rem 0.95rem;
+  box-shadow: 3px 3px 0 #171717;
+  color: #171717;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.primaryActions button:active,
+.photoActions button:active,
+.controlStack button:active,
+.uploadButton:active {
+  box-shadow: 1px 1px 0 #171717;
+  transform: translate(2px, 2px);
+}
+
+.primaryButton {
+  background: #6fc8ff;
+}
+
+.secondaryButton,
+.photoActions button,
+.controlStack button,
+.uploadButton {
+  background: #fffaf0;
+}
+
+.photoPanel {
+  margin-top: 1rem;
+  border: 2px solid #171717;
+  padding: 1.2rem;
+  background: #d9efff;
+}
+
+.photoStage {
+  margin-top: 1rem;
+}
+
+.cameraPreview,
+.photoPreview {
+  display: grid;
+  min-height: 15rem;
+  overflow: hidden;
+  place-items: center;
+  border: 2px solid #171717;
+  background: #171717;
+  color: #fffaf0;
+}
+
+.cameraPreview p {
+  max-width: 28rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.cameraPreview video,
+.photoPreview img {
+  display: block;
+  width: 100%;
+  max-height: 32rem;
+  object-fit: contain;
+}
+
+.cameraPreview video {
+  display: none;
+}
+
+.cameraPreviewActive video {
+  display: block;
+}
+
+.photoActions {
+  margin-top: 0.85rem;
+}
+
+.uploadButton {
+  display: inline-flex;
+  align-items: center;
+}
+
+.uploadButton input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.photoNote {
+  margin: 0.8rem 0 0;
+  color: #49453e;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.hiddenCanvas {
+  display: none;
+}
+
+.review dl {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.reviewItem {
+  border: 2px solid #171717;
+  background: #fff;
+}
+
+.reviewItem dt {
+  border-bottom: 2px solid #171717;
+  padding: 0.7rem 0.9rem;
+  background: #b8e85c;
+  font-weight: 950;
+}
+
+.reviewItem dd {
+  margin: 0;
+  padding: 1rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.reviewPhoto {
+  width: min(18rem, 100%);
+  margin: 0 0 1rem auto;
+  border: 2px solid #171717;
+  background: #ffd447;
+}
+
+.reviewPhoto img {
+  display: block;
+  width: 100%;
+  max-height: 22rem;
+  object-fit: contain;
+  background: #171717;
+}
+
+.reviewPhoto p {
+  margin: 0;
+  padding: 0.5rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.controls {
+  position: sticky;
+  top: 7rem;
+  padding: 1.2rem;
+}
+
+.controlStack {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.controlStack button {
+  width: 100%;
+  text-align: left;
+}
+
+.controlStack button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.controlStack .dangerButton {
+  background: #ff8177;
+}
+
+.savedState {
+  border-top: 2px solid #171717;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  font-weight: 900;
+}
+
+.storageWarning {
+  padding: 0.75rem;
+  background: #ffd447;
+  color: #171717;
+  font-size: 0.85rem;
+}
+
+.methodology {
+  grid-column: 1 / -1;
+  padding: clamp(1.2rem, 3vw, 2rem);
+}
+
+.methodology p {
+  max-width: 65rem;
+}
+
+@media (max-width: 58rem) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    position: static;
+    grid-row: 2;
+  }
+
+  .methodology {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 38rem) {
+  .page {
+    padding: 2rem 0.75rem 3rem;
+  }
+
+  .workspaceHeader {
+    display: grid;
+  }
+
+  .viewSwitch {
+    width: 100%;
+  }
+
+  .viewSwitch button {
+    flex: 1;
+  }
+
+  .fieldCard,
+  .photoPanel {
+    padding: 1rem;
+  }
+
+  .fieldMeta {
+    align-items: start;
+  }
+
+  .primaryActions,
+  .photoActions {
+    display: grid;
+  }
+
+  .primaryActions button,
+  .photoActions button,
+  .uploadButton {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .cameraPreview,
+  .photoPreview {
+    min-height: 11rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primaryActions button,
+  .photoActions button,
+  .controlStack button,
+  .uploadButton {
+    scroll-behavior: auto;
+  }
+}

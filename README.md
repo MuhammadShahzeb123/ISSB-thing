@@ -34,3 +34,25 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## AI writing coach configuration
+
+The writing coach calls Google's hosted Gemma model from the server-only
+`POST /api/writing-assessment` route. Configure these variables in the Vercel
+project environment:
+
+```text
+Gemma_API=your_google_ai_studio_api_key
+GEMMA_MODEL=gemma-4-26b-a4b-it
+```
+
+- `Gemma_API` is required and must be a Google AI Studio / Gemini API key. Never
+  prefix it with `NEXT_PUBLIC_` or expose it to browser code.
+- `GEMMA_MODEL` is optional. The default is `gemma-4-26b-a4b-it`, a Gemma model
+  supported by the Gemini API `v1beta` `generateContent` endpoint. Override it
+  only with another model ID supported by that endpoint.
+- Add the variables separately for each Vercel environment that needs coaching
+  (Development, Preview, and Production), then redeploy.
+
+For local development, provide the same names through your normal uncommitted
+environment configuration. Do not commit a real API key.
