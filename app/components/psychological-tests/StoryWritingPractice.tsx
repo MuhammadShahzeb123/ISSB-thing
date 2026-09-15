@@ -292,7 +292,7 @@ export default function StoryWritingPractice() {
           </section>
         ) : (
           <section className="mt-6">
-            <div className="border-2 border-slate-950 bg-slate-950 p-5 text-center text-white">
+            <div className="border-2 border-slate-950 bg-neutral-950 p-5 text-center text-white">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-blue-300">
                 Stimulus hidden during writing
               </p>

@@ -206,7 +206,7 @@ export default function WatPractice() {
               style={{ width: `${progress}%` }}
             />
           </div>
-          <section className="mt-6 border-2 border-slate-950 bg-slate-950 p-8 text-center text-white shadow-[8px_8px_0_#2563eb] sm:p-12">
+          <section className="mt-6 border-2 border-slate-950 bg-neutral-950 p-8 text-center text-white shadow-[8px_8px_0_#2563eb] sm:p-12">
             <p className="text-xs font-black uppercase tracking-[0.24em] text-blue-300">
               Write the first natural response
             </p>

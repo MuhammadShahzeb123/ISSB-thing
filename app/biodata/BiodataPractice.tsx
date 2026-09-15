@@ -179,6 +179,9 @@ export default function BiodataPractice() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const mountedRef = useRef(true);
+  const cameraRequestGenerationRef = useRef(0);
+  const uploadGenerationRef = useRef(0);
 
   const completedCount = useMemo(
     () =>
@@ -188,9 +191,12 @@ export default function BiodataPractice() {
   );
 
   const stopCamera = useCallback(() => {
+    cameraRequestGenerationRef.current += 1;
     streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
-    setCameraStream(null);
+    if (mountedRef.current) {
+      setCameraStream(null);
+    }
   }, []);
 
   useEffect(() => {
@@ -226,10 +232,21 @@ export default function BiodataPractice() {
     });
   }, [cameraStream]);
 
-  useEffect(() => stopCamera, [stopCamera]);
+  useEffect(() => {
+    mountedRef.current = true;
+
+    return () => {
+      mountedRef.current = false;
+      cameraRequestGenerationRef.current += 1;
+      uploadGenerationRef.current += 1;
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    };
+  }, []);
 
   const startCamera = useCallback(
     async (requestedFacingMode: FacingMode = facingMode) => {
+      uploadGenerationRef.current += 1;
       setCameraError("");
       setStatusMessage("");
 
@@ -241,6 +258,7 @@ export default function BiodataPractice() {
       }
 
       stopCamera();
+      const requestGeneration = cameraRequestGenerationRef.current;
 
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -249,16 +267,46 @@ export default function BiodataPractice() {
             facingMode: { ideal: requestedFacingMode },
           },
         });
+
+        if (
+          !mountedRef.current ||
+          cameraRequestGenerationRef.current !== requestGeneration
+        ) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+
+        streamRef.current?.getTracks().forEach((track) => track.stop());
         streamRef.current = stream;
         setCameraStream(stream);
         setFacingMode(requestedFacingMode);
 
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        setCameraSwitchAvailable(
-          devices.filter((device) => device.kind === "videoinput").length > 1,
-        );
+        try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          if (
+            mountedRef.current &&
+            cameraRequestGenerationRef.current === requestGeneration
+          ) {
+            setCameraSwitchAvailable(
+              devices.filter((device) => device.kind === "videoinput").length >
+                1,
+            );
+          }
+        } catch {
+          if (
+            mountedRef.current &&
+            cameraRequestGenerationRef.current === requestGeneration
+          ) {
+            setCameraSwitchAvailable(false);
+          }
+        }
       } catch (error) {
-        setCameraError(cameraErrorMessage(error));
+        if (
+          mountedRef.current &&
+          cameraRequestGenerationRef.current === requestGeneration
+        ) {
+          setCameraError(cameraErrorMessage(error));
+        }
       }
     },
     [facingMode, stopCamera],
@@ -271,6 +319,7 @@ export default function BiodataPractice() {
   };
 
   const capturePhoto = () => {
+    uploadGenerationRef.current += 1;
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas || !video.videoWidth || !video.videoHeight) {
@@ -300,6 +349,8 @@ export default function BiodataPractice() {
   };
 
   const handlePhotoUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const uploadGeneration = uploadGenerationRef.current + 1;
+    uploadGenerationRef.current = uploadGeneration;
     const file = event.target.files?.[0];
     event.target.value = "";
     setCameraError("");
@@ -316,8 +367,16 @@ export default function BiodataPractice() {
       return;
     }
 
+    stopCamera();
+
     const reader = new FileReader();
     reader.onload = () => {
+      if (
+        !mountedRef.current ||
+        uploadGenerationRef.current !== uploadGeneration
+      ) {
+        return;
+      }
       if (typeof reader.result !== "string") {
         setCameraError("The selected image could not be read.");
         return;
@@ -325,6 +384,12 @@ export default function BiodataPractice() {
 
       const image = new Image();
       image.onload = () => {
+        if (
+          !mountedRef.current ||
+          uploadGenerationRef.current !== uploadGeneration
+        ) {
+          return;
+        }
         const scale = Math.min(
           1,
           MAX_PHOTO_DIMENSION /
@@ -348,12 +413,22 @@ export default function BiodataPractice() {
         stopCamera();
       };
       image.onerror = () => {
-        setCameraError("The selected image could not be prepared.");
+        if (
+          mountedRef.current &&
+          uploadGenerationRef.current === uploadGeneration
+        ) {
+          setCameraError("The selected image could not be prepared.");
+        }
       };
       image.src = reader.result;
     };
     reader.onerror = () => {
-      setCameraError("The selected image could not be read.");
+      if (
+        mountedRef.current &&
+        uploadGenerationRef.current === uploadGeneration
+      ) {
+        setCameraError("The selected image could not be read.");
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -409,6 +484,9 @@ export default function BiodataPractice() {
   };
 
   const loadSavedDraft = () => {
+    uploadGenerationRef.current += 1;
+    stopCamera();
+
     try {
       const storedDraft = window.localStorage.getItem(STORAGE_KEY);
       if (!storedDraft) {
@@ -422,7 +500,6 @@ export default function BiodataPractice() {
         throw new Error("Invalid saved draft");
       }
 
-      stopCamera();
       setFields(parsed.fields);
       setPhotoDataUrl(parsed.photoDataUrl);
       setPhotoSource(parsed.photoSource);
@@ -481,6 +558,7 @@ export default function BiodataPractice() {
       return;
     }
 
+    uploadGenerationRef.current += 1;
     stopCamera();
     setFields({ ...emptyFields });
     setPhotoDataUrl(null);
@@ -494,11 +572,19 @@ export default function BiodataPractice() {
   };
 
   const removePhoto = () => {
+    uploadGenerationRef.current += 1;
     setPhotoDataUrl(null);
     setPhotoSource(null);
     setStatusMessage(
       "Picture removed from memory. Save again to update a saved browser draft.",
     );
+  };
+
+  const retakePhoto = () => {
+    uploadGenerationRef.current += 1;
+    setPhotoDataUrl(null);
+    setPhotoSource(null);
+    void startCamera();
   };
 
   return (
@@ -620,11 +706,7 @@ export default function BiodataPractice() {
                 canvasRef={canvasRef}
                 onCapture={capturePhoto}
                 onRemove={removePhoto}
-                onRetake={() => {
-                  setPhotoDataUrl(null);
-                  setPhotoSource(null);
-                  void startCamera();
-                }}
+                onRetake={retakePhoto}
                 onStart={() => void startCamera()}
                 onStop={stopCamera}
                 onSwitch={() => void switchCamera()}

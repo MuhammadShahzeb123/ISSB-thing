@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import MechanicalDiagram from "./MechanicalDiagram";
 import {
   CATEGORY_LABELS,
@@ -123,6 +123,7 @@ export default function MechanicalAptitudePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [secondsLeft, setSecondsLeft] = useState(SIMULATION_SECONDS);
+  const deadlineRef = useRef<number | null>(null);
 
   const current = session[currentIndex];
   const selectedAnswer = current ? answers[current.question.id] : undefined;
@@ -133,6 +134,7 @@ export default function MechanicalAptitudePage() {
   const practiceSelectionIsValid = selectedCategories.length > 0 && availablePracticeQuestions >= practiceSize;
 
   const finishSession = useCallback(() => {
+    deadlineRef.current = null;
     setPhase("results");
   }, []);
 
@@ -142,16 +144,30 @@ export default function MechanicalAptitudePage() {
 
   useEffect(() => {
     if (phase !== "questions" || mode !== "simulation") return;
-    const interval = window.setInterval(() => {
-      setSecondsLeft((previous) => {
-        if (previous <= 1) {
-          window.setTimeout(finishSession, 0);
-          return 0;
-        }
-        return previous - 1;
-      });
-    }, 1000);
-    return () => window.clearInterval(interval);
+
+    const updateTimer = () => {
+      const deadline = deadlineRef.current;
+      if (deadline === null) {
+        return;
+      }
+
+      const remaining = Math.max(
+        0,
+        Math.ceil((deadline - Date.now()) / 1000),
+      );
+      setSecondsLeft(remaining);
+      if (remaining === 0) {
+        finishSession();
+      }
+    };
+
+    updateTimer();
+    const interval = window.setInterval(updateTimer, 1000);
+    document.addEventListener("visibilitychange", updateTimer);
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", updateTimer);
+    };
   }, [finishSession, mode, phase]);
 
   useEffect(() => {
@@ -197,6 +213,8 @@ export default function MechanicalAptitudePage() {
     setCurrentIndex(0);
     setAnswers({});
     setSecondsLeft(SIMULATION_SECONDS);
+    deadlineRef.current =
+      mode === "simulation" ? Date.now() + SIMULATION_SECONDS * 1000 : null;
     setPhase("questions");
   };
 
@@ -204,6 +222,8 @@ export default function MechanicalAptitudePage() {
     setCurrentIndex(0);
     setAnswers({});
     setSecondsLeft(SIMULATION_SECONDS);
+    deadlineRef.current =
+      mode === "simulation" ? Date.now() + SIMULATION_SECONDS * 1000 : null;
     setPhase("questions");
   };
 
