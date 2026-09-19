@@ -1,4 +1,5 @@
 import { completionSentences } from "@/app/picturestest/completionSentences";
+import { allSentenceSets } from "@/app/lib/contentBank";
 import type {
   SentenceCompletionPrompt,
   VersionedContentPack,
@@ -7,15 +8,29 @@ import type {
 export const sentenceCompletionContent: VersionedContentPack<SentenceCompletionPrompt> =
   {
     schemaVersion: 1,
-    contentVersion: "legacy-sct-practice-v1",
-    title: "Current sentence-completion practice set",
+    contentVersion: "sct-practice-v2-photo-sets",
+    title: "Sentence completion: photo sets plus original practice",
     readiness: "practice-pending-replacement",
     pendingNotice:
-      "These existing prompts are practice-only and remain pending replacement with user-owned final content.",
-    prompts: completionSentences.map((prompt) => ({
-      id: `sct-${prompt.id}`,
-      stem: prompt.prompt,
-      category: prompt.category,
-      provenance: "legacy-practice-pending-replacement",
-    })),
+      "Combines the sentence stems transcribed from the supplied study photos with the original practice set. Photo wording is preserved where readable.",
+    prompts: [
+      ...allSentenceSets.flatMap((set) =>
+        set.prompts.map(
+          (stem, index): SentenceCompletionPrompt => ({
+            id: `sct-photo-${set.id}-${index + 1}`,
+            stem,
+            category: "general-defense",
+            provenance: "legacy-practice-pending-replacement",
+          }),
+        ),
+      ),
+      ...completionSentences.map(
+        (prompt): SentenceCompletionPrompt => ({
+          id: `sct-${prompt.id}`,
+          stem: prompt.prompt,
+          category: prompt.category,
+          provenance: "legacy-practice-pending-replacement",
+        }),
+      ),
+    ],
   };

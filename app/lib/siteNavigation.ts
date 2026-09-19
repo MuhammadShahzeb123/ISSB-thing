@@ -39,7 +39,7 @@ export const siteNavigation = [
       {
         label: "Word Association Test",
         href: "/psychological/wat",
-        description: "Timed WAT practice using the existing versioned word bank.",
+        description: "Timed WAT practice with the legacy bank plus photo-transcribed words.",
       },
       {
         label: "Story Writing",
@@ -49,7 +49,7 @@ export const siteNavigation = [
       {
         label: "Sentence Completion",
         href: "/psychological/sentence-completion",
-        description: "Complete timed practice prompts with refresh-safe drafts.",
+        description: "Timed completions from the photo-transcribed sets and the original practice bank.",
       },
       {
         label: "OPI self-reflection",
@@ -69,7 +69,13 @@ export const siteNavigation = [
     href: "/gto",
     classification: "core-assessor-dimension",
     summary: "Prepare for group planning, discussion, command, and outdoor leadership tasks.",
-    resources: [],
+    resources: [
+      {
+        label: "Indoor GTO practice",
+        href: "/gto",
+        description: "Lecture topics, group discussion motions, and planning exercises from the study photos.",
+      },
+    ],
   },
   {
     slug: "deputy-president-interview",
@@ -78,6 +84,11 @@ export const siteNavigation = [
     classification: "core-assessor-dimension",
     summary: "Organise your personal record, motivations, awareness, and interview responses.",
     resources: [
+      {
+        label: "Interview preparation",
+        href: "/interview",
+        description: "Introduction practice, quick mental maths, sourced current affairs, and gallantry stories.",
+      },
       {
         label: "Biodata practice",
         href: "/biodata",
@@ -100,7 +111,12 @@ export const siteNavigation = [
       {
         label: "Study",
         href: "/study",
-        description: "Review the existing general-knowledge study deck.",
+        description: "Spaced-repetition deck including photo-transcribed knowledge cards.",
+      },
+      {
+        label: "Source coverage",
+        href: "/sources",
+        description: "A text-only index of every supplied study photo and its extracted items.",
       },
       {
         label: "Quiz",
