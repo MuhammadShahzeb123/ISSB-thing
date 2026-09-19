@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { knowledgePages } from '../lib/sourceKnowledge';
 
 type Category = 'ISSB' | 'Pakistan' | 'World' | 'Science' | 'Service knowledge';
 
@@ -16,6 +17,10 @@ type Rating = 'again' | 'hard' | 'easy';
 type ReviewProgress = Record<string, { dueAt: number; reviews: number; streak: number; lastRating: Rating }>;
 
 const facts: Fact[] = [
+  ...knowledgePages.flatMap((page) => page.cards.map(([prompt, answer], index): Fact => ({
+    id: `photo-${page.sourceImage}-${page.sourcePage}-${index}`, category: page.category, prompt, answer,
+    detail: `Source: ${page.sourceImage}, page ${page.sourcePage}. ${page.note ?? 'Study transcription from the supplied notes.'}`,
+  }))),
   { id: 'issb-dimensions', category: 'ISSB', prompt: 'What are the three assessment dimensions named by ISSB?', answer: 'Psychologist, GTO, and Deputy President.', detail: 'The official selection system describes a three-dimensional assessment protocol.' },
   { id: 'issb-duration', category: 'ISSB', prompt: 'How long does the ISSB selection process last according to the official site?', answer: 'Four days.', detail: 'The official site says the activities are flexible and regularly adjusted to service requirements.' },
   { id: 'issb-gto', category: 'ISSB', prompt: 'What does the GTO dimension observe?', answer: 'Behaviour in group settings through situational tests and group activities.', detail: 'Think: GTO = group behaviour under practical conditions.' },

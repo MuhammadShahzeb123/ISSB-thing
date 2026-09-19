@@ -1,10 +1,13 @@
+import { allPhotoWords } from './lib/contentBank';
+
 export interface Word {
   id: number;
   word: string;
   category: 'positive' | 'negative' | 'neutral';
+  sourceImage?: string;
 }
 
-export const watWords: Word[] = [
+const originalWords: Word[] = [
   { id: 1, word: 'AGREE', category: 'positive' },
   { id: 2, word: 'BEAUTIFUL', category: 'positive' },
   { id: 3, word: 'CARE', category: 'positive' },
@@ -499,6 +502,12 @@ export const watWords: Word[] = [
   { id: 492, word: 'YOUNG', category: 'neutral' },
   { id: 493, word: 'ZEAL', category: 'positive' },
 ].map((w, i) => ({ ...w, id: i + 1, category: w.category as 'positive' | 'negative' | 'neutral' }));
+
+export const photoWatWords: Word[] = Array.from(new Map(allPhotoWords.map((item) => [item.word.trim().toUpperCase(), item])).values()).map((item, index) => ({
+  id: 10000 + index, word: item.word.trim().toUpperCase(), category: 'neutral', sourceImage: item.sourceImage,
+}));
+
+export const watWords: Word[] = [...originalWords, ...photoWatWords];
 
 export function shuffleWords(words: Word[]): Word[] {
   const uniqueWords = Array.from(new Map(words.map((word) => [word.word, word])).values());

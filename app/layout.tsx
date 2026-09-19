@@ -5,8 +5,9 @@ import { siteNavigation } from "./lib/siteNavigation";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ISSB Preparation",
-  description: "Prepare across physical, psychological, GTO, interview, and general-knowledge areas.",
+  title: "ISSB Prep - Psychological, GTO & Interview Practice",
+  description:
+    "ISSB practice across the psychological, indoor GTO and Deputy President dimensions, with Urdu and English prompts, mental maths, sourced current affairs and gallantry stories.",
 };
 
 export default function RootLayout({

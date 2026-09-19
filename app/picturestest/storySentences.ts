@@ -1,3 +1,5 @@
+import { allPhotoStories, sourcePhotos } from '../lib/contentBank';
+
 export interface StorySentence {
   id: number;
   sentence: string;
@@ -35,6 +37,43 @@ export const storySentences: StorySentence[] = [
   { id: 28, sentence: 'The passport in his hand belonged to another man.', category: 'general' },
   { id: 29, sentence: 'He could not remember how he got to this place.', category: 'negative' },
   { id: 30, sentence: 'The last entry in the diary was left unfinished.', category: 'general' },
+];
+
+export interface StoryPracticePrompt {
+  id: string;
+  sentence: string;
+  language: 'en' | 'ur';
+  origin: 'photo' | 'original';
+  sourceImage?: string;
+  sourcePage?: string;
+  sourceNumber?: number;
+  category?: StorySentence['category'];
+}
+
+const photoStoryLocations = new Map<string, { sourcePage: string; sourceNumber: number }>(sourcePhotos.flatMap((photo) =>
+  photo.sections.filter((section) => section.kind === 'story').flatMap((section) =>
+    section.items.map((_, index) => [
+      `${photo.fileName}:${section.id}-${index}`,
+      { sourcePage: section.sourcePage, sourceNumber: index + 1 },
+    ] as const),
+  ),
+));
+
+export const storyPracticePrompts: StoryPracticePrompt[] = [
+  ...allPhotoStories.map((story, index) => ({
+    id: `photo-${story.sourceImage}-${story.id}-${index}`,
+    sentence: story.prompt,
+    language: story.language,
+    origin: 'photo' as const,
+    sourceImage: story.sourceImage,
+    ...photoStoryLocations.get(`${story.sourceImage}:${story.id}`),
+  })),
+  ...storySentences.map((story) => ({
+    ...story,
+    id: `original-story-${story.id}`,
+    language: 'en' as const,
+    origin: 'original' as const,
+  })),
 ];
 
 export function shuffleStorySentences(sentences: StorySentence[]): StorySentence[] {

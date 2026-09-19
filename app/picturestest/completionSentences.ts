@@ -1,3 +1,6 @@
+import { allSentenceSets } from '../lib/contentBank';
+import type { SourcePromptSet } from './pictureSourceData';
+
 export interface CompletionSentence {
   id: number;
   prompt: string;
@@ -35,6 +38,25 @@ export const completionSentences: CompletionSentence[] = [
   { id: 28, prompt: 'During a rescue mission, ...', category: 'paf' },
   { id: 29, prompt: 'A person I cannot trust ...', category: 'general-defense' },
   { id: 30, prompt: 'When my efforts go unnoticed, ...', category: 'army' },
+];
+
+export type CompletionPracticeSet = Omit<SourcePromptSet, 'sourceImage' | 'sourcePage'> & {
+  sourceImage?: string;
+  sourcePage?: string;
+  origin: 'photo' | 'original';
+};
+
+export const completionPracticeSets: CompletionPracticeSet[] = [
+  ...allSentenceSets.map((set) => ({ ...set, origin: 'photo' as const })),
+  {
+    id: 'original-completion-practice',
+    title: 'Original PAF and Army practice',
+    language: 'en',
+    seconds: 360,
+    prompts: completionSentences.map(({ prompt }) => prompt),
+    origin: 'original',
+    note: 'The original site prompts are retained here. The optional six-minute timer is a practice setting, not a timing instruction from a photographed source.',
+  },
 ];
 
 export function shuffleCompletionSentences(sentences: CompletionSentence[]): CompletionSentence[] {
