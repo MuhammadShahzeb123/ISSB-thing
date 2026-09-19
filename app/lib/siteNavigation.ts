@@ -1,5 +1,4 @@
 export type PreparationAreaSlug =
-  | "physical"
   | "psychological"
   | "gto"
   | "deputy-president-interview"
@@ -14,6 +13,8 @@ export type PreparationResource = {
 export type PreparationArea = {
   slug: PreparationAreaSlug;
   label: string;
+  /** Compact label for the header bar. */
+  shortLabel: string;
   href: `/${PreparationAreaSlug}`;
   classification: "core-assessor-dimension" | "preparation-area";
   summary: string;
@@ -22,15 +23,8 @@ export type PreparationArea = {
 
 export const siteNavigation = [
   {
-    slug: "physical",
-    label: "Physical",
-    href: "/physical",
-    classification: "preparation-area",
-    summary: "Build sustainable fitness, recovery, and readiness habits for selection activities.",
-    resources: [],
-  },
-  {
     slug: "psychological",
+    shortLabel: "Psychological",
     label: "Psychological",
     href: "/psychological",
     classification: "core-assessor-dimension",
@@ -65,6 +59,7 @@ export const siteNavigation = [
   },
   {
     slug: "gto",
+    shortLabel: "GTO",
     label: "GTO",
     href: "/gto",
     classification: "core-assessor-dimension",
@@ -72,13 +67,19 @@ export const siteNavigation = [
     resources: [
       {
         label: "Indoor GTO practice",
-        href: "/gto",
+        href: "/gto/indoor",
         description: "Lecture topics, group discussion motions, and planning exercises from the study photos.",
+      },
+      {
+        label: "Outdoor obstacles",
+        href: "/gto/outdoor",
+        description: "Animated technique walkthroughs for the nine individual obstacles.",
       },
     ],
   },
   {
     slug: "deputy-president-interview",
+    shortLabel: "Interview",
     label: "Deputy President Interview",
     href: "/deputy-president-interview",
     classification: "core-assessor-dimension",
@@ -98,6 +99,7 @@ export const siteNavigation = [
   },
   {
     slug: "general-knowledge",
+    shortLabel: "General Knowledge",
     label: "General Knowledge",
     href: "/general-knowledge",
     classification: "preparation-area",

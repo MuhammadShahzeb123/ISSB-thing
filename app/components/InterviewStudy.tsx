@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SpacedRepetitionDeck from './SpacedRepetitionDeck';
 import { currentAffairs, regionPrimer, researchAsOf, researchCaveat } from '../lib/currentAffairs';
 import { awardExplanation, militaryStories, type MilitaryStory } from '../lib/militaryStories';
@@ -9,9 +9,6 @@ import { interviewSourcePages } from '../lib/interviewSource';
 import { downloadText } from '../lib/practice';
 
 const getStoryId = (story: MilitaryStory) => story.id;
-const knowledgeCards = sourcePhotos.flatMap((photo) => photo.sections.filter((section) => section.kind === 'knowledge' && !['source-award-table', 'source-rank-comparison'].includes(section.id)).flatMap((section) => section.items.map((item, index) => ({
-  id: `${section.id}-${index}`, ...item, language: section.language, title: section.title, sourceImage: photo.fileName, sourcePage: section.sourcePage, notes: photo.issues,
-}))));
 
 export function CurrentAffairsStudy() {
   const [region, setRegion] = useState('All');
@@ -47,24 +44,7 @@ export function MilitaryStoriesStudy() {
   </>;
 }
 
-export function KnowledgeStudy() {
-  const [language, setLanguage] = useState('en');
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(0);
-  const [topic, setTopic] = useState('All');
-  const topics = [...new Set(knowledgeCards.filter((card) => card.language === language).map((card) => card.title))];
-  const cards = useMemo(() => knowledgeCards.filter((card) => card.language === language && (topic === 'All' || card.title === topic) && `${card.prompt} ${card.answer ?? ''}`.toLocaleLowerCase().includes(query.toLocaleLowerCase())), [language, query, topic]);
-  const pages = Math.max(1, Math.ceil(cards.length / 20));
-  const safePage = Math.min(page, pages - 1);
-  return <>
-    <section className="prep-panel"><h2>General knowledge from the photos</h2><p>Science, geography, service terms, Pakistan Studies and Urdu religious notes. Reveal each answer after trying to recall it.</p><div className="prep-note">English study cards identify corrections and outdated claims. Urdu religious/history answers are <strong>source transcriptions, not an independently verified answer key</strong>. Some contain errors or reflect a particular interpretation. Read the attached caution before studying a claim; confirm disputed religious details with a reliable reference.</div></section>
-    <div className="prep-filters"><label className="prep-field">Collection<select value={language} onChange={(event) => { setLanguage(event.target.value); setTopic('All'); setPage(0); }}><option value="en">English study cards</option><option value="ur">Urdu source notes</option></select></label><label className="prep-field">Topic<select value={topic} onChange={(event) => { setTopic(event.target.value); setPage(0); }}><option>All</option>{topics.map((value) => <option key={value}>{value}</option>)}</select></label><label className="prep-field">Search<input type="search" dir="auto" value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }} /></label></div>
-    <p className="prep-muted mb-5" role="status">{cards.length} cards | page {safePage + 1} of {pages}</p>
-    {!cards.length && <p className="prep-panel">No matching questions. Clear the search or change the topic.</p>}
-    {cards.slice(safePage * 20, (safePage + 1) * 20).map((card) => <details className="prep-details" key={card.id}><summary lang={card.language} dir={card.language === 'ur' ? 'rtl' : 'ltr'}>{card.prompt}</summary><p className="prep-muted">{card.language === 'ur' ? 'Printed source answer, not independently verified' : 'Study answer'}</p><p lang={card.language} dir={card.language === 'ur' ? 'rtl' : 'ltr'} className="whitespace-pre-line">{card.answer ?? (card.language === 'ur' ? 'اس مد میں الگ جواب درج نہیں ہے۔' : 'This item is a statement in the source; no separate answer is printed.')}</p>{card.detail && <p className="prep-note" dir="auto">{card.detail}</p>}{card.notes.length > 0 && <details className="prep-details"><summary>Page notes and corrections</summary><ul>{card.notes.map((note) => <li key={note} dir="auto">{note}</li>)}</ul></details>}<a className="prep-source-link" href={`/sources#${card.sourceImage}`}>Source page {card.sourcePage}</a></details>)}
-    <div className="prep-actions mt-5"><button type="button" className="prep-button prep-button-secondary" disabled={safePage === 0} onClick={() => setPage(safePage - 1)}>Previous page</button><button type="button" className="prep-button" disabled={safePage + 1 >= pages} onClick={() => setPage(safePage + 1)}>Next page</button><a href="/study" className="prep-button prep-button-secondary">Spaced memory practice</a></div>
-  </>;
-}
+export { default as KnowledgeStudy } from './GeneralKnowledgeBrowser';
 
 export function SourceQuestionStudy() {
   const [query, setQuery] = useState('');

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import WritingAssessmentPanel from "@/app/components/WritingAssessmentPanel";
@@ -56,12 +57,17 @@ function PromptPreview({ prompt }: { prompt: StoryPrompt }) {
   }
 
   return (
-    <div
-      aria-label={prompt.alt}
-      className="min-h-80 border-2 border-slate-950 bg-cover bg-center"
-      role="img"
-      style={{ backgroundImage: `url("${prompt.imageUrl}")` }}
-    />
+    <figure className="border-2 border-slate-950 bg-neutral-200">
+      <Image
+        alt={prompt.alt}
+        className="block h-auto w-full"
+        height={520}
+        priority
+        src={prompt.imageUrl}
+        unoptimized
+        width={800}
+      />
+    </figure>
   );
 }
 
@@ -145,7 +151,7 @@ export default function StoryWritingPractice() {
                 Observe first. Write from memory.
               </h1>
               <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">
-                One fixed session: four picture slots followed by two opening
+                One fixed session: four pictures followed by two opening
                 sentences. The editor is hidden while observing; the stimulus
                 is hidden while writing.
               </p>
@@ -165,10 +171,10 @@ export default function StoryWritingPractice() {
                 Fixed six-prompt session
               </p>
               <ol className="mt-5 space-y-3 font-bold">
-                <li>1–4. Picture prompts · assets pending</li>
+                <li>1–4. Picture prompts · original practice illustrations</li>
                 <li>5–6. Original sentence prompts · practice only</li>
               </ol>
-              <div className="mt-6 border-2 border-amber-900 bg-amber-100 p-4 text-sm font-semibold leading-6 text-amber-950">
+              <div className="mt-6 border-2 border-slate-950 bg-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">
                 {storyWritingContent.pendingNotice}
               </div>
               <p className="mt-5 text-sm font-semibold leading-6 text-slate-700">

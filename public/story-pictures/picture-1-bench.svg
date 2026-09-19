@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="t d">
+  <title id="t">Two men on a bench at dusk</title>
+  <desc id="d">An older man sits on a park bench, leaning forward with his hands clasped and eyes lowered. A younger man beside him has turned toward him. The sky is grey and a bare tree stands nearby.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9c9c9c"/><stop offset="1" stop-color="#dedede"/></linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8f8f8f"/><stop offset="1" stop-color="#626262"/></linearGradient>
+    <filter id="haze"><feGaussianBlur stdDeviation="0.7"/></filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0.35 0"/></filter>
+  </defs>
+  <g filter="url(#haze)">
+    <rect width="800" height="520" fill="url(#sky)"/>
+    <path d="M0 330 Q 160 300 330 322 T 800 312 L 800 360 L 0 360 Z" fill="#b1b1b1"/>
+    <rect y="358" width="800" height="162" fill="url(#ground)"/>
+    <path d="M0 440 Q 400 420 800 452" stroke="#7a7a7a" stroke-width="2" fill="none"/>
+    <g stroke="#5a5a5a" fill="none" stroke-linecap="round">
+      <path d="M 120 392 L 120 160" stroke-width="7"/>
+      <path d="M 120 162 Q 138 150 152 164" stroke-width="5"/>
+      <rect x="140" y="163" width="24" height="16" rx="3" fill="#8a8a8a" stroke-width="3"/>
+    </g>
+    <g stroke="#474747" fill="none" stroke-linecap="round">
+      <path d="M 700 372 C 696 300 704 240 700 150" stroke-width="16"/>
+      <path d="M 700 250 C 660 220 640 200 618 160" stroke-width="7"/>
+      <path d="M 702 210 C 730 180 750 160 772 150" stroke-width="6"/>
+      <path d="M 700 170 C 690 130 700 100 690 70" stroke-width="5"/>
+      <path d="M 640 196 L 612 186 M 650 206 L 636 176 M 740 176 L 760 184 M 694 110 L 676 96 M 696 96 L 712 80" stroke-width="3"/>
+    </g>
+    <g stroke="#6a6a6a" stroke-width="2" fill="none"><path d="M 470 90 l 8 6 l 8 -6"/><path d="M 505 72 l 6 5 l 6 -5"/><path d="M 540 98 l 7 5 l 7 -5"/></g>
+    <ellipse cx="410" cy="402" rx="190" ry="14" fill="#4f4f4f" opacity="0.45"/>
+    <g fill="#57534e">
+      <rect x="252" y="276" width="316" height="11" rx="3"/>
+      <rect x="252" y="296" width="316" height="11" rx="3"/>
+      <rect x="248" y="330" width="324" height="13" rx="3"/>
+      <rect x="266" y="286" width="8" height="112"/>
+      <rect x="546" y="286" width="8" height="112"/>
+    </g>
+    <!-- Older man, left, leaning forward -->
+    <g>
+      <rect x="318" y="330" width="25" height="66" rx="8" fill="#3d3d3d"/>
+      <rect x="349" y="330" width="25" height="66" rx="8" fill="#3d3d3d"/>
+      <ellipse cx="328" cy="398" rx="16" ry="7" fill="#262626"/>
+      <ellipse cx="364" cy="398" rx="16" ry="7" fill="#262626"/>
+      <path d="M 316 258 Q 346 242 376 258 L 382 334 L 310 334 Z" fill="#595959"/>
+      <path d="M 346 250 L 346 334" stroke="#4a4a4a" stroke-width="2"/>
+      <path d="M 322 264 C 318 290 330 308 350 318" stroke="#4d4d4d" stroke-width="15" fill="none" stroke-linecap="round"/>
+      <path d="M 372 264 C 378 290 370 308 356 318" stroke="#4d4d4d" stroke-width="15" fill="none" stroke-linecap="round"/>
+      <ellipse cx="353" cy="319" rx="11" ry="8" fill="#a3a3a3"/>
+      <rect x="338" y="238" width="16" height="16" fill="#9a9a9a"/>
+      <g transform="rotate(14 346 222)">
+        <ellipse cx="346" cy="222" rx="20" ry="24" fill="#a9a9a9"/>
+        <path d="M 326 216 Q 330 194 348 196 Q 364 196 366 214 Q 356 204 340 206 Z" fill="#cfcfcf"/>
+        <path d="M 350 214 L 360 217" stroke="#3a3a3a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 352 222 L 359 223" stroke="#2f2f2f" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M 366 222 L 369 230 L 364 231" stroke="#7d7d7d" stroke-width="2" fill="none"/>
+        <path d="M 352 235 L 363 235" stroke="#dcdcdc" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M 353 240 Q 357 239 361 242" stroke="#3a3a3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </g>
+    </g>
+    <!-- Younger man, right, turned toward him -->
+    <g>
+      <rect x="436" y="330" width="24" height="66" rx="8" fill="#2f2f2f"/>
+      <rect x="466" y="330" width="24" height="66" rx="8" fill="#2f2f2f"/>
+      <ellipse cx="444" cy="398" rx="15" ry="7" fill="#1f1f1f"/>
+      <ellipse cx="480" cy="398" rx="15" ry="7" fill="#1f1f1f"/>
+      <path d="M 434 248 Q 463 236 494 248 L 498 334 L 430 334 Z" fill="#848484"/>
+      <path d="M 440 256 C 430 280 426 300 432 320" stroke="#777" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M 490 256 C 500 282 498 304 488 322" stroke="#777" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <ellipse cx="432" cy="322" rx="8" ry="7" fill="#9e9e9e"/>
+      <ellipse cx="488" cy="324" rx="8" ry="7" fill="#9e9e9e"/>
+      <rect x="456" y="226" width="15" height="16" fill="#969696"/>
+      <g transform="rotate(-6 464 212)">
+        <ellipse cx="464" cy="212" rx="19" ry="23" fill="#a2a2a2"/>
+        <path d="M 445 208 Q 446 184 466 186 Q 486 188 484 214 Q 478 198 462 198 Q 452 200 445 208 Z" fill="#2e2e2e"/>
+        <path d="M 446 205 L 456 204" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 448 212 L 455 212" stroke="#262626" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M 445 212 L 441 221 L 446 222" stroke="#7a7a7a" stroke-width="2" fill="none"/>
+        <path d="M 448 229 L 456 229" stroke="#353535" stroke-width="2" stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+  <rect width="800" height="520" filter="url(#grain)" opacity="0.6"/>
+</svg>

@@ -1,7 +1,8 @@
 export type ContentReadiness =
   | "legacy-practice"
   | "practice-pending-replacement"
-  | "asset-pending";
+  | "asset-pending"
+  | "practice-ready";
 
 export type VersionedContentPack<TPrompt> = {
   schemaVersion: 1;
@@ -25,7 +26,7 @@ export type StoryPicturePrompt = {
   sequence: number;
   imageUrl: string | null;
   alt: string;
-  provenance: "user-asset-pending";
+  provenance: "user-asset-pending" | "original-practice-illustration";
 };
 
 export type StorySentencePrompt = {

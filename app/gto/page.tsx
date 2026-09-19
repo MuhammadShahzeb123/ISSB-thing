@@ -1,55 +1,15 @@
-'use client';
+import DimensionOverview from '../components/DimensionOverview';
 
-import { useState } from 'react';
-import DimensionNav from '../components/DimensionNav';
-import PracticeTimer from '../components/PracticeTimer';
-import { allTopics } from '../lib/contentBank';
-import { sourcePlanningScenarios } from '../lib/gtoData';
-import { downloadText } from '../lib/practice';
-
-const planningFields = ['Priorities and deadlines', 'People, vehicles and supplies', 'Routes and travel calculations', 'Task allocation and timings', 'Risks, missing facts and alternatives', 'One-minute final group plan'];
-
-export default function GTOPage() {
-  const [tab, setTab] = useState('lecture');
-  const [language, setLanguage] = useState<'en' | 'ur'>('en');
-  const [query, setQuery] = useState('');
-  const [topicId, setTopicId] = useState('');
-  const [phase, setPhase] = useState('prepare');
-  const [notes, setNotes] = useState<Record<string, string>>({});
-  const [planning, setPlanning] = useState<Record<string, string>>({});
-  const [scenario, setScenario] = useState('source');
-  const [showWorked, setShowWorked] = useState(false);
-  const topics = allTopics.filter((topic) => topic.language === language && topic.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
-  const selected = topics.find((topic) => topic.id === topicId) ?? topics[0];
-  const source = sourcePlanningScenarios[0];
-  const plannerKey = `${scenario}-`;
-
+export default function GtoOverviewPage() {
   return (
-    <div className="neo-page neo-page--leadership prep-page"><div className="prep-shell">
-      <DimensionNav active="gto" />
-      <header className="prep-header"><h1>Think clearly. Work as a group.</h1><p>Indoor GTO practice: give a short lecture, discuss a topic and explain a workable group plan.</p></header>
-      <div className="prep-note">Outdoor tasks are intentionally excluded. The photographed timetable is academy guidance, not a guaranteed ISSB schedule. The official board says activities can change. <a href="https://issb.gov.pk/selection-system" target="_blank" rel="noreferrer">Read the official selection system.</a></div>
-      <div className="prep-tabs" aria-label="Indoor GTO activities">{[['lecture', 'Lecture practice'], ['discussion', 'Group discussion'], ['planning', 'Group planning']].map(([id, label]) => <button type="button" key={id} aria-pressed={tab === id} onClick={() => { setTab(id); setPhase('prepare'); }}>{label}</button>)}</div>
-      {tab !== 'planning' ? <>
-        <div className="prep-filters"><label className="prep-field">Topic language<select value={language} onChange={(event) => { setLanguage(event.target.value as 'en' | 'ur'); setTopicId(''); setPhase('prepare'); }}><option value="en">English</option><option value="ur">اردو</option></select></label><label className="prep-field">Search topics<input type="search" value={query} dir="auto" onChange={(event) => { setQuery(event.target.value); setTopicId(''); setPhase('prepare'); }} placeholder="Education, Pakistan, تعلیم..." /></label></div>
-        <p className="prep-muted mb-5">{topics.length} matching topic entries. The photos label these as discussion topics; the same motions are also available here for a short lecture.</p>
-        {selected ? <div className="prep-split"><section className="prep-panel">
-          <label className="prep-field">Choose a topic<select value={selected.id} dir={language === 'ur' ? 'rtl' : 'ltr'} lang={language} onChange={(event) => { setTopicId(event.target.value); setPhase('prepare'); }}>{topics.map((topic) => <option key={topic.id} value={topic.id}>{topic.title}</option>)}</select></label>
-          <h2 className="prep-question" lang={selected.language} dir={selected.language === 'ur' ? 'rtl' : 'ltr'}>{selected.title}</h2>
-          <a className="prep-source-link" href={`/sources#${selected.sourceImage}`}>Source page {selected.sourcePage}</a>
-          <div className="prep-note">A debate motion is not an established fact or this site’s view. You may challenge its premise. Support your own position with reasons and a concrete example.</div>
-          <PracticeTimer key={`${tab}-${selected.id}-${phase}`} seconds={tab === 'discussion' ? 900 : 120} label={tab === 'discussion' ? 'Optional 15-minute discussion' : phase === 'prepare' ? '2-minute preparation practice' : '2-minute lecture, as in the source schedule'} />
-          {tab === 'lecture' && <div className="prep-actions mb-5"><button type="button" className="prep-button" onClick={() => setPhase(phase === 'prepare' ? 'speak' : 'prepare')}>{phase === 'prepare' ? 'Move to speaking' : 'Prepare again'}</button><span className="prep-muted">Start the timer when ready.</span></div>}
-          <label className="prep-field">Your {tab === 'lecture' ? 'speech outline' : 'discussion notes'}<textarea lang={language} dir={language === 'ur' ? 'rtl' : 'ltr'} value={notes[`${tab}-${selected.id}`] ?? ''} onChange={(event) => setNotes((previous) => ({ ...previous, [`${tab}-${selected.id}`]: event.target.value }))} placeholder={language === 'ur' ? 'اپنی رائے، دلیل، مثال اور نتیجہ لکھیں۔' : 'Position, reason, example, a fair objection, conclusion.'} /></label>
-          <button type="button" className="prep-button prep-button-secondary" onClick={() => downloadText(`gto-${tab}.txt`, `${selected.title}\n\n${notes[`${tab}-${selected.id}`] ?? ''}`)}>Download outline</button>
-        </section><aside className="prep-panel"><h2>{tab === 'lecture' ? 'Make one clear argument' : 'Build the discussion'}</h2>{tab === 'lecture' ? <ol><li>State your view in one sentence.</li><li>Give two reasons you can explain.</li><li>Use a real example, not an invented statistic.</li><li>Acknowledge a fair opposing point.</li><li>End with a practical recommendation.</li></ol> : <ol><li>Listen before adding a point.</li><li>Give a short reason rather than repeating a slogan.</li><li>Disagree with the argument, not the person.</li><li>Invite a quieter member to contribute.</li><li>Summarise agreement and unresolved points.</li></ol>}<h3>Self-review</h3><div className="prep-checklist" key={`${tab}-${selected.id}`}>{['I answered the actual topic.', 'My example supported my point.', 'I separated facts from opinions.', 'I stayed within the time.', 'I spoke clearly without rushing.'].map((line) => <label key={line}><input type="checkbox" />{line}</label>)}</div><p className="prep-muted">This is a reflection checklist, not an ISSB mark or recommendation prediction. Notes are kept only while this page remains open unless downloaded.</p></aside></div> : <div className="prep-panel"><h2>No matching topics</h2><p>Clear the search or choose another language.</p></div>}
-      </> : <>
-        <div className="prep-filters"><label className="prep-field">Planning exercise<select value={scenario} onChange={(event) => { setScenario(event.target.value); setShowWorked(false); }}><option value="source">Photographed bridge-repair problem</option><option value="practice">New practice: village flood response</option></select></label></div>
-        <section className="prep-panel"><h2>{scenario === 'source' ? source.title : 'Village flood response'}</h2>
-          {scenario === 'source' ? <><p>{source.brief}</p><ul>{source.facts.map((fact) => <li key={fact}>{fact}</li>)}</ul><p lang="ur" dir="rtl" className="mt-4">{source.sourceText}</p><div className="prep-note"><strong>The source problem is incomplete.</strong><ul>{source.caveats.map((caveat) => <li key={caveat}>{caveat}</li>)}</ul></div><p>Use this exercise to identify missing facts and build a conditional plan, not to guess a single correct numerical solution.</p><a className="prep-source-link" href={`/sources#${source.sourceImage}`}>Source page {source.sourcePage}</a></> : <><p><strong>New practice scenario, not transcribed from a photo.</strong> It is 08:00. Your eight-person team is at Base beside a safe boat landing. Two injured villagers must reach a hospital by 09:15. Twenty food packages must reach their hamlet by 10:00. A damaged footbridge is closed. Trained local responders operate the boat; nobody enters unsafe water.</p><div className="prep-table-wrap"><table className="prep-table"><thead><tr><th>Resource or route</th><th>Given data</th></tr></thead><tbody>{[['Base to hamlet', '3 km by boat; speed 12 km/h; 10 minutes to collect the patients.'], ['Base to hospital', '12 km by road; jeep speed 36 km/h; allow 5 minutes at Base to transfer the patients.'], ['Base to food depot', '6 km by road; jeep speed 30 km/h; loading takes 6 minutes and unloading at Base takes 5 minutes.'], ['Jeep', 'Five seats including the driver; can carry all 20 packages on its supply run.'], ['Boat', 'Six people including the operator. For a supply trip, two crew and all 20 packages are within capacity.'], ['Food delivery', 'Allow 10 minutes to load the boat and 10 minutes to unload at the hamlet.'], ['People and communication', 'One boat operator, one first-aid responder, one boat helper, one driver, one supply helper and three coordinators. A working radio is at Base.']].map(([name, value]) => <tr key={name}><th scope="row">{name}</th><td>{value}</td></tr>)}</tbody></table></div></>}
-        </section>
-        <div className="prep-split"><section className="prep-panel"><h2>Your group plan</h2><PracticeTimer key={scenario} seconds={900} label="15-minute planning practice" />{planningFields.map((field) => <label key={`${scenario}-${field}`} className="prep-field">{field}<textarea dir="auto" value={planning[plannerKey + field] ?? ''} onChange={(event) => setPlanning((previous) => ({ ...previous, [plannerKey + field]: event.target.value }))} /></label>)}<button type="button" className="prep-button" onClick={() => downloadText('gto-group-plan.txt', planningFields.map((field) => `${field}\n${planning[plannerKey + field] ?? ''}`).join('\n\n'))}>Download plan</button></section><aside className="prep-panel"><h2>Check the constraints</h2><ul><li>Prioritise people before property.</li><li>Convert minutes to hours before using speed × time.</li><li>Count drivers and crew in vehicle capacity.</li><li>Include loading, unloading and handover.</li><li>A vehicle or person cannot do two jobs at once.</li><li>State assumptions and keep a backup.</li></ul>{scenario === 'practice' ? <><button className="prep-button mt-5" type="button" onClick={() => setShowWorked(!showWorked)}>{showWorked ? 'Hide worked plan' : 'Reveal worked plan'}</button>{showWorked && <div className="prep-answer"><ol><li>Boat team leaves at 08:00, arrives 08:15, collects patients until 08:25 and returns at 08:40. Five people are aboard on return.</li><li>Jeep driver and supply helper leave at 08:00, arrive at the depot 08:12, load until 08:18 and return 08:30. Unloading finishes 08:35.</li><li>Transfer patients from 08:40 to 08:45. Driver, first-aid responder and two patients leave by jeep, reaching hospital at 09:05, ten minutes before the deadline.</li><li>Boat operator and helper load food from 08:40 to 08:50 while the three coordinators assist with the handover. The boat arrives 09:05 and finishes unloading at 09:15.</li><li>Confirm delivery and hospital arrival by radio. Keep the closed bridge unused and request outside help if weather makes the boat route unsafe.</li></ol><p>Travel assumptions are fixed for this exercise. Real emergencies need local-authority instructions and a fresh risk assessment.</p></div>}</> : <><h3>Questions to resolve first</h3><ul>{source.prompts.map((prompt) => <li key={prompt}>{prompt}</li>)}</ul></>}</aside></div>
-      </>}
-    </div></div>
+    <DimensionOverview
+      dimension="gto"
+      title="Group Testing Officer"
+      summary="Indoor planning, discussion and lecture tasks, plus the outdoor individual obstacles. Outdoor tasks now live here instead of in a separate physical section."
+      resources={[
+        { label: 'Outdoor obstacles', href: '/gto/outdoor', description: 'Animated, step-by-step technique for all nine individual obstacles.' },
+        { label: 'Indoor practice room', href: '/gto/indoor', description: 'Lecture topics, discussion motions and planning problems in one place.' },
+      ]}
+    />
   );
 }

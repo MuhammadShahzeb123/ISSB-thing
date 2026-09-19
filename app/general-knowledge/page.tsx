@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GeneralKnowledgeBrowser from "../components/GeneralKnowledgeBrowser";
 import PracticeDisclaimer from "../components/PracticeDisclaimer";
 import { getPreparationArea } from "../lib/siteNavigation";
 
@@ -11,7 +12,11 @@ export default function GeneralKnowledgeOverviewPage() {
         <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-800">Preparation area</p>
         <h1 className="mt-3 text-4xl font-black sm:text-6xl">{area.label}</h1>
         <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">{area.summary}</p>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="prep-page mt-8 !p-0 text-left">
+          <GeneralKnowledgeBrowser />
+        </div>
+        <h2 className="mt-12 text-2xl font-black">More study tools</h2>
+        <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {area.resources.map((resource) => (
             <Link
               key={resource.href}

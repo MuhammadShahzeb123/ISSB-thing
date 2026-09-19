@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="t d">
+  <title id="t">A father and son at a dry field</title>
+  <desc id="d">An older farmer in a turban leans on a spade beside his teenage son at the edge of a dry, cracked field. Heavy clouds gather over a distant village. The boy looks up at the sky while the father looks across the field.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a8a8a"/><stop offset="1" stop-color="#cfcfcf"/></linearGradient>
+    <linearGradient id="field" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6a6a6"/><stop offset="1" stop-color="#7c7c7c"/></linearGradient>
+    <filter id="haze"><feGaussianBlur stdDeviation="0.7"/></filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="21"/><feColorMatrix values="0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0.35 0"/></filter>
+  </defs>
+  <g filter="url(#haze)">
+    <rect width="800" height="520" fill="url(#sky)"/>
+    <g fill="#747474"><ellipse cx="160" cy="80" rx="150" ry="42"/><ellipse cx="300" cy="60" rx="120" ry="38"/><ellipse cx="560" cy="90" rx="170" ry="46"/><ellipse cx="720" cy="70" rx="110" ry="36"/></g>
+    <g fill="#8e8e8e"><ellipse cx="230" cy="120" rx="130" ry="30"/><ellipse cx="480" cy="130" rx="150" ry="30"/><ellipse cx="690" cy="128" rx="120" ry="26"/></g>
+    <path d="M 0 300 Q 200 288 400 298 T 800 292 L 800 312 L 0 312 Z" fill="#9a9a9a"/>
+    <g fill="#6c6c6c"><rect x="80" y="276" width="34" height="24"/><path d="M 76 278 L 97 262 L 118 278 Z"/><rect x="130" y="282" width="26" height="18"/><rect x="660" y="274" width="40" height="26"/><path d="M 656 276 L 680 258 L 704 276 Z"/></g>
+    <path d="M 610 300 C 606 270 612 250 608 232 M 608 250 C 596 236 584 232 574 234 M 608 244 C 622 232 632 230 640 232" stroke="#555" stroke-width="5" fill="none"/>
+    <ellipse cx="608" cy="226" rx="30" ry="16" fill="#6a6a6a"/>
+    <rect y="306" width="800" height="214" fill="url(#field)"/>
+    <g stroke="#6b6b6b" stroke-width="2" fill="none">
+      <path d="M 40 360 L 90 380 L 80 420 M 90 380 L 150 372 L 170 410 M 150 372 L 160 340"/>
+      <path d="M 200 440 L 250 430 L 270 470 M 250 430 L 240 400 L 290 390 M 290 390 L 330 420"/>
+      <path d="M 520 450 L 570 430 L 600 460 M 570 430 L 560 400 L 620 392 L 650 430 M 620 392 L 640 360"/>
+      <path d="M 680 470 L 720 440 L 770 460 M 720 440 L 730 400"/>
+      <path d="M 60 480 L 110 470 L 140 500"/>
+    </g>
+    <path d="M 0 340 C 200 332 300 350 520 336 C 640 328 720 334 800 330" stroke="#8b8b8b" stroke-width="10" fill="none"/>
+    <path d="M 0 340 C 200 332 300 350 520 336 C 640 328 720 334 800 330" stroke="#737373" stroke-width="3" fill="none"/>
+    <g stroke="#5e5e5e" stroke-width="2.5" fill="none"><path d="M 110 330 l -4 -18 m 4 18 l 6 -14"/><path d="M 200 350 l -3 -14 m 3 14 l 7 -12"/><path d="M 260 330 l -5 -16"/><path d="M 700 360 l -3 -16 m 3 16 l 6 -10"/><path d="M 150 460 l -4 -14"/></g>
+    <!-- son, looking up at the sky -->
+    <g>
+      <ellipse cx="398" cy="428" rx="36" ry="7" fill="#555" opacity="0.5"/>
+      <rect x="382" y="352" width="15" height="72" rx="5" fill="#8f8f8f"/>
+      <rect x="400" y="352" width="15" height="72" rx="5" fill="#8f8f8f"/>
+      <ellipse cx="388" cy="426" rx="12" ry="5" fill="#2f2f2f"/>
+      <ellipse cx="410" cy="426" rx="12" ry="5" fill="#2f2f2f"/>
+      <path d="M 376 262 Q 398 252 420 262 L 426 366 L 370 366 Z" fill="#a4a4a4"/>
+      <path d="M 380 272 C 376 300 378 322 382 340" stroke="#999" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <path d="M 416 272 C 422 300 420 322 416 340" stroke="#999" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <rect x="391" y="242" width="13" height="14" fill="#8c8c8c"/>
+      <g transform="rotate(-18 398 228)">
+        <ellipse cx="398" cy="228" rx="16" ry="20" fill="#9a9a9a"/>
+        <path d="M 382 224 Q 384 204 400 206 Q 416 208 414 228 Q 408 214 396 216 Q 388 218 382 224 Z" fill="#2c2c2c"/>
+        <path d="M 384 224 L 392 223" stroke="#2c2c2c" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M 382 226 L 378 234 L 383 235" stroke="#6f6f6f" stroke-width="2" fill="none"/>
+        <path d="M 385 241 L 392 241" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+      </g>
+    </g>
+    <!-- father with turban, leaning on a spade -->
+    <g>
+      <ellipse cx="484" cy="430" rx="44" ry="8" fill="#555" opacity="0.5"/>
+      <rect x="466" y="346" width="17" height="80" rx="5" fill="#b6b6b6"/>
+      <rect x="487" y="346" width="17" height="80" rx="5" fill="#b6b6b6"/>
+      <ellipse cx="472" cy="428" rx="14" ry="5" fill="#2f2f2f"/>
+      <ellipse cx="498" cy="428" rx="14" ry="5" fill="#2f2f2f"/>
+      <path d="M 456 232 Q 485 220 514 232 L 522 362 L 448 362 Z" fill="#767676"/>
+      <path d="M 428 246 L 420 424" stroke="#4b4b4b" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 408 420 L 432 420 L 430 444 Q 420 452 410 444 Z" fill="#5a5a5a"/>
+      <path d="M 460 242 C 446 258 436 264 428 262" stroke="#6d6d6d" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <ellipse cx="428" cy="262" rx="8" ry="7" fill="#a0a0a0"/>
+      <path d="M 510 242 C 520 280 518 310 512 330" stroke="#6d6d6d" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <rect x="477" y="212" width="15" height="16" fill="#8f8f8f"/>
+      <g transform="rotate(-4 484 196)">
+        <ellipse cx="484" cy="198" rx="18" ry="22" fill="#9a9a9a"/>
+        <path d="M 464 190 Q 466 168 486 166 Q 506 168 506 190 Q 498 180 484 182 Q 472 182 464 190 Z" fill="#dadada"/>
+        <path d="M 466 176 Q 486 162 504 178" stroke="#bdbdbd" stroke-width="4" fill="none"/>
+        <path d="M 466 206 Q 470 226 488 224 Q 482 214 466 206 Z" fill="#c9c9c9"/>
+        <path d="M 468 196 L 476 196" stroke="#262626" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M 467 190 L 477 192" stroke="#2c2c2c" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 466 198 L 462 206 L 467 207" stroke="#6f6f6f" stroke-width="2" fill="none"/>
+      </g>
+    </g>
+  </g>
+  <rect width="800" height="520" filter="url(#grain)" opacity="0.6"/>
+</svg>

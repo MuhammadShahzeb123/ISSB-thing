@@ -242,7 +242,7 @@ export default function MechanicalAptitudePage() {
           <header className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.24em] text-blue-800">Original practice module</p>
-              <h1 className="mt-4 max-w-4xl text-5xl font-black leading-none sm:text-7xl">Mechanical aptitude, built from principles.</h1>
+              <h1 className="mt-4 max-w-4xl text-4xl font-black leading-none [overflow-wrap:anywhere] sm:text-6xl lg:text-7xl">Mechanical aptitude, built from principles.</h1>
               <p className="mt-6 max-w-3xl text-lg font-semibold leading-8 text-slate-700">
                 Train with 100 original questions across torque, pulleys, gears, machines, motion, friction,
                 fluids, tools, and mechanisms. Questions and category coverage are unofficial practice
@@ -387,14 +387,14 @@ export default function MechanicalAptitudePage() {
               return (
                 <article key={question.id} className={`border-2 border-slate-950 p-5 shadow-[5px_5px_0_#171717] sm:p-6 ${isCorrect ? "bg-lime-100" : "bg-rose-100"}`}>
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-600">
+                    <p className="min-w-0 text-xs font-black uppercase tracking-[0.16em] text-slate-600 [overflow-wrap:anywhere]">
                       {index + 1}. {question.id} · {CATEGORY_LABELS[question.category]} · {question.difficulty}
                     </p>
                     <span className="border-2 border-slate-950 bg-white px-3 py-1 text-xs font-black uppercase">{isCorrect ? "Correct" : "Review"}</span>
                   </div>
-                  <h3 className="mt-3 text-xl font-black leading-7">{question.prompt}</h3>
+                  <h3 className="mt-3 text-xl font-black leading-7 [overflow-wrap:anywhere]">{question.prompt}</h3>
                   <div className="mt-4 grid gap-4 md:grid-cols-[minmax(0,1fr)_15rem]">
-                    <div>
+                    <div className="min-w-0">
                       <p className="font-bold">Your answer: <span className={isCorrect ? "text-green-800" : "text-red-800"}>{chosenLabel}</span></p>
                       {!isCorrect && <p className="mt-1 font-bold">Correct answer: {question.choices[question.answerIndex]}</p>}
                       <p className="mt-4 leading-7 text-slate-700">{question.explanation}</p>
@@ -407,7 +407,7 @@ export default function MechanicalAptitudePage() {
                       </div>
                     </div>
                     {question.diagram && (
-                      <div className="h-40 border-2 border-slate-950 bg-white p-2">
+                      <div className="mx-auto aspect-[2/1] w-full max-w-sm self-start border-2 border-slate-950 bg-white p-2">
                         <MechanicalDiagram diagram={question.diagram} />
                       </div>
                     )}
@@ -446,7 +446,7 @@ export default function MechanicalAptitudePage() {
 
         <section className="mt-6 border-2 border-slate-950 bg-white p-5 shadow-[7px_7px_0_#171717] sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-600">
+            <p className="min-w-0 text-xs font-black uppercase tracking-[0.16em] text-slate-600 [overflow-wrap:anywhere]">
               {current.question.id} · {CATEGORY_LABELS[current.question.category]} · {current.question.difficulty}
             </p>
             <button type="button" onClick={() => setPhase("setup")} className="text-sm font-black text-blue-800 underline decoration-2 underline-offset-4 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
@@ -454,10 +454,10 @@ export default function MechanicalAptitudePage() {
             </button>
           </div>
 
-          <div className={`mt-5 grid gap-6 ${current.question.diagram ? "lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-center" : ""}`}>
-            <h1 className="text-2xl font-black leading-9 sm:text-3xl">{current.question.prompt}</h1>
+          <div className={`mt-5 grid gap-6 ${current.question.diagram ? "md:grid-cols-[minmax(0,1fr)_minmax(14rem,18rem)] md:items-start" : ""}`}>
+            <h1 className="min-w-0 text-xl font-black leading-8 [overflow-wrap:anywhere] sm:text-2xl sm:leading-9 lg:text-3xl">{current.question.prompt}</h1>
             {current.question.diagram && (
-              <div className="h-48 border-2 border-slate-950 bg-amber-50 p-3">
+              <div className="mx-auto aspect-[2/1] w-full max-w-sm border-2 border-slate-950 bg-amber-50 p-3 md:max-w-none">
                 <MechanicalDiagram diagram={current.question.diagram} />
               </div>
             )}
@@ -465,7 +465,7 @@ export default function MechanicalAptitudePage() {
 
           <fieldset className="mt-7">
             <legend className="sr-only">Choose one answer</legend>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3 md:grid-cols-2">
               {current.choices.map((choice, index) => {
                 const active = selectedAnswer === choice.originalIndex;
                 return (
@@ -479,7 +479,7 @@ export default function MechanicalAptitudePage() {
                     }`}
                   >
                     <span className="grid h-9 w-9 shrink-0 place-items-center border-2 border-slate-950 bg-amber-100 font-black">{index + 1}</span>
-                    <span>{choice.label}</span>
+                    <span className="min-w-0 [overflow-wrap:anywhere]">{choice.label}</span>
                   </button>
                 );
               })}
@@ -487,22 +487,22 @@ export default function MechanicalAptitudePage() {
           </fieldset>
 
           <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t-2 border-slate-950 pt-5">
-            <p className="text-sm font-semibold text-slate-600">Keys: 1–4 choose · ←/→ move · Enter advances</p>
-            <div className="flex gap-3">
+            <p className="hidden text-sm font-semibold text-slate-600 sm:block">Keys: 1–4 choose · ←/→ move · Enter advances</p>
+            <div className="flex w-full gap-3 sm:w-auto">
               <button
                 type="button"
                 onClick={() => moveQuestion(-1)}
                 disabled={currentIndex === 0}
-                className="border-2 border-slate-950 bg-white px-5 py-3 font-black disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+                className="flex-1 border-2 border-slate-950 bg-white px-5 py-3 font-black disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700 sm:flex-none"
               >
                 Previous
               </button>
               {currentIndex === session.length - 1 ? (
-                <button type="button" onClick={finishSession} className="border-2 border-slate-950 bg-pink-200 px-5 py-3 font-black shadow-[4px_4px_0_#171717] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
+                <button type="button" onClick={finishSession} className="flex-1 border-2 border-slate-950 bg-pink-200 px-5 py-3 font-black shadow-[4px_4px_0_#171717] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700 sm:flex-none">
                   Finish
                 </button>
               ) : (
-                <button type="button" onClick={() => moveQuestion(1)} className="border-2 border-slate-950 bg-blue-200 px-5 py-3 font-black shadow-[4px_4px_0_#171717] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
+                <button type="button" onClick={() => moveQuestion(1)} className="flex-1 border-2 border-slate-950 bg-blue-200 px-5 py-3 font-black shadow-[4px_4px_0_#171717] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700 sm:flex-none">
                   Next
                 </button>
               )}
