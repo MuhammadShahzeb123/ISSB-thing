@@ -73,3 +73,15 @@ for (const text of [JSON.stringify(sourcePhotos), JSON.stringify(militaryStories
   assert.ok(!/<img\b|data:image\//i.test(text), 'Photo content must be text, not embedded images.');
 }
 console.log(`Interview content: ${militaryStories.length} sourced stories, ${currentAffairs.length} briefings and ${regionPrimer.length} regional primers passed.`);
+
+const { collections, librarySets, libraryItemCount, getAllCardsSet } = loadModule('../app/lib/library.ts');
+const sourceItemTotal = sourcePhotos.reduce((sum, photo) => sum + photo.sections.reduce((inner, section) => inner + section.items.length, 0), 0);
+assert.equal(libraryItemCount, sourceItemTotal, 'Every transcribed item must appear in exactly one practice-library set.');
+const librarySlugs = new Set(collections.map((collection) => collection.slug));
+assert.ok(librarySets.every((set) => librarySlugs.has(set.collection) && set.items.length > 0), 'Library sets need a known collection and at least one item.');
+for (const slug of librarySlugs) assert.ok(librarySets.some((set) => set.collection === slug), `Collection ${slug} must not be empty.`);
+const libraryRoutes = librarySets.map((set) => `${set.collection}/${set.id}`);
+assert.equal(new Set(libraryRoutes).size, libraryRoutes.length, 'Library set routes must be unique.');
+assert.ok(librarySets.every((set) => set.id !== 'all'), 'The "all" id is reserved for combined decks.');
+assert.ok(librarySets.filter((set) => set.mode === 'sentence').every((set) => set.items.length >= 25 && set.seconds === 360), 'Sentence sets keep the 6-minute source timing.');
+console.log(`Practice library: ${librarySets.length} sets in ${librarySlugs.size} collections (${[...librarySlugs].filter((slug) => getAllCardsSet(slug)).length} combined decks) cover all ${libraryItemCount} items.`);

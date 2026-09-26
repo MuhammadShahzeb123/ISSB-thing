@@ -130,6 +130,18 @@ a {
   transform: translate(-2px, -2px);
 }
 
+.site-nav-link--primary {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--yellow);
+}
+
+.site-nav-link--primary:hover,
+.site-nav-link--primary:focus-visible {
+  background: var(--ink);
+  color: var(--paper-bright);
+}
+
 .site-nav-link--separated {
   margin-left: auto;
   border-color: var(--ink);

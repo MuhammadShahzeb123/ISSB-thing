@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import DimensionNav from '../components/DimensionNav';
 import { sourcePhotos, sourceItemCount } from '../lib/contentBank';
@@ -26,7 +27,7 @@ export default function SourcesPage() {
   return (
     <div className="neo-page prep-page"><div className="prep-shell">
       <DimensionNav active="sources" />
-      <header className="prep-header"><h1>Every photo, accounted for.</h1><p>A text-only index of the supplied study material. Open a source to see its extracted prompts, form fields and study answers.</p></header>
+      <header className="prep-header"><h1>Every photo, accounted for.</h1><p>A text-only index of the supplied study material. Open a source to see its extracted prompts, form fields and study answers.</p><p>Want to practise instead? The <Link href="/library">practice library</Link> sorts the same material into timed tests and flashcards.</p></header>
       <div className="prep-counts"><div><strong>{sourcePhotos.length} / 52</strong><span>photos reviewed</span></div><div><strong>{sourceItemCount}</strong><span>extracted items, including repeats</span></div><div><strong>0</strong><span>source photos displayed</span></div></div>
       <div className="prep-note">The notes are academy material, not an official test syllabus. English sentence stems and Urdu prompts retain their source wording where readable. Some Urdu general-knowledge pages are translated into English study cards. Clear factual errors are corrected and old statistics are labelled. Notes identify obscured text and differences between source versions. Repeated pages and prompts remain traceable; counts are not counts of unique questions.</div>
       <div className="prep-filters"><label className="prep-field">Search extracted text or filename<input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Urdu text, percentage, biodata..." /></label><label className="prep-field">Material type<select value={kind} onChange={(event) => setKind(event.target.value)}><option value="all">All material</option>{kinds.map((value) => <option key={value} value={value}>{value.replace(/-/g, ' ')}</option>)}</select></label></div>

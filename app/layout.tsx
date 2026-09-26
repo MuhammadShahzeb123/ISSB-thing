@@ -25,6 +25,7 @@ export default function RootLayout({
               <span>ISSB <strong>PREP</strong></span>
             </Link>
             <div className="site-nav-links">
+              <Link href="/library" className="site-nav-link site-nav-link--primary">Practice library</Link>
               {siteNavigation.map((area) => (
                 <Link
                   key={area.slug}

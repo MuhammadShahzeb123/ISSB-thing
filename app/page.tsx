@@ -1,6 +1,8 @@
 import Link from "next/link";
 import PracticeDisclaimer from "./components/PracticeDisclaimer";
 import { siteNavigation } from "./lib/siteNavigation";
+import { collections, libraryItemCount } from "./lib/library";
+import "./library.css";
 
 export default function HomePage() {
   return (
@@ -21,7 +23,28 @@ export default function HomePage() {
           </p>
         </header>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
+        <section className="mt-10 border-[3px] border-slate-950 bg-amber-100 p-6 shadow-[6px_6px_0_#171717] sm:p-8" aria-labelledby="library-cta">
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div className="max-w-2xl">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-800">New · start here</p>
+              <h2 id="library-cta" className="mt-2 text-3xl font-black sm:text-4xl">Practice library</h2>
+              <p className="mt-3 text-lg font-semibold leading-8 text-slate-700">
+                All {libraryItemCount.toLocaleString()} tests and notes from the 52 study photos, sorted into timed tests and revision decks. Pick one and start in a single click.
+              </p>
+            </div>
+            <Link href="/library" className="prep-button">Open the library →</Link>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            {collections.map((collection) => (
+              <Link key={collection.slug} href={`/library/${collection.slug}`} className={`lib-chip lib-chip--accent lib-accent-${collection.accent}`} style={{ fontSize: "0.85rem", padding: "0.35rem 0.7rem", textDecoration: "none", color: "var(--ink)" }}>
+                {collection.short}
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <h2 className="mt-12 text-2xl font-black">Preparation areas</h2>
+        <div className="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
           {siteNavigation.map((area) => (
             <Link
               key={area.slug}
