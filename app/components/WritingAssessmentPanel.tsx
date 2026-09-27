@@ -6,6 +6,10 @@ import type {
   WritingAssessmentResult,
   WritingResponseRecord,
 } from "@/app/lib/writing-assessment/types";
+import { MorphButton } from "./motion/MorphButton";
+import { RollingNumber } from "./motion/RollingNumber";
+import { Swap } from "./motion/Swap";
+import { stagger } from "./motion/stagger";
 
 type WritingAssessmentPanelProps = {
   assessmentType: WritingAssessmentType;
@@ -102,20 +106,16 @@ export default function WritingAssessmentPanel({
             never included.
           </p>
         </div>
-        <button
-          type="button"
+        <MorphButton
+          status={isLoading ? "busy" : result && !error ? "done" : "idle"}
+          busyLabel="Reviewing"
+          doneLabel="Review again"
           onClick={assessWriting}
           disabled={isLoading || coachedResponses.length === 0}
           className="border-2 border-slate-950 bg-blue-700 px-4 py-3 text-sm font-black uppercase tracking-wide text-white shadow-[3px_3px_0_#171717] transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-400"
         >
-          {isLoading
-            ? "Reviewing…"
-            : error
-              ? "Retry coaching"
-              : result
-                ? "Review again"
-                : "Get writing feedback"}
-        </button>
+          {error ? "Retry coaching" : "Get writing feedback"}
+        </MorphButton>
       </div>
 
       {responses.length > MAX_COACHED_RESPONSES ? (
@@ -125,6 +125,7 @@ export default function WritingAssessmentPanel({
         </p>
       ) : null}
 
+      <Swap id={error ? "error" : result ? "result" : "empty"}>
       {error ? (
         <p
           className="mt-5 border-2 border-red-900 bg-red-50 p-4 text-sm font-semibold text-red-900"
@@ -136,30 +137,30 @@ export default function WritingAssessmentPanel({
 
       {result ? (
         <div className="mt-6 space-y-6" aria-live="polite">
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="border-2 border-slate-950 bg-amber-100 p-4">
+          <div className="grid gap-3 sm:grid-cols-3 stagger">
+            <div className="border-2 border-slate-950 bg-amber-100 p-4" style={stagger(0)}>
               <p className="text-xs font-black uppercase tracking-wide text-slate-600">
                 Practice score
               </p>
               <p className="mt-1 text-4xl font-black">
-                {result.overallPracticeScore}
+                <RollingNumber value={String(result.overallPracticeScore)} from="0" />
                 <span className="text-base">/100</span>
               </p>
             </div>
-            <div className="border-2 border-slate-950 p-4">
+            <div className="border-2 border-slate-950 p-4" style={stagger(1)}>
               <p className="text-xs font-black uppercase tracking-wide text-slate-600">
                 Words reviewed
               </p>
               <p className="mt-1 text-3xl font-black">
-                {result.metrics.totalWordCount}
+                <RollingNumber value={String(result.metrics.totalWordCount)} from="0" />
               </p>
             </div>
-            <div className="border-2 border-slate-950 p-4">
+            <div className="border-2 border-slate-950 p-4" style={stagger(2)}>
               <p className="text-xs font-black uppercase tracking-wide text-slate-600">
                 Responses reviewed
               </p>
               <p className="mt-1 text-3xl font-black">
-                {result.metrics.responseCount}
+                <RollingNumber value={String(result.metrics.responseCount)} from="0" />
               </p>
             </div>
           </div>
@@ -171,11 +172,12 @@ export default function WritingAssessmentPanel({
 
           <div>
             <h3 className="text-lg font-black">Transparent sub-scores</h3>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              {result.scores.map((item) => (
+            <div className="mt-3 grid gap-3 sm:grid-cols-2 stagger">
+              {result.scores.map((item, index) => (
                 <div
                   key={item.criterion}
                   className="border border-slate-300 bg-slate-50 p-4"
+                  style={stagger(index + 3)}
                 >
                   <div className="flex items-baseline justify-between gap-3">
                     <h4 className="font-black">
@@ -220,6 +222,7 @@ export default function WritingAssessmentPanel({
           </p>
         </div>
       ) : null}
+      </Swap>
     </section>
   );
 }

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import SiteNav from "./components/SiteNav";
 import ThirdPartyScripts from "./components/ThirdPartyScripts";
-import { siteNavigation } from "./lib/siteNavigation";
 import "./globals.css";
+import "./motion.css";
 
 export const metadata: Metadata = {
   title: "ISSB Prep - Psychological, GTO & Interview Practice",
@@ -18,26 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="neo-body">
-        <nav className="site-nav" aria-label="Primary navigation">
-          <div className="site-nav-inner">
-            <Link href="/" className="site-brand">
-              <span className="site-brand-mark">IP</span>
-              <span>ISSB <strong>PREP</strong></span>
-            </Link>
-            <div className="site-nav-links">
-              <Link href="/library" className="site-nav-link site-nav-link--primary">Practice library</Link>
-              {siteNavigation.map((area) => (
-                <Link
-                  key={area.slug}
-                  href={area.href}
-                  className={`site-nav-link${area.slug === "general-knowledge" ? " site-nav-link--separated" : ""}`}
-                >
-                  {area.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </nav>
+        <SiteNav />
         <main className="site-main">{children}</main>
         <ThirdPartyScripts excludedPathPrefixes={["/biodata", "/opi"]} />
       </body>

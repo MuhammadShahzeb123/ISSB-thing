@@ -1,0 +1,154 @@
+/* ---------- Motion system ----------
+   CSS-side of the spring motion system. The `linear()` curves below are the step responses of the springs in
+   app/lib/motion/spring.ts (springEasing(springs.snappy, 400), springs.gentle at 500ms, springs.stiff at 300ms),
+   so CSS transitions and JS-driven springs share one feel: fast, decisive, a 2% overshoot at most. */
+:root {
+  --dur-snappy: 400ms;
+  --ease-snappy: linear(0, 0.0649, 0.2099, 0.3808, 0.5456, 0.6878, 0.801, 0.8853, 0.9441, 0.9824, 1.005, 1.0166, 1.0209, 1.0207, 1.0182, 1.0147, 1.0111, 1.0078, 1.0052, 1.0031, 1);
+  --dur-gentle: 500ms;
+  --ease-gentle: linear(0, 0.0625, 0.1941, 0.3421, 0.4812, 0.601, 0.6989, 0.7761, 0.8355, 0.8803, 0.9137, 0.9382, 0.956, 0.9689, 0.9781, 0.9847, 0.9893, 0.9926, 0.9949, 0.9965, 1);
+  --dur-stiff: 300ms;
+  --ease-stiff: linear(0, 0.0637, 0.2056, 0.3728, 0.5342, 0.6739, 0.7859, 0.8702, 0.9301, 0.9701, 0.9948, 1.0086, 1.0149, 1.0166, 1.0156, 1.0132, 1.0104, 1.0078, 1.0054, 1.0036, 1);
+}
+
+/* ---------- Page entrance (app/template.tsx re-mounts this wrapper on every navigation) ---------- */
+.page-enter { animation: page-in var(--dur-gentle) var(--ease-gentle) both; }
+@keyframes page-in { from { opacity: 0; transform: translateY(10px); } }
+
+/* ---------- Pressable things: hover lifts, press sinks into the hard shadow, release springs back ---------- */
+.neo-page button:not(.world-map-country),
+.prep-button,
+.lib-card,
+.lib-set,
+.lib-continue {
+  transition: transform var(--dur-stiff) var(--ease-stiff), box-shadow var(--dur-stiff) var(--ease-stiff), background-color 160ms linear, color 160ms linear, border-color 160ms linear;
+}
+.neo-page button:not(.world-map-country):hover,
+.neo-page button:not(.world-map-country):focus-visible,
+.prep-button:hover,
+.prep-button:focus-visible {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.neo-page button:not(.world-map-country):active,
+.prep-button:active,
+.lib-card:active,
+.lib-set:active,
+.lib-continue:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--ink);
+  transition-duration: 80ms;
+  transition-timing-function: ease-out;
+}
+.neo-page button:not(.world-map-country):disabled {
+  transform: none;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.neo-page [class*="transition"] {
+  transition-duration: var(--dur-snappy);
+  transition-timing-function: var(--ease-snappy);
+}
+.neo-page [class*="transition"]:active {
+  transition-duration: 80ms;
+  transition-timing-function: ease-out;
+}
+.neo-page .home-card:active { translate: 3px 3px; box-shadow: 1px 1px 0 var(--ink) !important; }
+.home-chip { transition: transform var(--dur-stiff) var(--ease-stiff), box-shadow var(--dur-stiff) var(--ease-stiff); }
+.home-chip:hover,
+.home-chip:focus-visible { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+.home-chip:active { transform: translate(1px, 1px); box-shadow: none; transition-duration: 80ms; }
+
+/* ---------- Site nav: an underline that slides between links; hover previews, leaving returns it to the page you are on ---------- */
+.site-nav-links { position: relative; }
+.site-nav-ink { position: absolute; left: 0; top: 0; width: 0; height: 0; background: var(--ink); pointer-events: none; }
+.site-nav-link { transition: color 160ms linear, opacity 160ms linear; }
+.site-nav-link:hover,
+.site-nav-link:focus-visible { border-color: transparent; background: transparent; transform: none; }
+.site-nav-link--primary:hover,
+.site-nav-link--primary:focus-visible { border-color: var(--ink); background: var(--ink); }
+.site-nav-link--separated:hover,
+.site-nav-link--separated:focus-visible { border-color: var(--ink); background: var(--paper-bright); }
+
+/* ---------- Swap: content changes inside one container, which morphs its size instead of cutting ---------- */
+.swap { position: relative; display: flow-root; }
+.swap[data-morphing] { overflow: clip; overflow-clip-margin: 12px; }
+.swap-current { display: flow-root; min-width: 0; }
+.swap--inline { display: inline-grid; align-items: center; vertical-align: middle; }
+.swap--inline .swap-current { display: flex; align-items: center; width: max-content; }
+.swap-current.is-entering { animation: swap-in var(--dur-gentle) var(--ease-gentle) 60ms both; }
+.swap-leaving { position: absolute; inset: 0 0 auto 0; pointer-events: none; animation: swap-out 160ms ease-in forwards; }
+.swap--inline .swap-leaving { inset: 0 auto auto 0; white-space: nowrap; display: inline-grid; align-items: center; height: 100%; }
+/* A ghost is a still of what was there: nothing inside it re-plays its own entrance. */
+.swap-leaving .stagger > *,
+.swap-leaving .swap-current.is-entering { animation: none; }
+.swap-leaving .morph-check path { animation: none; stroke-dashoffset: 0; }
+.swap[data-dir="right"] { --swap-exit-x: 28px; --swap-exit-y: 0px; }
+.swap[data-dir="left"] { --swap-exit-x: -28px; --swap-exit-y: 0px; }
+.swap[data-dir="down"] { --swap-exit-y: 10px; --swap-enter-y: -10px; }
+@keyframes swap-in { from { opacity: 0; transform: translate(var(--swap-enter-x, 0px), var(--swap-enter-y, 10px)); filter: blur(6px); } }
+@keyframes swap-out { to { opacity: 0; transform: translate(var(--swap-exit-x, 0px), var(--swap-exit-y, -10px)); filter: blur(6px); } }
+
+/* ---------- Staggered entrances: set --i on each child ---------- */
+.stagger > * { animation: rise-in var(--dur-gentle) var(--ease-gentle) both; animation-delay: calc(var(--i, 0) * 45ms); }
+@keyframes rise-in { from { opacity: 0; transform: translateY(10px); } }
+
+/* ---------- Segmented control with a liquid indicator ----------
+   The indicator is a white block blended with `difference`, so whatever it passes over inverts exactly. */
+.seg { position: relative; isolation: isolate; display: inline-flex; flex-wrap: wrap; padding: 3px; border: 2px solid var(--ink); background: white; box-shadow: 3px 3px 0 var(--ink); }
+.neo-page .seg button,
+.seg button { position: relative; border: 0; border-radius: 0; box-shadow: none; background: transparent; padding: 0.45rem 0.85rem; min-height: 36px; font-weight: 800; color: var(--ink); transform: none; cursor: pointer; }
+.neo-page .seg button:hover,
+.neo-page .seg button:active,
+.neo-page .seg button:focus-visible { transform: none; box-shadow: none; background: transparent; }
+.neo-page .seg button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.seg-ink { position: absolute; left: 0; top: 0; width: 0; height: 0; background: white; mix-blend-mode: difference; pointer-events: none; z-index: 1; }
+.seg:not([data-ready]) button[aria-pressed="true"] { background: var(--ink); color: var(--paper-bright); }
+
+/* ---------- Toggle with a knob whose two edges ride different springs, so it stretches as it travels ---------- */
+.neo-page button.tog,
+.tog { display: inline-flex; align-items: center; gap: 0.6rem; border: 0; border-radius: 0; box-shadow: none; background: transparent; padding: 0.25rem 0; font-weight: 800; color: var(--muted); cursor: pointer; transform: none; text-align: start; }
+.neo-page button.tog:hover,
+.neo-page button.tog:active,
+.neo-page button.tog:focus-visible { transform: none; box-shadow: none; outline: none; }
+.neo-page button.tog:focus-visible .tog-track { outline: 3px solid var(--ink); outline-offset: 3px; }
+.tog-track { position: relative; flex: none; width: 46px; height: 26px; border: 2px solid var(--ink); background: white; box-shadow: 2px 2px 0 var(--ink); }
+.tog-knob { position: absolute; left: 0; top: 3px; width: 1px; height: 16px; background: var(--ink); transform-origin: 0 0; }
+.tog[aria-checked="true"] { color: var(--ink); }
+
+/* ---------- Liquid ink used behind lists (topic pickers, stem dots) ---------- */
+.liquid-ink { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+
+/* ---------- Rolling digits ----------
+   Each digit is a wheel of 0-9 clipped to one line. The box is an inline-grid so its baseline is the wheel's
+   FIRST digit (an inline-block would use the last one and stretch the line), and clip-path rather than overflow
+   does the clipping so that baseline still lines up with the text around it. */
+.roll { display: inline; font-variant-numeric: tabular-nums; white-space: pre; }
+.roll-digit { display: inline-grid; align-items: start; width: 1ch; height: 1em; line-height: 1; clip-path: inset(0); vertical-align: baseline; text-align: center; }
+.roll-digit > span { display: block; }
+.roll-digit > span > span { display: block; height: 1em; line-height: 1; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- Morph button: label -> spinner -> drawn check inside one button that changes width ---------- */
+.morph-content { display: inline-flex; align-items: center; gap: 0.45em; white-space: nowrap; }
+.morph-spinner { width: 1em; height: 1em; flex: none; animation: spin 900ms linear infinite; }
+.morph-check { width: 1em; height: 1em; flex: none; }
+.morph-check path { stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw 360ms var(--ease-gentle) 100ms forwards; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* ---------- Reduced motion: everything lands instantly ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .stagger > *,
+  .swap-current.is-entering,
+  .swap-leaving,
+  .morph-check path { animation-duration: 1ms !important; animation-delay: 0ms !important; }
+  .morph-spinner { animation-duration: 1500ms; }
+  .neo-page button,
+  .prep-button,
+  .lib-card,
+  .lib-set,
+  .lib-continue,
+  .site-nav-link,
+  .neo-page [class*="transition"] { transition: none !important; }
+}

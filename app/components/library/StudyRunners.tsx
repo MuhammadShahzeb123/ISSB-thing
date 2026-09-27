@@ -6,8 +6,19 @@ import type { LibraryItem, LibrarySet } from '../../lib/library';
 import { useLibraryProgress } from '../../lib/libraryProgress';
 import { isCorrectAnswer, parseNumericAnswer } from '../../lib/mentalMath';
 import { shuffleItems } from '../../lib/practice';
+import { MorphButton } from '../motion/MorphButton';
+import { RollingNumber } from '../motion/RollingNumber';
+import { Segmented } from '../motion/Segmented';
+import { Swap } from '../motion/Swap';
+import { Toggle } from '../motion/Toggle';
+import { stagger } from '../motion/stagger';
 import { Highlight, ProgressBar, dirFor, isTyping, useToast } from './shared';
 import { FinishActions, type RunnerProps } from './WritingRunners';
+
+const VIEW_OPTIONS = [
+  { value: 'cards', label: 'Flashcards' },
+  { value: 'list', label: 'Read as a list' },
+] as const;
 
 function ItemList({ set, query, showAnswers, known }: { set: LibrarySet; query: string; showAnswers: boolean; known?: Set<number> }) {
   const needle = query.trim().toLocaleLowerCase();
@@ -73,6 +84,8 @@ export function FlashcardRunner({ set, pKey, next }: RunnerProps) {
   const [round, setRound] = useState<{ good: number[]; again: number[] }>({ good: [], again: [] });
   const [query, setQuery] = useState('');
   const [showAnswers, setShowAnswers] = useState(false);
+  // Which way the last card left: right when known, left when it needs another look.
+  const [exit, setExit] = useState<'up' | 'left' | 'right'>('up');
   const answerInput = useRef<HTMLInputElement>(null);
 
   const finished = pos >= deck.length;
@@ -87,6 +100,7 @@ export function FlashcardRunner({ set, pKey, next }: RunnerProps) {
     setTyped('');
     setVerdict(null);
     setRound({ good: [], again: [] });
+    setExit('up');
   };
 
   const grade = (good: boolean) => {
@@ -98,6 +112,7 @@ export function FlashcardRunner({ set, pKey, next }: RunnerProps) {
       return { done: [...new Set([...state.done, index])], known: [...knownSet], lastResult: `${knownSet.size}/${count} known` };
     });
     setRound((state) => ({ good: good ? [...state.good, index] : state.good, again: good ? state.again : [...state.again, index] }));
+    setExit(good ? 'right' : 'left');
     setPos((value) => value + 1);
     setRevealed(false);
     setTyped('');
@@ -135,87 +150,93 @@ export function FlashcardRunner({ set, pKey, next }: RunnerProps) {
   return (
     <>
       <div className="lib-toolbar">
-        <div className="lib-segment" role="group" aria-label="View">
-          <button type="button" aria-pressed={view === 'cards'} onClick={() => setView('cards')}>Flashcards</button>
-          <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')}>Read as a list</button>
-        </div>
+        <Segmented options={VIEW_OPTIONS} value={view} onChange={setView} label="View" />
         <div style={{ minWidth: '12rem', flex: '0 1 18rem' }}>
           <ProgressBar value={known.size / count} label="Cards known" />
-          <p className="lib-bar-label"><span>{known.size} of {count} known</span><span>{count - known.size} to learn</span></p>
+          <p className="lib-bar-label"><span><RollingNumber value={String(known.size)} /> of {count} known</span><span><RollingNumber value={String(count - known.size)} /> to learn</span></p>
         </div>
       </div>
 
-      {view === 'list' ? (
-        <>
-          <div className="lib-toolbar">
-            <div className="prep-field" style={{ margin: 0, flex: '1 1 16rem' }}>
-              <label htmlFor="list-search" className="lib-sr-only">Search this set</label>
-              <input id="list-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search this set…" dir="auto" />
-            </div>
-            <label className="prep-muted" style={{ display: 'inline-flex', gap: '0.5rem', alignItems: 'center', fontWeight: 800 }}>
-              <input type="checkbox" checked={showAnswers} onChange={(event) => setShowAnswers(event.target.checked)} /> Show all answers
-            </label>
-          </div>
-          <ItemList set={set} query={query} showAnswers={showAnswers} known={known} />
-        </>
-      ) : finished ? (
-        <div className="lib-stage">
-          <p className="lib-kicker">Round complete</p>
-          <h2 className="lib-prompt" style={{ marginTop: '0.3rem' }}>{round.again.length === 0 ? 'Perfect round.' : `${round.good.length} right, ${round.again.length} to review.`}</h2>
-          <div className="lib-score">
-            <div><strong>{round.good.length}</strong><span>knew it</span></div>
-            <div><strong>{round.again.length}</strong><span>still learning</span></div>
-            <div><strong>{known.size}/{count}</strong><span>known overall</span></div>
-          </div>
-          <div className="prep-actions">
-            {round.again.length > 0 && <button type="button" className="prep-button" onClick={() => startDeck(round.again, true)}>Review the {round.again.length} I missed</button>}
-            {unknown.length > 0 && unknown.length !== round.again.length && <button type="button" className="prep-button prep-button-secondary" onClick={() => startDeck(unknown, true)}>All {unknown.length} not yet known</button>}
-          </div>
-          <FinishActions onRestart={() => startDeck(set.items.map((_, i) => i))} next={next} />
-        </div>
-      ) : current && (
-        <div className="lib-stage">
-          <div className="lib-stage-head">
-            <span className="lib-counter">Card {pos + 1} / {deck.length}</span>
-            <div className="prep-actions">
-              <button type="button" className="prep-button prep-button-secondary" onClick={() => { startDeck(deck.slice(pos).concat(deck.slice(0, pos)), true); show('Shuffled'); }}>Shuffle</button>
-              {unknown.length > 0 && unknown.length < count && <button type="button" className="prep-button prep-button-secondary" onClick={() => { startDeck(unknown, true); show(`${unknown.length} cards you have not marked as known`); }}>Only unknown ({unknown.length})</button>}
-              {known.size > 0 && <button type="button" className="prep-button prep-button-secondary" onClick={() => { reset(pKey); startDeck(set.items.map((_, i) => i)); show('Progress for this set cleared'); }}>Reset</button>}
-            </div>
-          </div>
-          <ProgressBar value={pos / deck.length} label="Position in this round" variant="time" />
-          {current.group && <p className="lib-chip lib-chip--accent" style={{ marginTop: '1rem' }} lang={/[؀-ۿ]/.test(current.group) ? 'ur' : undefined}>{current.group}</p>}
-          <p className="lib-prompt" lang={lang} dir={dirFor(lang)}>{known.has(deck[pos]) && <span className="lib-chip lib-chip--done" style={{ verticalAlign: 'middle', marginInlineEnd: '0.5rem' }}>known</span>}{current.prompt}</p>
-
-          {numeric && !revealed && (
-            <form onSubmit={(event) => { event.preventDefault(); check(); }} className="prep-actions">
-              <label htmlFor="card-answer" className="lib-sr-only">Your answer</label>
-              <input ref={answerInput} id="card-answer" className="lib-input" style={{ flex: '1 1 12rem', width: 'auto' }} inputMode="decimal" value={typed} onChange={(event) => setTyped(event.target.value)} placeholder="Your answer, e.g. 2.25 or 1/4" autoComplete="off" />
-              <button type="submit" className="prep-button" disabled={!typed.trim()}>Check</button>
-            </form>
-          )}
-
-          {!revealed ? (
-            <div className="prep-actions" style={{ marginTop: '1rem' }}>
-              <button type="button" className={numeric ? 'prep-button prep-button-secondary' : 'prep-button'} onClick={() => setRevealed(true)} autoFocus={!numeric}>{current.answer ? 'Show answer' : 'Show notes'}</button>
-              <span className="lib-hint" style={{ margin: 0 }}><span><kbd className="lib-kbd">Space</kbd> reveal</span></span>
-            </div>
-          ) : (
+      {/* One stage for every state of the runner: its content swaps and its height morphs, it is never cut. */}
+      <div className="lib-stage">
+        <Swap id={view === 'list' ? 'list' : finished ? 'finished' : 'cards'}>
+          {view === 'list' ? (
             <>
-              {verdict && <p className={`lib-feedback ${verdict === 'right' ? 'lib-feedback--good' : 'lib-feedback--bad'}`} role="status">{verdict === 'right' ? '✓ Correct!' : `✗ Not quite. You wrote ${typed}.`}</p>}
-              <div className="lib-reveal" lang={lang} dir={dirFor(lang)} style={{ marginTop: '0.75rem' }}>
-                {current.answer ?? 'This entry has no answer in the source. Work it out, then check your method with a friend or teacher.'}
-                {current.detail && <small dir="auto">{current.detail}</small>}
+              <div className="lib-toolbar" style={{ marginTop: 0 }}>
+                <div className="prep-field" style={{ margin: 0, flex: '1 1 16rem' }}>
+                  <label htmlFor="list-search" className="lib-sr-only">Search this set</label>
+                  <input id="list-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search this set…" dir="auto" />
+                </div>
+                <Toggle checked={showAnswers} onChange={setShowAnswers}>Show all answers</Toggle>
               </div>
-              <div className="lib-grade">
-                <button type="button" className="is-again" onClick={() => grade(false)}>Still learning <kbd className="lib-kbd">L</kbd></button>
-                <button type="button" className="is-good" onClick={() => grade(verdict ? verdict === 'right' : true)} autoFocus>{verdict === 'wrong' ? 'Got it now' : 'I knew it'} <kbd className="lib-kbd">K</kbd></button>
+              <ItemList set={set} query={query} showAnswers={showAnswers} known={known} />
+            </>
+          ) : finished ? (
+            <>
+              <p className="lib-kicker">Round complete</p>
+              <h2 className="lib-prompt" style={{ marginTop: '0.3rem' }}>{round.again.length === 0 ? 'Perfect round.' : `${round.good.length} right, ${round.again.length} to review.`}</h2>
+              <div className="lib-score stagger">
+                <div style={stagger(0)}><strong>{round.good.length}</strong><span>knew it</span></div>
+                <div style={stagger(1)}><strong>{round.again.length}</strong><span>still learning</span></div>
+                <div style={stagger(2)}><strong>{known.size}/{count}</strong><span>known overall</span></div>
               </div>
+              <div className="prep-actions">
+                {round.again.length > 0 && <button type="button" className="prep-button" onClick={() => startDeck(round.again, true)}>Review the {round.again.length} I missed</button>}
+                {unknown.length > 0 && unknown.length !== round.again.length && <button type="button" className="prep-button prep-button-secondary" onClick={() => startDeck(unknown, true)}>All {unknown.length} not yet known</button>}
+              </div>
+              <FinishActions onRestart={() => startDeck(set.items.map((_, i) => i))} next={next} />
+            </>
+          ) : current && (
+            <>
+              <div className="lib-stage-head">
+                <span className="lib-counter">Card <RollingNumber value={String(pos + 1)} /> / {deck.length}</span>
+                <div className="prep-actions">
+                  <button type="button" className="prep-button prep-button-secondary" onClick={() => { startDeck(deck.slice(pos).concat(deck.slice(0, pos)), true); show('Shuffled'); }}>Shuffle</button>
+                  {unknown.length > 0 && unknown.length < count && <button type="button" className="prep-button prep-button-secondary" onClick={() => { startDeck(unknown, true); show(`${unknown.length} cards you have not marked as known`); }}>Only unknown ({unknown.length})</button>}
+                  {known.size > 0 && <button type="button" className="prep-button prep-button-secondary" onClick={() => { reset(pKey); startDeck(set.items.map((_, i) => i)); show('Progress for this set cleared'); }}>Reset</button>}
+                </div>
+              </div>
+              <ProgressBar value={pos / deck.length} label="Position in this round" variant="time" />
+
+              {/* The card itself: leaves to the right when known, to the left when it needs another look. */}
+              <Swap id={`${deck[pos]}-${pos}`} dir={exit} morph="none">
+                {current.group && <p className="lib-chip lib-chip--accent" style={{ marginTop: '1rem' }} lang={/[؀-ۿ]/.test(current.group) ? 'ur' : undefined}>{current.group}</p>}
+                <p className="lib-prompt" lang={lang} dir={dirFor(lang)}>{known.has(deck[pos]) && <span className="lib-chip lib-chip--done" style={{ verticalAlign: 'middle', marginInlineEnd: '0.5rem' }}>known</span>}{current.prompt}</p>
+
+                {numeric && !revealed && (
+                  <form onSubmit={(event) => { event.preventDefault(); check(); }} className="prep-actions">
+                    <label htmlFor="card-answer" className="lib-sr-only">Your answer</label>
+                    <input ref={answerInput} id="card-answer" className="lib-input" style={{ flex: '1 1 12rem', width: 'auto' }} inputMode="decimal" value={typed} onChange={(event) => setTyped(event.target.value)} placeholder="Your answer, e.g. 2.25 or 1/4" autoComplete="off" />
+                    <button type="submit" className="prep-button" disabled={!typed.trim()}>Check</button>
+                  </form>
+                )}
+
+                <Swap id={revealed ? 'answer' : 'question'} morph="none">
+                  {!revealed ? (
+                    <div className="prep-actions" style={{ marginTop: '1rem' }}>
+                      <button type="button" className={numeric ? 'prep-button prep-button-secondary' : 'prep-button'} onClick={() => setRevealed(true)} autoFocus={!numeric}>{current.answer ? 'Show answer' : 'Show notes'}</button>
+                      <span className="lib-hint" style={{ margin: 0 }}><span><kbd className="lib-kbd">Space</kbd> reveal</span></span>
+                    </div>
+                  ) : (
+                    <>
+                      {verdict && <p className={`lib-feedback ${verdict === 'right' ? 'lib-feedback--good' : 'lib-feedback--bad'}`} role="status">{verdict === 'right' ? '✓ Correct!' : `✗ Not quite. You wrote ${typed}.`}</p>}
+                      <div className="lib-reveal" lang={lang} dir={dirFor(lang)} style={{ marginTop: '0.75rem' }}>
+                        {current.answer ?? 'This entry has no answer in the source. Work it out, then check your method with a friend or teacher.'}
+                        {current.detail && <small dir="auto">{current.detail}</small>}
+                      </div>
+                      <div className="lib-grade stagger">
+                        <button type="button" className="is-again" style={stagger(1)} onClick={() => grade(false)}>Still learning <kbd className="lib-kbd">L</kbd></button>
+                        <button type="button" className="is-good" style={stagger(2)} onClick={() => grade(verdict ? verdict === 'right' : true)} autoFocus>{verdict === 'wrong' ? 'Got it now' : 'I knew it'} <kbd className="lib-kbd">K</kbd></button>
+                      </div>
+                    </>
+                  )}
+                </Swap>
+              </Swap>
             </>
           )}
-          {toast}
-        </div>
-      )}
+        </Swap>
+      </div>
+      {toast}
     </>
   );
 }
@@ -244,10 +265,10 @@ export function ReferenceView({ set, pKey, next }: RunnerProps) {
             <input id="ref-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search this list…" dir="auto" />
           </div>
         ) : <span />}
-        <button type="button" className={read ? 'prep-button prep-button-secondary' : 'prep-button'} onClick={() => { update(pKey, set.items.length, () => ({ done: set.items.map((_, i) => i), completedAt: Date.now(), lastResult: 'Read' })); show('Marked as read'); }}>{read ? 'Read ✓' : 'Mark as read'}</button>
+        <MorphButton status={read ? 'done' : 'idle'} doneLabel="Read" className={read ? 'prep-button prep-button-secondary' : 'prep-button'} onClick={() => { if (read) return; update(pKey, set.items.length, () => ({ done: set.items.map((_, i) => i), completedAt: Date.now(), lastResult: 'Read' })); show('Marked as read'); }}>Mark as read</MorphButton>
       </div>
       <ItemList set={set} query={query} showAnswers />
-      {read && next && <FinishActions next={next} />}
+      <Swap id={read && next ? 'next' : 'reading'}>{read && next && <FinishActions next={next} />}</Swap>
       {toast}
     </>
   );

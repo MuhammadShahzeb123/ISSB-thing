@@ -3,15 +3,23 @@
 import { useEffect, useState } from 'react';
 import { useCountdown, useLibraryProgress } from '../../lib/libraryProgress';
 import { downloadText, formatClock } from '../../lib/practice';
+import { MorphButton } from '../motion/MorphButton';
+import { RollingNumber } from '../motion/RollingNumber';
+import { Segmented } from '../motion/Segmented';
+import { Swap } from '../motion/Swap';
+import { useLiquidInk } from '../motion/useLiquidInk';
 import { Clock, dirFor, useToast, wordCount } from './shared';
 import { FinishActions, type RunnerProps } from './WritingRunners';
 
+/** The list of prompts, with one accent block that slides to the selected one. */
 function PromptPicker({ set, selected, done, onSelect }: { set: RunnerProps['set']; selected: number; done: Set<number>; onSelect: (index: number) => void }) {
+  const { container, ink } = useLiquidInk<HTMLDivElement>({ target: String(selected), inset: 2 });
   return (
-    <div className="lib-topic-list" role="list">
+    <div ref={container} className="lib-topic-list" role="list">
+      <span ref={ink} className="liquid-ink" aria-hidden />
       {set.items.map((item, i) => (
         <div role="listitem" key={i}>
-          <button type="button" lang={set.language} aria-pressed={selected === i} onClick={() => onSelect(i)}>
+          <button type="button" lang={set.language} data-ink={String(i)} aria-pressed={selected === i} onClick={() => onSelect(i)}>
             <span aria-hidden style={{ marginInlineEnd: '0.5rem' }}>{done.has(i) ? '✓' : `${i + 1}.`}</span>{item.prompt}
           </button>
         </div>
@@ -52,10 +60,12 @@ export function StoryRunner({ set, pKey, next }: RunnerProps) {
     <div className="prep-split">
       <div className="lib-stage">
         <div className="lib-stage-head">
-          <span className="lib-counter">Prompt {selected + 1} / {set.items.length}</span>
+          <span className="lib-counter">Prompt <RollingNumber value={String(selected + 1)} /> / {set.items.length}</span>
           <Clock left={clock.left} total={SECONDS} />
         </div>
-        <p className="lib-prompt" lang={set.language}>{set.items[selected].prompt}{set.id === 'story-pointers' ? ' …' : ''}</p>
+        <Swap id={selected}>
+          <p className="lib-prompt" lang={set.language}>{set.items[selected].prompt}{set.id === 'story-pointers' ? ' …' : ''}</p>
+        </Swap>
         <label htmlFor="story-text" className="prep-muted" style={{ fontWeight: 800 }}>Your story</label>
         <textarea
           id="story-text"
@@ -64,19 +74,21 @@ export function StoryRunner({ set, pKey, next }: RunnerProps) {
           onChange={(event) => { setText(event.target.value); if (!clock.running && !finished && clock.left === SECONDS) clock.start(); }}
           placeholder="The clock starts when you start typing. Who is the hero? What do they do, and how does it end?"
         />
-        <p className="lib-hint"><span>{words} words</span><span>{clock.running ? 'Clock running' : clock.left === SECONDS ? 'Clock starts on your first key' : clock.left === 0 ? 'Time is up' : 'Paused'}</span></p>
+        <p className="lib-hint"><span><RollingNumber value={String(words)} /> words</span><span>{clock.running ? 'Clock running' : clock.left === SECONDS ? 'Clock starts on your first key' : clock.left === 0 ? 'Time is up' : 'Paused'}</span></p>
         <div className="prep-actions" style={{ marginTop: '1rem' }}>
-          <button type="button" className="prep-button" onClick={save} disabled={!text.trim()}>Finish & save</button>
+          <MorphButton status={finished && done.has(selected) ? 'done' : 'idle'} doneLabel="Saved" onClick={save} disabled={!text.trim()}>Finish & save</MorphButton>
           <button type="button" className="prep-button prep-button-secondary" onClick={() => (clock.running ? clock.pause() : clock.start())}>{clock.running ? 'Pause' : clock.left === SECONDS ? 'Start clock' : 'Resume'}</button>
           <button type="button" className="prep-button prep-button-secondary" onClick={() => choose(randomOther(set.items.length, selected))}>Random prompt</button>
           {text.trim() && <button type="button" className="prep-button prep-button-secondary" onClick={() => downloadText(`${set.id}-${selected + 1}.txt`, `${set.items[selected].prompt}\n\n${text}`)}>Download</button>}
         </div>
-        {finished && (
-          <div className="prep-note prep-success" role="status">
-            Written in {formatClock(SECONDS - clock.left)}, {words} words. Read it once: does your hero act, solve the problem and reach a clear ending?
-            <FinishActions onRestart={() => choose(randomOther(set.items.length, selected))} next={next} />
-          </div>
-        )}
+        <Swap id={finished ? 'finished' : 'writing'}>
+          {finished && (
+            <div className="prep-note prep-success" role="status">
+              Written in {formatClock(SECONDS - clock.left)}, {words} words. Read it once: does your hero act, solve the problem and reach a clear ending?
+              <FinishActions onRestart={() => choose(randomOther(set.items.length, selected))} next={next} />
+            </div>
+          )}
+        </Swap>
         {toast}
       </div>
       <aside>
@@ -93,6 +105,8 @@ const FORMATS = [
   { id: 'lecture', label: 'Lecture · 2 min', seconds: 120, tip: 'One minute of thinking is realistic. Open with your stand, give three reasons, close with one line.' },
   { id: 'discussion', label: 'Group discussion · 15 min', seconds: 900, tip: 'Enter early, build on others by name, add a fresh point, and help the group reach a conclusion.' },
 ] as const;
+
+const FORMAT_OPTIONS = FORMATS.map((option) => ({ value: option.id, label: option.label }));
 
 export function TopicRunner({ set, pKey, next }: RunnerProps) {
   const [selected, setSelected] = useState(0);
@@ -115,18 +129,20 @@ export function TopicRunner({ set, pKey, next }: RunnerProps) {
     <div className="prep-split">
       <div className="lib-stage">
         <div className="lib-toolbar" style={{ marginTop: 0 }}>
-          <div className="lib-segment" role="group" aria-label="Format">
-            {FORMATS.map((option) => <button key={option.id} type="button" aria-pressed={format.id === option.id} onClick={() => setFormat(option)}>{option.label}</button>)}
-          </div>
+          <Segmented options={FORMAT_OPTIONS} value={format.id} onChange={(id) => setFormat(FORMATS.find((option) => option.id === id) ?? FORMATS[0])} label="Format" />
           <Clock left={clock.left} total={format.seconds} />
         </div>
-        <p className="lib-prompt" lang={set.language} dir={dirFor(set.language)}>{set.items[selected].prompt}</p>
-        <p className="lib-howto" style={{ margin: '0 0 1rem' }}><strong>Tip</strong><span>{format.tip}</span></p>
+        <Swap id={selected}>
+          <p className="lib-prompt" lang={set.language} dir={dirFor(set.language)}>{set.items[selected].prompt}</p>
+        </Swap>
+        <Swap id={format.id}>
+          <p className="lib-howto" style={{ margin: '0 0 1rem' }}><strong>Tip</strong><span>{format.tip}</span></p>
+        </Swap>
         <label htmlFor="topic-notes" className="prep-muted" style={{ fontWeight: 800 }}>Quick notes (for your eyes only)</label>
         <textarea id="topic-notes" className="lib-input" style={{ minHeight: '9rem' }} dir={dirFor(set.language)} value={notes} onChange={(event) => setNotes(event.target.value)} placeholder={'My stand:\n1.\n2.\n3.\nConclusion:'} />
         <div className="prep-actions" style={{ marginTop: '1rem' }}>
           <button type="button" className="prep-button" onClick={() => (clock.running ? clock.pause() : clock.start())}>{clock.running ? 'Pause' : clock.left === format.seconds ? `Start ${formatClock(format.seconds)}` : 'Resume'}</button>
-          <button type="button" className="prep-button prep-button-secondary" onClick={markDone}>{done.has(selected) ? 'Practised ✓' : 'Mark practised'}</button>
+          <MorphButton status={done.has(selected) ? 'done' : 'idle'} doneLabel="Practised" className="prep-button prep-button-secondary" onClick={markDone}>Mark practised</MorphButton>
           <button type="button" className="prep-button prep-button-secondary" onClick={() => choose(randomOther(set.items.length, selected))}>Random topic</button>
           {selected < set.items.length - 1 ? <button type="button" className="prep-button prep-button-secondary" onClick={() => choose(selected + 1)}>Next topic →</button> : next && <FinishActions onRestart={() => choose(0)} next={next} />}
         </div>
@@ -168,15 +184,17 @@ export function PlanningRunner({ set, pKey, next }: RunnerProps) {
         <label htmlFor="plan-text" className="prep-muted" style={{ fontWeight: 800 }}>Your plan</label>
         <textarea id="plan-text" className="lib-input" dir={dirFor(set.language)} value={plan} onChange={(event) => { setPlan(event.target.value); if (!clock.running && clock.left === SECONDS) clock.start(); }} placeholder={'Aim:\nResources and times:\nStep-by-step timeline:\nWhy this order works:'} />
         <div className="prep-actions" style={{ marginTop: '1rem' }}>
-          <button type="button" className="prep-button" onClick={finish} disabled={!plan.trim()}>Finish & check</button>
+          <MorphButton status={finished ? 'done' : 'idle'} doneLabel="Checked" onClick={finish} disabled={!plan.trim()}>Finish & check</MorphButton>
           <button type="button" className="prep-button prep-button-secondary" onClick={() => (clock.running ? clock.pause() : clock.start())}>{clock.running ? 'Pause' : clock.left === SECONDS ? 'Start clock' : 'Resume'}</button>
         </div>
-        {finished && (
-          <div className="prep-note prep-success" role="status">
-            Check your plan against every fact on the right. Did you use each vehicle and time, and does the timeline add up?
-            <FinishActions onRestart={() => { setPlan(''); setFinished(false); clock.reset(); }} next={next} />
-          </div>
-        )}
+        <Swap id={finished ? 'finished' : 'planning'}>
+          {finished && (
+            <div className="prep-note prep-success" role="status">
+              Check your plan against every fact on the right. Did you use each vehicle and time, and does the timeline add up?
+              <FinishActions onRestart={() => { setPlan(''); setFinished(false); clock.reset(); }} next={next} />
+            </div>
+          )}
+        </Swap>
         {toast}
       </div>
       <aside className="lib-stage" style={{ boxShadow: '4px 4px 0 var(--ink)' }}>
@@ -192,8 +210,14 @@ export function PlanningRunner({ set, pKey, next }: RunnerProps) {
 
 /* ---------------- Interview questions ---------------- */
 
+const QUESTION_VIEWS = [
+  { value: 'one', label: 'One at a time' },
+  { value: 'all', label: 'All questions' },
+] as const;
+
 export function QuestionRunner({ set, pKey, next }: RunnerProps) {
   const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState<'left' | 'right'>('left');
   const [view, setView] = useState<'one' | 'all'>('one');
   const { progress, update } = useLibraryProgress();
   const { show, toast } = useToast();
@@ -204,7 +228,9 @@ export function QuestionRunner({ set, pKey, next }: RunnerProps) {
   const go = (to: number, markCurrent = true) => {
     if (markCurrent) update(pKey, count, (current) => ({ done: [...new Set([...current.done, index])], lastResult: `${new Set([...current.done, index]).size}/${count} answered` }));
     clock.reset();
-    setIndex(((to % count) + count) % count);
+    const target = ((to % count) + count) % count;
+    setDirection(target > index || (index === count - 1 && target === 0) ? 'left' : 'right');
+    setIndex(target);
   };
 
   useEffect(() => {
@@ -222,39 +248,40 @@ export function QuestionRunner({ set, pKey, next }: RunnerProps) {
   return (
     <>
       <div className="lib-toolbar">
-        <div className="lib-segment" role="group" aria-label="View">
-          <button type="button" aria-pressed={view === 'one'} onClick={() => setView('one')}>One at a time</button>
-          <button type="button" aria-pressed={view === 'all'} onClick={() => setView('all')}>All questions</button>
-        </div>
-        <span className="lib-chip lib-chip--done">{done.size}/{count} answered</span>
+        <Segmented options={QUESTION_VIEWS} value={view} onChange={setView} label="View" />
+        <span className="lib-chip lib-chip--done"><RollingNumber value={String(done.size)} />/{count} answered</span>
       </div>
-      {view === 'one' ? (
-        <div className="lib-stage">
-          <div className="lib-stage-head">
-            <span className="lib-counter">{index + 1} / {count}</span>
-            <Clock left={clock.left} total={60} label="Answer time" />
+      <Swap id={view}>
+        {view === 'one' ? (
+          <div className="lib-stage">
+            <div className="lib-stage-head">
+              <span className="lib-counter"><RollingNumber value={String(index + 1)} /> / {count}</span>
+              <Clock left={clock.left} total={60} label="Answer time" />
+            </div>
+            <Swap id={index} dir={direction} morph="none">
+              <p className="lib-prompt" lang={set.language} dir={dirFor(set.language)}>{set.items[index].prompt}</p>
+              {set.items[index].detail && <p className="prep-muted" dir="auto">{set.items[index].detail}</p>}
+            </Swap>
+            <p className="lib-hint"><span>Answer out loud, in full sentences.</span><span><kbd className="lib-kbd">→</kbd> next</span><span><kbd className="lib-kbd">←</kbd> back</span></p>
+            <div className="prep-actions" style={{ marginTop: '1rem' }}>
+              <button type="button" className="prep-button" onClick={() => (clock.running ? clock.pause() : clock.start())}>{clock.running ? 'Pause' : 'Start 1-minute answer'}</button>
+              <button type="button" className="prep-button prep-button-secondary" onClick={() => go(index - 1, false)}>← Back</button>
+              <button type="button" className="prep-button prep-button-secondary" onClick={() => go(index + 1)}>{done.has(index) ? 'Next →' : 'Answered, next →'}</button>
+              <button type="button" className="prep-button prep-button-secondary" onClick={() => go(randomOther(count, index))}>Random</button>
+            </div>
+            {done.size >= count && <div className="prep-note prep-success">You have answered every question in this set.<FinishActions onRestart={() => go(0, false)} next={next} /></div>}
           </div>
-          <p className="lib-prompt" lang={set.language} dir={dirFor(set.language)}>{set.items[index].prompt}</p>
-          {set.items[index].detail && <p className="prep-muted" dir="auto">{set.items[index].detail}</p>}
-          <p className="lib-hint"><span>Answer out loud, in full sentences.</span><span><kbd className="lib-kbd">→</kbd> next</span><span><kbd className="lib-kbd">←</kbd> back</span></p>
-          <div className="prep-actions" style={{ marginTop: '1rem' }}>
-            <button type="button" className="prep-button" onClick={() => (clock.running ? clock.pause() : clock.start())}>{clock.running ? 'Pause' : 'Start 1-minute answer'}</button>
-            <button type="button" className="prep-button prep-button-secondary" onClick={() => go(index - 1, false)}>← Back</button>
-            <button type="button" className="prep-button prep-button-secondary" onClick={() => go(index + 1)}>{done.has(index) ? 'Next →' : 'Answered, next →'}</button>
-            <button type="button" className="prep-button prep-button-secondary" onClick={() => go(randomOther(count, index))}>Random</button>
-          </div>
-          {done.size >= count && <div className="prep-note prep-success">You have answered every question in this set.<FinishActions onRestart={() => go(0, false)} next={next} /></div>}
-          {toast}
-        </div>
-      ) : (
-        <ol className="lib-list">
-          {set.items.map((item, i) => (
-            <li key={i} className="lib-list-item" lang={set.language} dir={dirFor(set.language)}>
-              <span aria-hidden>{done.has(i) ? '✓ ' : `${i + 1}. `}</span>{item.prompt}
-            </li>
-          ))}
-        </ol>
-      )}
+        ) : (
+          <ol className="lib-list">
+            {set.items.map((item, i) => (
+              <li key={i} className="lib-list-item" lang={set.language} dir={dirFor(set.language)}>
+                <span aria-hidden>{done.has(i) ? '✓ ' : `${i + 1}. `}</span>{item.prompt}
+              </li>
+            ))}
+          </ol>
+        )}
+      </Swap>
+      {toast}
     </>
   );
 }

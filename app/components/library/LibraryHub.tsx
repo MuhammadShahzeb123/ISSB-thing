@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { collections, collectionStats, getCollection, librarySets, libraryItemCount, type LibraryCollection } from '../../lib/library';
 import { completion, useLibraryProgress, type ProgressMap } from '../../lib/libraryProgress';
+import { RollingNumber } from '../motion/RollingNumber';
+import { Swap } from '../motion/Swap';
+import { stagger } from '../motion/stagger';
 import { Highlight, ProgressBar, isTyping } from './shared';
 
 const searchIndex = librarySets.flatMap((set) => set.items.map((item, index) => ({
@@ -20,11 +23,11 @@ function collectionProgress(slug: LibraryCollection['slug'], progress: ProgressM
   return total ? done / total : 0;
 }
 
-function CollectionCard({ collection, progress }: { collection: LibraryCollection; progress: ProgressMap }) {
+function CollectionCard({ collection, progress, index }: { collection: LibraryCollection; progress: ProgressMap; index: number }) {
   const stats = collectionStats(collection.slug);
   const value = collectionProgress(collection.slug, progress);
   return (
-    <Link href={`/library/${collection.slug}`} className={`lib-card lib-accent-${collection.accent}`}>
+    <Link href={`/library/${collection.slug}`} className={`lib-card lib-accent-${collection.accent}`} style={stagger(index)}>
       <div className="lib-card-top">
         <span className="lib-mark" aria-hidden>{collection.mark}</span>
         {value > 0 && <span className={`lib-chip${value >= 1 ? ' lib-chip--done' : ''}`}>{value >= 1 ? 'Complete' : `${Math.round(value * 100)}% done`}</span>}
@@ -97,18 +100,20 @@ export default function LibraryHub() {
         </div>
       </section>
 
+      {/* Typing swaps the whole hub for results inside one morphing container, and back again when the search clears. */}
+      <Swap id={results ? 'results' : 'home'}>
       {results ? (
         <section aria-labelledby="search-results">
           <div className="lib-section-head">
             <h2 id="search-results">Search results</h2>
-            <p role="status">{results.total ? `${results.total} matches in ${results.sets} ${results.sets === 1 ? 'set' : 'sets'}${results.total > MAX_RESULTS ? `, showing the first ${MAX_RESULTS}` : ''}` : 'No matches'}</p>
+            <p role="status">{results.total ? <><RollingNumber value={String(results.total)} /> matches in {results.sets} {results.sets === 1 ? 'set' : 'sets'}{results.total > MAX_RESULTS ? `, showing the first ${MAX_RESULTS}` : ''}</> : 'No matches'}</p>
           </div>
           {results.total === 0 && <div className="lib-empty">Nothing matches “{deferred}”. Try a shorter word or a different spelling.</div>}
-          <div className="lib-results">
-            {results.shown.map(({ set, index, item }) => {
+          <div className="lib-results stagger">
+            {results.shown.map(({ set, index, item }, position) => {
               const collection = getCollection(set.collection)!;
               return (
-                <article key={`${set.collection}-${set.id}-${index}`} className={`lib-result lib-accent-${collection.accent}`}>
+                <article key={`${set.collection}-${set.id}-${index}`} className={`lib-result lib-accent-${collection.accent}`} style={stagger(position)}>
                   <div>
                     <p lang={set.language} dir={set.language === 'ur' ? 'rtl' : undefined}><strong><Highlight text={item.prompt} query={deferred} /></strong></p>
                     {item.answer && <p className="lib-result-answer" lang={set.language} dir={set.language === 'ur' ? 'rtl' : undefined}><Highlight text={item.answer} query={deferred} /></p>}
@@ -137,7 +142,7 @@ export default function LibraryHub() {
               <h2 id="practice-heading">Take a timed test</h2>
               <p>Real timings from the ISSB schedule. Instant review at the end.</p>
             </div>
-            <div className="lib-grid">{practice.map((collection) => <CollectionCard key={collection.slug} collection={collection} progress={progress} />)}</div>
+            <div className="lib-grid stagger">{practice.map((collection, index) => <CollectionCard key={collection.slug} collection={collection} progress={progress} index={index} />)}</div>
           </section>
 
           <section aria-labelledby="study-heading">
@@ -145,12 +150,13 @@ export default function LibraryHub() {
               <h2 id="study-heading">Study & revise</h2>
               <p>Flashcards that remember what you missed, plus quick-read lists.</p>
             </div>
-            <div className="lib-grid">{study.map((collection) => <CollectionCard key={collection.slug} collection={collection} progress={progress} />)}</div>
+            <div className="lib-grid stagger">{study.map((collection, index) => <CollectionCard key={collection.slug} collection={collection} progress={progress} index={index + 2} />)}</div>
           </section>
 
           <p className="lib-source">Everything here is transcribed from the photographed Noor Forces Academies study notes. It is academy material, not an official syllabus. Clear factual errors are corrected and old figures are labelled, with the correction shown under the answer. For each photo&apos;s full transcription, see <Link href="/sources" className="prep-source-link">source coverage</Link>.</p>
         </>
       )}
+      </Swap>
     </div></div>
   );
 }

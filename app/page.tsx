@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PracticeDisclaimer from "./components/PracticeDisclaimer";
+import { stagger } from "./components/motion/stagger";
 import { siteNavigation } from "./lib/siteNavigation";
 import { collections, libraryItemCount } from "./lib/library";
 import "./library.css";
@@ -34,9 +35,9 @@ export default function HomePage() {
             </div>
             <Link href="/library" className="prep-button">Open the library →</Link>
           </div>
-          <div className="mt-6 flex flex-wrap gap-3">
-            {collections.map((collection) => (
-              <Link key={collection.slug} href={`/library/${collection.slug}`} className={`lib-chip lib-chip--accent lib-accent-${collection.accent}`} style={{ fontSize: "0.85rem", padding: "0.35rem 0.7rem", textDecoration: "none", color: "var(--ink)" }}>
+          <div className="mt-6 flex flex-wrap gap-3 stagger">
+            {collections.map((collection, index) => (
+              <Link key={collection.slug} href={`/library/${collection.slug}`} className={`lib-chip lib-chip--accent lib-accent-${collection.accent} home-chip`} style={stagger(index + 2, { fontSize: "0.85rem", padding: "0.35rem 0.7rem", textDecoration: "none", color: "var(--ink)" })}>
                 {collection.short}
               </Link>
             ))}
@@ -44,12 +45,13 @@ export default function HomePage() {
         </section>
 
         <h2 className="mt-12 text-2xl font-black">Preparation areas</h2>
-        <div className="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
-          {siteNavigation.map((area) => (
+        <div className="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-5 stagger">
+          {siteNavigation.map((area, index) => (
             <Link
               key={area.slug}
               href={area.href}
-              className={`border-2 border-slate-950 p-6 text-slate-950 shadow-[6px_6px_0_#171717] transition hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-blue-700 ${
+              style={stagger(index + 4)}
+              className={`home-card border-2 border-slate-950 p-6 text-slate-950 shadow-[6px_6px_0_#171717] transition hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-blue-700 ${
                 area.slug === "general-knowledge" ? "bg-amber-100" : "bg-white"
               }`}
             >

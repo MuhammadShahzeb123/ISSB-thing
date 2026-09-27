@@ -22,7 +22,7 @@
 .lib-search kbd { position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); }
 kbd.lib-kbd, .lib-search kbd { font-family: "Courier New", monospace; font-size: 0.75rem; font-weight: 800; border: 2px solid var(--ink); background: var(--paper-deep); padding: 0.05rem 0.35rem; box-shadow: 2px 2px 0 var(--ink); }
 
-.lib-continue { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; justify-content: space-between; border: 2px solid var(--ink); background: var(--accent, var(--yellow)); padding: 0.9rem 1.1rem; box-shadow: 4px 4px 0 var(--ink); margin: 1rem 0 1.5rem; text-decoration: none; color: var(--ink); transition: transform 140ms ease, box-shadow 140ms ease; }
+.lib-continue { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; justify-content: space-between; border: 2px solid var(--ink); background: var(--accent, var(--yellow)); padding: 0.9rem 1.1rem; box-shadow: 4px 4px 0 var(--ink); margin: 1rem 0 1.5rem; text-decoration: none; color: var(--ink); transition: transform var(--dur-stiff) var(--ease-stiff), box-shadow var(--dur-stiff) var(--ease-stiff); }
 .lib-continue:hover, .lib-continue:focus-visible { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
 .lib-continue strong { font-size: 1.1rem; }
 
@@ -31,7 +31,7 @@ kbd.lib-kbd, .lib-search kbd { font-family: "Courier New", monospace; font-size:
 .lib-section-head p { color: var(--muted); font-weight: 700; font-size: 0.9rem; }
 
 .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 1.1rem; }
-.lib-card { position: relative; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0; border: 2px solid var(--ink); background: var(--paper-bright); padding: 1rem 1rem 1.1rem; color: var(--ink); text-decoration: none; box-shadow: 5px 5px 0 var(--ink); transition: transform 140ms ease, box-shadow 140ms ease; }
+.lib-card { position: relative; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0; border: 2px solid var(--ink); background: var(--paper-bright); padding: 1rem 1rem 1.1rem; color: var(--ink); text-decoration: none; box-shadow: 5px 5px 0 var(--ink); transition: transform var(--dur-stiff) var(--ease-stiff), box-shadow var(--dur-stiff) var(--ease-stiff); }
 .lib-card:hover, .lib-card:focus-visible { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ink); }
 .lib-card:focus-visible { outline: 3px solid #0057a8; outline-offset: 3px; }
 .lib-card-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
@@ -44,8 +44,8 @@ kbd.lib-kbd, .lib-search kbd { font-family: "Courier New", monospace; font-size:
 .lib-chip--done { background: var(--lime); }
 
 .lib-bar { height: 0.65rem; border: 2px solid var(--ink); background: white; overflow: hidden; }
-.lib-bar > span { display: block; height: 100%; background: var(--lime); transition: width 300ms ease; }
-.lib-bar--time > span { background: var(--accent, var(--yellow)); transition: width 100ms linear; }
+.lib-bar > span { display: block; width: 100%; height: 100%; background: var(--lime); transform-origin: left center; transform: scaleX(var(--value, 0)); }
+.lib-bar--time > span { background: var(--accent, var(--yellow)); }
 .lib-bar--danger > span { background: var(--red); }
 .lib-bar-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800; color: var(--muted); margin-top: 0.25rem; }
 
@@ -58,7 +58,7 @@ kbd.lib-kbd, .lib-search kbd { font-family: "Courier New", monospace; font-size:
 .lib-result-answer { color: #25632a; font-weight: 700; }
 
 .lib-set-list { display: grid; gap: 0.75rem; }
-.lib-set { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.9rem; align-items: center; border: 2px solid var(--ink); background: var(--paper-bright); padding: 0.85rem 1rem; color: var(--ink); text-decoration: none; box-shadow: 4px 4px 0 var(--ink); transition: transform 140ms ease, box-shadow 140ms ease; }
+.lib-set { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.9rem; align-items: center; border: 2px solid var(--ink); background: var(--paper-bright); padding: 0.85rem 1rem; color: var(--ink); text-decoration: none; box-shadow: 4px 4px 0 var(--ink); transition: transform var(--dur-stiff) var(--ease-stiff), box-shadow var(--dur-stiff) var(--ease-stiff); }
 .lib-set:hover, .lib-set:focus-visible { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
 .lib-set--featured { background: var(--accent, var(--yellow)); }
 .lib-set h3 { font-size: 1.08rem; line-height: 1.35; }
@@ -93,16 +93,21 @@ textarea.lib-input { min-height: 12rem; line-height: 1.8; resize: vertical; }
 .lib-input[dir="rtl"] { font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", "Segoe UI", serif; line-height: 2.1; }
 .lib-hint { font-size: 0.82rem; color: var(--muted); font-weight: 700; margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; }
 
-.lib-dots { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.8rem 0; }
-.neo-page .lib-dots button { width: 1.7rem; height: 1.7rem; min-height: 0; padding: 0; font-size: 0.65rem; font-weight: 900; border: 2px solid var(--ink); background: white; box-shadow: none; }
+.lib-dots { position: relative; display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.8rem 0; }
+.lib-dots .liquid-ink { background: var(--ink); border-radius: 0.25rem; }
+.neo-page .lib-dots button { position: relative; z-index: 1; width: 1.7rem; height: 1.7rem; min-height: 0; padding: 0; font-size: 0.65rem; font-weight: 900; border: 2px solid var(--ink); background: white; box-shadow: none; }
 .neo-page .lib-dots button.is-filled { background: var(--lime); }
 .neo-page .lib-dots button.is-current { background: var(--ink); color: var(--paper-bright); }
+/* The dot swaps its colours in one step, 100ms after the click: by then the ink block has arrived under the new dot and left the old one. */
+.neo-page .lib-dots[data-ready] button { transition: color 0s 100ms, background-color 0s 100ms, border-color 0s 100ms, transform var(--dur-stiff) var(--ease-stiff), box-shadow var(--dur-stiff) var(--ease-stiff); }
+.neo-page .lib-dots[data-ready] button.is-current { background: transparent; border-color: transparent; }
 .neo-page .lib-dots button:hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0 var(--ink); }
+.neo-page .lib-dots button:active { transform: translate(1px, 1px); box-shadow: none; }
 
-.lib-reveal { border: 2px solid var(--ink); background: #e3f1ce; padding: 1rem 1.1rem; line-height: 1.8; animation: lib-pop 180ms ease-out; white-space: pre-line; overflow-wrap: anywhere; }
+.lib-reveal { border: 2px solid var(--ink); background: #e3f1ce; padding: 1rem 1.1rem; line-height: 1.8; white-space: pre-line; overflow-wrap: anywhere; }
 .lib-reveal[lang="ur"] { font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", "Segoe UI", serif; line-height: 2.2; }
 .lib-reveal small { display: block; margin-top: 0.5rem; color: var(--muted); font-size: 0.85rem; line-height: 1.7; }
-.lib-feedback { border: 2px solid var(--ink); padding: 0.6rem 0.9rem; font-weight: 800; animation: lib-pop 180ms ease-out; margin-top: 0.75rem; }
+.lib-feedback { border: 2px solid var(--ink); padding: 0.6rem 0.9rem; font-weight: 800; margin-top: 0.75rem; }
 .lib-feedback--good { background: var(--lime); }
 .lib-feedback--bad { background: #ffd2cc; }
 .lib-grade { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem; }
@@ -132,21 +137,27 @@ textarea.lib-input { min-height: 12rem; line-height: 1.8; resize: vertical; }
 .lib-list-group { font-family: "Arial Black", Arial, sans-serif; font-size: 1.05rem; margin: 1.2rem 0 0.2rem; padding: 0.2rem 0.5rem; background: var(--accent, var(--yellow)); border: 2px solid var(--ink); justify-self: start; }
 .lib-list-group[lang="ur"] { font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", "Segoe UI", serif; line-height: 2; justify-self: end; }
 
-.lib-topic-list { display: grid; gap: 0.5rem; }
-.neo-page .lib-topic-list button { text-align: start; justify-content: flex-start; background: white; font-weight: 700; line-height: 1.5; min-height: 48px; padding: 0.6rem 0.9rem; width: 100%; }
+.lib-topic-list { position: relative; display: grid; gap: 0.5rem; }
+.lib-topic-list .liquid-ink { background: var(--accent, var(--yellow)); }
+.neo-page .lib-topic-list button { position: relative; z-index: 1; text-align: start; justify-content: flex-start; background: white; font-weight: 700; line-height: 1.5; min-height: 48px; padding: 0.6rem 0.9rem; width: 100%; }
 .neo-page .lib-topic-list button[aria-pressed="true"] { background: var(--accent, var(--yellow)); }
+/* Once the ink is live it sits behind the buttons, so the chosen one goes clear to let it show through. */
+.neo-page .lib-topic-list[data-ready] button { transition: background-color 200ms linear, transform var(--dur-stiff) var(--ease-stiff), box-shadow var(--dur-stiff) var(--ease-stiff); }
+.neo-page .lib-topic-list[data-ready] button[aria-pressed="true"] { background: transparent; transition-delay: 60ms, 0s, 0s; }
 .neo-page .lib-topic-list button[lang="ur"] { font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic", "Segoe UI", serif; line-height: 2; text-align: right; }
 
 .lib-source { font-size: 0.8rem; color: var(--muted); margin-top: 2rem; border-top: 2px dashed #9b9282; padding-top: 0.8rem; line-height: 1.7; }
 .lib-source summary { cursor: pointer; font-weight: 800; }
 .lib-source ul { list-style: disc; padding-inline-start: 1.2rem; }
-.lib-toast { position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%); z-index: 60; border: 2px solid var(--ink); background: var(--ink); color: var(--paper-bright); padding: 0.6rem 1rem; font-weight: 800; box-shadow: 4px 4px 0 var(--yellow); animation: lib-toast 180ms ease-out; max-width: calc(100vw - 2rem); }
+.lib-toast { position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%); z-index: 60; border: 2px solid var(--ink); background: var(--ink); color: var(--paper-bright); padding: 0.6rem 1rem; font-weight: 800; box-shadow: 4px 4px 0 var(--yellow); animation: lib-toast var(--dur-snappy) var(--ease-snappy) both; max-width: calc(100vw - 2rem); white-space: nowrap; }
+.lib-toast.is-out { animation: lib-toast-out 220ms ease-in forwards; pointer-events: none; }
 .lib-empty { border: 2px dashed var(--ink); background: white; padding: 1.2rem; text-align: center; font-weight: 700; }
 
-@keyframes lib-pop { from { transform: scale(0.97); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes lib-toast { from { opacity: 0; transform: translate(-50%, 0.5rem); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes lib-toast { from { opacity: 0; transform: translate(-50%, 14px) scale(0.96); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+@keyframes lib-toast-out { to { opacity: 0; transform: translate(-50%, 8px); filter: blur(4px); } }
 @media (prefers-reduced-motion: reduce) {
   .lib-card, .lib-set, .lib-continue, .lib-bar > span, .lib-reveal, .lib-feedback, .lib-toast { transition: none; animation: none; }
+  .lib-toast.is-out { visibility: hidden; }
 }
 @media (max-width: 767px) {
   .lib-hero { grid-template-columns: minmax(0, 1fr); }

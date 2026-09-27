@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import type { LibraryCollection, LibraryMode } from '../../lib/library';
 import { completion, progressKey, useLibraryProgress } from '../../lib/libraryProgress';
+import { Swap } from '../motion/Swap';
+import { stagger } from '../motion/stagger';
 import { ProgressBar } from './shared';
 
 export interface SetSummary {
@@ -61,12 +63,14 @@ export default function CollectionView({ collection, sets }: { collection: Libra
         </div>
       )}
 
-      <div className="lib-set-list">
+      {/* Keyed on the visible ids: the list swaps only when the filter actually changes what is shown, not on every keystroke. */}
+      <Swap id={visible.map((set) => set.id).join('|')}>
+      <div className="lib-set-list stagger">
         {visible.map((set, index) => {
           const entry = progress[progressKey(collection.slug, set.id)];
           const value = completion(entry, set.count);
           return (
-            <Link key={set.id} href={`/library/${collection.slug}/${set.id}`} className={`lib-set${set.featured ? ' lib-set--featured' : ''}`}>
+            <Link key={set.id} href={`/library/${collection.slug}/${set.id}`} className={`lib-set${set.featured ? ' lib-set--featured' : ''}`} style={stagger(index)}>
               <span className={`lib-set-num${value >= 1 ? ' is-done' : ''}`} aria-hidden>{value >= 1 ? '✓' : set.featured ? '★' : index + (sets[0]?.featured ? 0 : 1)}</span>
               <div style={{ minWidth: 0 }}>
                 <h3 lang={set.language} dir={set.language === 'ur' && /[؀-ۿ]/.test(set.title) ? 'rtl' : undefined}>{set.title}</h3>
@@ -84,6 +88,7 @@ export default function CollectionView({ collection, sets }: { collection: Libra
         })}
         {!visible.length && <div className="lib-empty">No set title matches “{filter}”.</div>}
       </div>
+      </Swap>
     </div></div>
   );
 }

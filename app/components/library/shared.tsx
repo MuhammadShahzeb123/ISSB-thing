@@ -1,14 +1,25 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { springs } from '../../lib/motion/spring';
+import { useSpring, useSpringOutput } from '../../lib/motion/useSpring';
 import { formatClock } from '../../lib/practice';
+import { RollingNumber } from '../motion/RollingNumber';
+import { Toast } from '../motion/Toast';
 
 export function ProgressBar({ value, label, variant, className = '' }: { value: number; label?: string; variant?: 'time' | 'danger'; className?: string }) {
-  const percent = Math.round(Math.max(0, Math.min(1, value)) * 100);
+  const clamped = Math.max(0, Math.min(1, value));
+  const percent = Math.round(clamped * 100);
+  const fill = useRef<HTMLSpanElement>(null);
+  // Countdown bars move every tick, so they follow closely; progress bars take the house curve.
+  const spring = useSpring(clamped, variant ? springs.stiff : springs.gentle, 0.0005);
+  useSpringOutput(spring, ([current]) => {
+    if (fill.current) fill.current.style.transform = `scaleX(${Math.max(0, current)})`;
+  });
   return (
     <div className={className}>
       <div className={`lib-bar${variant === 'time' ? ' lib-bar--time' : ''}${variant === 'danger' ? ' lib-bar--time lib-bar--danger' : ''}`} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-label={label ?? 'Progress'}>
-        <span style={{ width: `${percent}%` }} />
+        <span ref={fill} style={{ transform: `scaleX(${clamped})` }} />
       </div>
     </div>
   );
@@ -18,7 +29,7 @@ export function Clock({ left, total, label = 'Time left' }: { left: number; tota
   const low = left <= Math.min(30, total * 0.15);
   return (
     <div style={{ minWidth: '9rem' }}>
-      <p className={`lib-clock${low ? ' is-low' : ''}`} role="timer" aria-label={`${label}: ${formatClock(left)}`}>{formatClock(left)}</p>
+      <p className={`lib-clock${low ? ' is-low' : ''}`} role="timer" aria-label={`${label}: ${formatClock(left)}`}><RollingNumber value={formatClock(left)} /></p>
       <ProgressBar value={total ? left / total : 0} variant={low ? 'danger' : 'time'} label={label} className="mt-1" />
     </div>
   );
@@ -34,7 +45,7 @@ export function useToast() {
     timer.current = window.setTimeout(() => setMessage(''), 2200);
   }, []);
   useEffect(() => () => window.clearTimeout(timer.current), []);
-  const toast = <div aria-live="polite" role="status">{message && <div className="lib-toast">{message}</div>}</div>;
+  const toast = <Toast message={message} />;
   return { show, toast };
 }
 
