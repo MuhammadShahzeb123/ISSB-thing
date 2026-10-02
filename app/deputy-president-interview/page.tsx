@@ -9,6 +9,7 @@ export default function DeputyPresidentInterviewOverviewPage() {
       resources={[
         { label: 'Biodata practice', href: '/biodata', description: 'Privately organise and review your personal record in this browser.' },
         { label: 'Interview preparation room', href: '/interview', description: 'All interview practice tabs in one place.' },
+        { label: 'Nishan-e-Haider martyrs', href: '/nishan-e-haider', description: 'Photo cards and compact stories for all eleven recipients.' },
       ]}
     />
   );

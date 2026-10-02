@@ -820,3 +820,153 @@ a {
 .gk-card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; }
 .gk-correction { border-inline-start: 4px solid #932c24; background: #fff0ec; padding: 0.7rem 0.9rem; margin: 0.8rem 0; line-height: 1.7; }
 .obstacle-guide { stroke: #635d52; stroke-width: 1; stroke-dasharray: 2 3; }
+
+
+/* Nishan-e-Haider martyr cards */
+.martyr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 1.25rem;
+}
+
+.martyr-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 2px solid var(--ink);
+  background: var(--paper-bright);
+  box-shadow: 4px 4px 0 var(--ink);
+  overflow: hidden;
+}
+
+.martyr-card-media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: #d8d0c0;
+  border-bottom: 2px solid var(--ink);
+}
+
+.martyr-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.martyr-card-placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffd447 0%, #6fc8ff 100%);
+  font-size: 2.5rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.martyr-card-placeholder--small {
+  width: 7.5rem;
+  height: 7.5rem;
+  flex: 0 0 auto;
+  font-size: 1.6rem;
+  border: 2px solid var(--ink);
+}
+
+.martyr-card-badge {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  border: 2px solid var(--ink);
+  background: var(--yellow);
+  padding: 0.2rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.martyr-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem 1.05rem 1.15rem;
+}
+
+.martyr-card-award {
+  margin: 0;
+  color: #0057a8;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.martyr-card-body h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.martyr-card-meta {
+  display: grid;
+  gap: 0.35rem 0.75rem;
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border: 2px solid var(--ink);
+  background: #fffaf0;
+  font-size: 0.86rem;
+}
+
+.martyr-card-meta div {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.4rem;
+}
+
+.martyr-card-meta dt {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.martyr-card-meta dd {
+  margin: 0;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.martyr-card-summary {
+  margin: 0;
+  line-height: 1.65;
+  font-size: 0.95rem;
+}
+
+.martyr-card-credit,
+.martyr-card-sources {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.martyr-inline {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.martyr-inline-media img,
+.martyr-inline-media .martyr-card-placeholder--small {
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+@media (max-width: 640px) {
+  .martyr-inline {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

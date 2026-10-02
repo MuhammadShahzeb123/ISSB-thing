@@ -47,6 +47,18 @@ export default function HomePage() {
           })}
         </div>
 
+        <section className="mt-8 border-2 border-slate-950 bg-lime-100 p-6 shadow-[6px_6px_0_#171717]" aria-labelledby="nh-heading">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-800">Interview knowledge</p>
+          <h2 id="nh-heading" className="mt-2 text-2xl font-black">Nishan-e-Haider martyrs</h2>
+          <p className="mt-3 max-w-3xl leading-7 text-slate-700">
+            Eleven compact cards covering Pakistan&apos;s highest gallantry award — photo, rank, unit, place, date, and a short story you can retell in an interview.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/nishan-e-haider" className="cta-button cta-button--secondary">View all 11 recipients</Link>
+            <Link href="/interview?tab=stories" className="home-dimension-link">Practise recall →</Link>
+          </div>
+        </section>
+
         {generalKnowledge && (
           <section className="mt-8 border-2 border-slate-950 bg-amber-100 p-6 shadow-[6px_6px_0_#171717]" aria-labelledby="gk-heading">
             <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-800">Preparation area</p>

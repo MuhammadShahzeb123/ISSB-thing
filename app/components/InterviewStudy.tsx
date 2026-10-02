@@ -30,17 +30,27 @@ export function CurrentAffairsStudy() {
 }
 
 function StoryDetail({ story }: { story: MilitaryStory }) {
-  return <><p>{story.story}</p><p className="prep-note"><strong>Remember:</strong> {story.memory}</p><details className="prep-details"><summary>The six details to recall</summary><dl>{[['Name', `${story.rank} ${story.name}`], ['What he did', story.what], ['How he did it', story.how], ['Local benefit', story.result], ['How he died', story.death], ['When he died', story.deathDate]].map(([label, value]) => <div key={label} className="mb-3"><dt className="font-bold">{label}</dt><dd>{value}</dd></div>)}</dl>{story.caution && <p className="prep-muted">{story.caution}</p>}</details><ul className="prep-muted">{story.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a></li>)}</ul></>;
+  return <>
+    <p className="prep-muted mb-2">{story.service} · {story.unit} · {story.conflict}</p>
+    <p>{story.summary}</p>
+    <p className="prep-note"><strong>Remember:</strong> {story.memory}</p>
+    <details className="prep-details"><summary>Full story and six details to recall</summary>
+      <p>{story.story}</p>
+      <dl>{[['Name', `${story.rank} ${story.name}`], ['What he did', story.what], ['How he did it', story.how], ['Local benefit', story.result], ['How he died', story.death], ['When he died', story.deathDate]].map(([label, value]) => <div key={label} className="mb-3"><dt className="font-bold">{label}</dt><dd>{value}</dd></div>)}</dl>
+      {story.caution && <p className="prep-muted">{story.caution}</p>}
+    </details>
+    <ul className="prep-muted">{story.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a></li>)}</ul>
+  </>;
 }
 
 export function MilitaryStoriesStudy() {
   const [mode, setMode] = useState('read');
   const [query, setQuery] = useState('');
-  const filtered = militaryStories.filter((story) => `${story.rank} ${story.name} ${story.place} ${story.memory}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
+  const filtered = militaryStories.filter((story) => `${story.rank} ${story.name} ${story.place} ${story.unit} ${story.memory}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
   return <>
-    <section className="prep-panel"><h2>11 people. Remember the action.</h2><p>{awardExplanation}</p><p className="mt-4">Learn the person, place and action first. Tell the story in your own words, then recall how and when he died. Birth dates and long career timelines are deliberately left out.</p></section>
+    <section className="prep-panel"><h2>11 people. Remember the action.</h2><p>{awardExplanation}</p><p className="mt-4">Learn the person, place and action first. Tell the story in your own words, then recall how and when he died. Birth dates and long career timelines are deliberately left out.</p><p className="mt-3"><a href="/nishan-e-haider">Open the photo card gallery →</a></p></section>
     <div className="prep-tabs"><button type="button" aria-pressed={mode === 'read'} onClick={() => setMode('read')}>Read stories</button><button type="button" aria-pressed={mode === 'recall'} onClick={() => setMode('recall')}>Practise recall</button></div>
-    {mode === 'recall' ? <SpacedRepetitionDeck storageKey="issb-gallantry-stories-v1" items={militaryStories} getId={getStoryId} accentColor="amber" renderFront={(story) => <div><p className="text-sm mb-4">Tell the story: action, method, benefit and sacrifice.</p><p>{story.rank} {story.name}</p></div>} renderBack={(story) => <StoryDetail story={story} />} /> : <><label className="prep-field">Find a person or action<input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Sarwar, canal, aircraft..." /></label><p className="prep-muted mb-5" role="status">{filtered.length} of {militaryStories.length} stories</p>{!filtered.length && <p className="prep-panel">No matching story. Try a name or place.</p>}{filtered.map((story) => <article className="prep-panel" key={story.id}><p className="prep-muted mb-2">{story.award} | {story.place}</p><h2>{story.rank} {story.name}</h2><StoryDetail story={story} /></article>)}</>}
+    {mode === 'recall' ? <SpacedRepetitionDeck storageKey="issb-gallantry-stories-v1" items={militaryStories} getId={getStoryId} accentColor="amber" renderFront={(story) => <div><p className="text-sm mb-4">Tell the story: action, method, benefit and sacrifice.</p><p>{story.rank} {story.name}</p></div>} renderBack={(story) => <StoryDetail story={story} />} /> : <><label className="prep-field">Find a person or action<input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Sarwar, canal, aircraft..." /></label><p className="prep-muted mb-5" role="status">{filtered.length} of {militaryStories.length} stories</p>{!filtered.length && <p className="prep-panel">No matching story. Try a name or place.</p>}{filtered.map((story) => <article className="prep-panel martyr-inline" key={story.id}><div className="martyr-inline-media">{story.image ? <img src={story.image} alt={story.imageKind === 'memorial' ? `Memorial related to ${story.rank} ${story.name}` : `Portrait of ${story.rank} ${story.name}`} loading="lazy" width={120} height={120} /> : <div className="martyr-card-placeholder martyr-card-placeholder--small" aria-hidden="true">{story.name.split(/\s+/).filter(Boolean).map((p,i,a)=>i===0||i===a.length-1?p[0]:'').join('').toUpperCase()}</div>}</div><div><p className="prep-muted mb-2">{story.award} | {story.place} | {story.deathDate}</p><h2>{story.rank} {story.name}</h2><StoryDetail story={story} /></div></article>)}</>}
   </>;
 }
 
