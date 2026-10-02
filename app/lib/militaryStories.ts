@@ -2,7 +2,7 @@ export interface MilitaryStory {
   id: string;
   name: string;
   rank: string;
-  award: 'Nishan-e-Haider' | 'Hilal-e-Kashmir (equivalent)';
+  award: 'Nishan-e-Haider';
   unit: string;
   service: 'Pakistan Army' | 'Pakistan Air Force' | 'Pakistan Navy';
   conflict: string;
@@ -26,7 +26,7 @@ export interface MilitaryStory {
 }
 
 export const awardExplanation: string =
-  "Nishan-e-Haider is Pakistan's highest gallantry award, not a military rank. These 11 stories cover its 10 recipients and Naik Saif Ali Janjua, whose Hilal-e-Kashmir is officially equivalent. Captain, Major and the other service titles shown are ranks. Karnal is part of Captain Karnal Sher Khan's name, not the rank Colonel. Combat details follow the linked official Pakistani accounts; a local battlefield success does not mean victory in an entire war.";
+  "Nishan-e-Haider is Pakistan's highest gallantry award, not a military rank. These cards cover all 10 recipients who received it. Captain, Major and the other service titles shown are ranks. Karnal is part of Captain Karnal Sher Khan's name, not the rank Colonel. Combat details follow the linked official Pakistani accounts; a local battlefield success does not mean victory in an entire war.";
 
 export const militaryStories: MilitaryStory[] = [
   {
@@ -58,38 +58,6 @@ export const militaryStories: MilitaryStory[] = [
         url: 'https://www.radio.gov.pk/27-07-2025/martyrdom-anniversary-of-capt-muhammad-sarwar-shaheed-today',
       },
     ],
-  },
-  {
-    id: 'saif-ali-janjua',
-    name: 'Saif Ali Janjua',
-    rank: 'Naik',
-    award: 'Hilal-e-Kashmir (equivalent)',
-    unit: '18 Azad Kashmir Regiment',
-    service: 'Pakistan Army',
-    conflict: 'Indo-Pakistani War of 1947–48',
-    place: 'Bhudha Khanna, Kashmir',
-    summary:
-      'Naik Saif Ali Janjua commanded a platoon defending a post at Bhudha Khanna in Kashmir. He led his men through repeated attacks and helped hold the position. He died of wounds on 26 October 1948. His Hilal-e-Kashmir was later declared equivalent to Nishan-e-Haider.',
-    story:
-      'Naik Saif Ali Janjua commanded a platoon defending a post at Bhudha Khanna in Kashmir. The Army biography records that he led his men through repeated attacks and helped repel attempts to take the post. This kept the local position defended while the fighting continued. He was seriously wounded in the battle and died on 26 October 1948. His award was Hilal-e-Kashmir, equivalent to Nishan-e-Haider. Remember: Janjua, platoon leader holding a Kashmir post.',
-    what: 'Defended a Kashmir post against repeated attacks.',
-    how: 'Commanded the platoon at Bhudha Khanna and led its resistance to the attacking troops.',
-    result: 'Helped repel attacks and maintain the local defence.',
-    death: 'Died after being seriously wounded in the battle.',
-    deathDate: '26 October 1948',
-    memory: 'Janjua: platoon, Kashmir post, equivalent award.',
-    
-    image: '/images/martyrs/saif-ali-janjua.jpg',
-    imageKind: 'portrait',
-    imageCredit: 'Wikimedia Commons CC BY 2.0 (portrait crop from battle-account board)',
-    sources: [
-      {
-        title: 'Pakistan Army archived biography: Naik Saif Ali Janjua',
-        url: 'https://web.archive.org/web/20191107182258/https:/pakistanarmy.gov.pk/Naik-Saif-Ali-Janjua.php',
-      },
-    ],
-    caution:
-      'His Hilal-e-Kashmir was declared equivalent to Nishan-e-Haider, not a second separate award. The biography does not identify the weapon that caused his fatal wounds.',
   },
   {
     id: 'tufail-muhammad',

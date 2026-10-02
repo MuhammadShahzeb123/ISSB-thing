@@ -93,7 +93,7 @@ export const siteNavigation = [
       {
         label: "Nishan-e-Haider martyrs",
         href: "/nishan-e-haider",
-        description: "Compact photo cards for all eleven recipients: rank, unit, place, date, and short stories.",
+        description: "Compact photo cards for all ten recipients: rank, unit, place, date, and short stories.",
       },
       {
         label: "World affairs & wars",

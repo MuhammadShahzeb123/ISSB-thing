@@ -6,7 +6,7 @@ import { awardExplanation, militaryStories } from '../lib/militaryStories';
 export const metadata: Metadata = {
   title: 'Nishan-e-Haider Martyrs - ISSB Prep',
   description:
-    'Compact profiles of all eleven Nishan-e-Haider recipients (including Hilal-e-Kashmir equivalent): rank, unit, place, date, and short stories for interview preparation.',
+    'Compact profiles of all ten Nishan-e-Haider recipients: rank, unit, place, date, and short stories for interview preparation.',
 };
 
 function Initials({ name }: { name: string }) {
@@ -22,9 +22,8 @@ export default function NishanEHaiderPage() {
         <p className="text-sm font-black uppercase tracking-[0.22em] text-blue-800">Gallantry award</p>
         <h1 className="mt-3 text-4xl font-black leading-none sm:text-6xl">Nishan-e-Haider</h1>
         <p className="mt-5 max-w-3xl text-lg font-semibold leading-8 text-slate-700">
-          Pakistan&apos;s highest military gallantry award. Eleven men have received it (ten Army, one Air Force),
-          including Naik Saif Ali Janjua whose Hilal-e-Kashmir is officially equivalent. Use these compact cards to
-          remember rank, place, action, and date — then tell each story in your own words.
+          Pakistan&apos;s highest military gallantry award. Ten men have received it (nine Army, one Air Force).
+          Use these compact cards to remember rank, place, action, and date — then tell each story in your own words.
         </p>
 
         <section className="prep-panel mt-8" aria-labelledby="award-note">
@@ -137,7 +136,7 @@ export default function NishanEHaiderPage() {
         <section className="prep-panel mt-8" aria-labelledby="image-notes">
           <h2 id="image-notes">Image notes</h2>
           <p>
-            All eleven cards use person portraits only. See{' '}
+            All ten cards use person portraits only. See{' '}
             <code>public/images/martyrs/ATTRIBUTION.json</code> for source pages and licence notes. Fair-use
             Wikipedia/ISPR likenesses are included for educational interview prep; do not reuse them commercially
             without checking the original licence.
