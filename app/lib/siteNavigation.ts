@@ -91,6 +91,11 @@ export const siteNavigation = [
         description: "Introduction practice, quick mental maths, sourced current affairs, and gallantry stories.",
       },
       {
+        label: "Nishan-e-Haider martyrs",
+        href: "/nishan-e-haider",
+        description: "Compact photo cards for all eleven recipients: rank, unit, place, date, and short stories.",
+      },
+      {
         label: "Biodata practice",
         href: "/biodata",
         description: "Privately organise and review your personal record in this browser.",
@@ -129,6 +134,11 @@ export const siteNavigation = [
         label: "Ministers",
         href: "/ministers",
         description: "Review Pakistan leadership and armed-forces appointments.",
+      },
+      {
+        label: "Nishan-e-Haider martyrs",
+        href: "/nishan-e-haider",
+        description: "All recipients of Pakistan's highest gallantry award, with photos and short stories.",
       },
       {
         label: "Army ranks",
