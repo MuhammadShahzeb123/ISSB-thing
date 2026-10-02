@@ -9,6 +9,8 @@ import {
   useTimedWritingSession,
 } from "@/app/lib/psychological-tests/useTimedWritingSession";
 import MethodologyNote from "./MethodologyNote";
+import TitleWithAudio from "@/app/components/TitleWithAudio";
+import { psychNarration } from "@/app/lib/narrationCatalog";
 
 const PRACTICE_SECONDS = 15;
 const SCT_PHASES: readonly SessionPhase[] = [
@@ -70,9 +72,14 @@ export default function SentenceCompletionPractice() {
               <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-800">
                 Sentence Completion
               </p>
-              <h1 className="mt-3 text-4xl font-black sm:text-6xl">
-                Complete each thought naturally.
-              </h1>
+              <TitleWithAudio
+                as="h1"
+                script={psychNarration["sentence-completion-overview"]?.script}
+                audioSrc={psychNarration["sentence-completion-overview"]?.audio}
+                playLabel="Play sentence completion overview"
+              >
+                <span className="mt-3 text-4xl font-black sm:text-6xl">Complete each thought naturally.</span>
+              </TitleWithAudio>
               <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">
                 This directly addressable simulation preserves the current
                 prompt set as practice-only content until the user-owned

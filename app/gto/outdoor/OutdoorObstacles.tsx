@@ -7,6 +7,8 @@ import { obstacleModuleId } from '../../lib/practiceModules';
 import { usePracticeProgress } from '../../lib/practiceProgress';
 import ObstaclePlayer from './ObstaclePlayer';
 import { obstacleSources, outdoorObstacles } from './obstacles';
+import TitleWithAudio from '../../components/TitleWithAudio';
+import { gtoNarration } from '../../lib/narrationCatalog';
 
 export default function OutdoorObstacles() {
   const router = useRouter();
@@ -49,7 +51,14 @@ export default function OutdoorObstacles() {
 
       <div className="prep-split mt-6">
         <section className="prep-panel" aria-labelledby="obstacle-heading">
-          <h2 id="obstacle-heading">{selected.name}</h2>
+          <TitleWithAudio
+            as="h2"
+            script={gtoNarration[selected.id]?.script}
+            audioSrc={gtoNarration[selected.id]?.audio}
+            playLabel={`Play technique for ${selected.name}`}
+          >
+            <span id="obstacle-heading">{selected.name}</span>
+          </TitleWithAudio>
           <p>{selected.summary}</p>
           <ObstaclePlayer key={selected.id} obstacle={selected} />
         </section>
