@@ -10,6 +10,28 @@ export default function GtoOverviewPage() {
         { label: 'Outdoor obstacles', href: '/gto/outdoor', description: 'Animated, step-by-step technique for all nine individual obstacles.' },
         { label: 'Indoor practice room', href: '/gto/indoor', description: 'Lecture topics, discussion motions and planning problems in one place.' },
       ]}
-    />
+    >
+      <section className="prep-panel mt-8" aria-labelledby="gto-hssc">
+        <h2 id="gto-hssc">HSSC / ISSB exam facts (keep it this short)</h2>
+        <div className="gk-tile-grid mt-4">
+          <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
+            <strong className="gk-tile-title">Indoor GTO set</strong>
+            <span className="gk-tile-teaser">Group Discussion, Lecturette, and Group Planning / Progressive Group Tasks. Speak clearly; give reasons and one real example.</span>
+          </article>
+          <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
+            <strong className="gk-tile-title">Outdoor set</strong>
+            <span className="gk-tile-teaser">Individual Obstacles (commonly nine), Command Task, and group outdoor tasks. Technique and safety matter more than showing off.</span>
+          </article>
+          <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
+            <strong className="gk-tile-title">What assessors watch</strong>
+            <span className="gk-tile-teaser">Leadership, teamwork, initiative, and calm planning — not the loudest voice. Invite quieter members in; disagree with ideas, not people.</span>
+          </article>
+          <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
+            <strong className="gk-tile-title">Beyond exam depth</strong>
+            <span className="gk-tile-teaser">Do not invent secret marking schemes or obstacle heights as official ISSB law. Use the site’s labelled practice notes only.</span>
+          </article>
+        </div>
+      </section>
+    </DimensionOverview>
   );
 }

@@ -23,6 +23,28 @@ export default function PsychologicalOverviewPage() {
           explicitly labeled as practice methodology.
         </MethodologyNote>
       </div>
+
+      <section className="prep-panel mt-8" aria-labelledby="psych-hssc">
+        <h2 id="psych-hssc">HSSC / ISSB exam facts (keep it this short)</h2>
+        <div className="gk-tile-grid mt-4">
+          <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
+            <strong className="gk-tile-title">What psych tests are for</strong>
+            <span className="gk-tile-teaser">They sample how you think and write under time — not a school marks exam. No “correct story” to memorise.</span>
+          </article>
+          <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
+            <strong className="gk-tile-title">Main indoor set</strong>
+            <span className="gk-tile-teaser">Word Association (WAT), Picture Story Writing, Sentence Completion, and related self-description tasks. Use each simulator’s published timing note.</span>
+          </article>
+          <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
+            <strong className="gk-tile-title">Safe answer habit</strong>
+            <span className="gk-tile-teaser">Be positive, practical, and honest. Use clear Urdu or English. Do not invent heroic fantasies or copy a template story.</span>
+          </article>
+          <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
+            <strong className="gk-tile-title">Beyond exam depth</strong>
+            <span className="gk-tile-teaser">Skip psychologist jargon and scoring theories. ISSB does not publish a public marking key for these practice apps.</span>
+          </article>
+        </div>
+      </section>
     </DimensionOverview>
   );
 }

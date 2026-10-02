@@ -39,16 +39,14 @@ export const gkTopics: readonly GkTopic[] = [
     summary:
       'The Indus Waters Treaty (IWT) was signed in 1960 by Pakistan and India with the World Bank as broker. It divides the Indus basin: Eastern Rivers (Ravi, Beas, Sutlej) go mainly to India; Western Rivers (Indus, Jhelum, Chenab) go mainly to Pakistan, with limited Indian uses allowed (domestic, non-consumptive, limited agriculture, and regulated hydropower). A Permanent Indus Commission handles day-to-day cooperation; disputes can go to a Neutral Expert or a Court of Arbitration.',
     keyPoints: [
-      'Signed 19 September 1960; entered into force after ratifications; effective from 1 April 1960.',
-      'Eastern Rivers → India (unrestricted use after a transition period that ended by 1970/1973). Western Rivers → Pakistan (unrestricted use of waters India must let flow).',
-      'India may build run-of-river hydropower on Western Rivers under Annexure D design rules, with notice to Pakistan.',
-      'Dispute ladder: Permanent Indus Commission → Neutral Expert → Court of Arbitration (Annexure G).',
-      'April 2025: India announced it was holding the treaty “in abeyance” after an attack in Indian-administered Jammu & Kashmir. Pakistan rejects unilateral suspension.',
-      '31 August 2026: Court of Arbitration (PCA secretariat) ruled unanimously that the treaty remains fully in force and India must observe its obligations. India rejects the court’s jurisdiction and keeps its abeyance stance.',
-      'Practical friction: Permanent Indus Commission has not met since May 2022 (per Pakistani reporting); data-sharing and inspections have been disrupted.',
+      'HSSC core: signed 1960 by Pakistan and India; World Bank brokered it.',
+      'Eastern Rivers (Ravi, Beas, Sutlej) → mainly India. Western Rivers (Indus, Jhelum, Chenab) → mainly Pakistan.',
+      'India may use Western Rivers for limited purposes (including run-of-river hydropower under treaty rules) but must let the allocated water flow to Pakistan.',
+      'Day-to-day body: Permanent Indus Commission. Disputes can go to a Neutral Expert or a Court of Arbitration.',
+      'Current-affairs add-on (beyond pure textbook): India said in 2025 it was holding the treaty “in abeyance”; Pakistan rejects unilateral exit. August 2026 arbitration reporting said the treaty remains in force — India disputes that process. State both positions; do not invent legal outcomes.',
     ],
     remember:
-      'Six rivers, two sides: East (Ravi–Beas–Sutlej) India; West (Indus–Jhelum–Chenab) Pakistan. Treaty cannot be ended by one side alone — only by a new joint treaty.',
+      '1960 · World Bank · East Ravi–Beas–Sutlej (India) · West Indus–Jhelum–Chenab (Pakistan). One side cannot end it alone.',
     whyIssb:
       'Water security is a classic ISSB interview topic. State the allocation clearly, name the World Bank role, and separate legal findings (Aug 2026 award) from political positions (India’s abeyance claim).',
     watch: [
@@ -108,20 +106,26 @@ export const gkTopics: readonly GkTopic[] = [
     id: 'rivers-dams',
     category: 'geography',
     title: 'Rivers, dams & hydropower',
-    teaser: 'Indus system, key dams, and why storage and irrigation keep coming up in interviews.',
+    teaser: 'HSSC essentials: which river, which district/city, and which dam is the largest.',
     summary:
-      'Pakistan’s agriculture and cities depend on the Indus basin. Know the main rivers, where major dams sit, and the link to the Indus Waters Treaty. Avoid quoting outdated reservoir statistics unless you rechecked them.',
+      'For school and ISSB recall, learn each major dam as three facts only: river, location (district/city), and relative size. Skip reservoir-cubic-metre trivia unless an interviewer asks. Agriculture and cities still depend on the Indus basin and these storages.',
     keyPoints: [
-      'Main stem: Indus. Major western tributaries relevant to the treaty: Jhelum and Chenab (plus Indus itself).',
-      'Kabul River joins the Indus near Attock.',
-      'Tarbela Dam — Indus River, Khyber Pakhtunkhwa (large earth-fill dam; hydropower + irrigation storage).',
-      'Mangla Dam — Jhelum River (Azad Jammu & Kashmir / Punjab interface; storage + power).',
-      'Warsak — Kabul River near Peshawar. Khanpur — Haro River (KP). Ghazi-Barotha — Indus run-of-river / diversion scheme.',
-      'Interview angle: storage, siltation, flood management, and treaty limits on Indian Western-River projects.',
+      'Main rivers to name: Indus (main stem); Jhelum and Chenab (western tributaries in the Indus Waters Treaty); Kabul joins the Indus near Attock.',
+      'Tarbela Dam — Indus River; Haripur / Swabi area of Khyber Pakhtunkhwa. Largest dam in Pakistan (biggest reservoir / storage). Hydropower + irrigation storage.',
+      'Mangla Dam — Jhelum River; near Mirpur, Azad Jammu & Kashmir. Second-largest storage dam after Tarbela.',
+      'Warsak Dam — Kabul River; near Peshawar, Khyber Pakhtunkhwa. Older hydropower dam (often asked as “near Peshawar”).',
+      'Khanpur Dam — Haro River; near Khanpur, Khyber Pakhtunkhwa (water supply / irrigation, not the largest).',
+      'Ghazi-Barotha — Indus River; run-of-river scheme between Tarbela and Attock (Ghazi / Barotha area). Not a big storage dam like Tarbela or Mangla.',
+      'Hub Dam — Hub River; near Karachi (Sindh / Balochistan border area). Mainly water supply for Karachi — do not confuse with Indus storages.',
+      'HSSC size rule: Tarbela = largest; Mangla = second. Do not invent exact MW or acre-feet figures in an interview unless you rechecked them.',
     ],
-    remember: 'Tarbela (Indus), Mangla (Jhelum), Warsak (Kabul). Attock = Kabul meets Indus.',
-    whyIssb: 'Links geography, water security, and the IWT in one tidy answer.',
-    sources: [{ title: 'Indus Waters Treaty topic card', url: '/general-knowledge' }],
+    remember:
+      'Largest = Tarbela (Indus, Haripur/Swabi KP). 2nd = Mangla (Jhelum, Mirpur AJK). Warsak = Kabul near Peshawar. Khanpur = Haro. Attock = Kabul meets Indus.',
+    whyIssb: 'Classic warm-up: name river + place + which is largest, then stop. Extra engineering detail is beyond normal HSSC level.',
+    sources: [
+      { title: 'Indus Waters Treaty topic card', url: '/general-knowledge' },
+      { title: 'Source GK Q&A — dam locations', url: '/general-knowledge' },
+    ],
   },
   {
     id: 'borders-neighbours',
