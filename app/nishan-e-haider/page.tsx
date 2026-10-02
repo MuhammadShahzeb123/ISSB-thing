@@ -31,8 +31,9 @@ export default function NishanEHaiderPage() {
           <h2 id="award-note">How to use this page</h2>
           <p>{awardExplanation}</p>
           <p className="mt-3">
-            Free-licensed photos from Wikimedia Commons are shown where available (portrait or memorial). Two
-            recipients have no free Commons portrait hosted here yet; their cards use a simple initial placeholder.
+            Every card shows a portrait of the person (face and uniform), not a monument or grave. Some images are
+            free-licensed Commons/ISPR files; others are fair-use Wikipedia portraits hosted here for educational
+            ISSB study with clear attribution under each card.
           </p>
           <p className="mt-4">
             <Link href="/interview?tab=stories">Open interview recall practice →</Link>
@@ -51,11 +52,7 @@ export default function NishanEHaiderPage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={story.image}
-                    alt={
-                      story.imageKind === 'memorial'
-                        ? `Memorial related to ${story.rank} ${story.name}`
-                        : `Portrait of ${story.rank} ${story.name}`
-                    }
+                    alt={`Portrait of ${story.rank} ${story.name}`}
                     loading="lazy"
                     width={360}
                     height={360}
@@ -65,7 +62,6 @@ export default function NishanEHaiderPage() {
                     <Initials name={story.name} />
                   </div>
                 )}
-                {story.imageKind === 'memorial' && <span className="martyr-card-badge">Memorial photo</span>}
                 {!story.image && <span className="martyr-card-badge">Photo unavailable</span>}
               </div>
 
@@ -141,10 +137,10 @@ export default function NishanEHaiderPage() {
         <section className="prep-panel mt-8" aria-labelledby="image-notes">
           <h2 id="image-notes">Image notes</h2>
           <p>
-            Hosted images are free-licensed files from Wikimedia Commons (see{' '}
-            <code>public/images/martyrs/ATTRIBUTION.json</code>). Fair-use Wikipedia portraits were not copied into
-            this repo. Lance Naik Muhammad Mahfuz and Captain Karnal Sher Khan currently use placeholders until a
-            free-licensed portrait or memorial can be added.
+            All eleven cards use person portraits only. See{' '}
+            <code>public/images/martyrs/ATTRIBUTION.json</code> for source pages and licence notes. Fair-use
+            Wikipedia/ISPR likenesses are included for educational interview prep; do not reuse them commercially
+            without checking the original licence.
           </p>
         </section>
 

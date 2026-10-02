@@ -1,83 +1,81 @@
 {
   "muhammad-sarwar": {
-    "file": "Captain Raja Muhammad Sarwar Bhatti Shaheed, Nishan e Haider (5997687098).jpg",
-    "kind": "memorial",
     "path": "/images/martyrs/muhammad-sarwar.jpg",
-    "license": "CC BY 2.0",
-    "artist": "Muhammad Imran Saeed from City of London, Canada",
-    "credit": "Captain Raja Muhammad Sarwar Bhatti Shaheed, Nishan e Haider",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Captain%20Raja%20Muhammad%20Sarwar%20Bhatti%20Shaheed%2C%20Nishan%20e%20Haider%20%285997687098%29.jpg"
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://en.wikipedia.org/wiki/File:Capt._Muhammad_Sarwar.jpg",
+    "credit": "Official Pakistan Army likeness sketched 24 April 1967; hosted for ISSB educational study with attribution"
   },
   "saif-ali-janjua": {
-    "file": "Saif Ali Janjua.jpg",
-    "kind": "portrait",
     "path": "/images/martyrs/saif-ali-janjua.jpg",
+    "kind": "portrait",
     "license": "CC BY 2.0",
-    "artist": "Muhammad Imran Saeed from City of London, Canada",
-    "credit": "Neik Saif Ali Janjua Shaheed Nishan e Haider - Battle Account",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Saif%20Ali%20Janjua.jpg"
+    "artist": "Muhammad Imran Saeed (portrait crop from battle-account board)",
+    "source_page": "https://commons.wikimedia.org/wiki/File:Saif_Ali_Janjua.jpg",
+    "credit": "Neik Saif Ali Janjua Shaheed — portrait from battle account board"
   },
   "tufail-muhammad": {
-    "file": "Major Tufail Muhammad Shaheed - The Tomb (7594762844).jpg",
-    "kind": "memorial",
     "path": "/images/martyrs/tufail-muhammad.jpg",
-    "license": "CC BY 2.0",
-    "artist": "Muhammad Imran Saeed from Rawalpindi, Pakistan",
-    "credit": "Major Tufail Muhammad Shaheed - The Tomb",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Major%20Tufail%20Muhammad%20Shaheed%20-%20The%20Tomb%20%287594762844%29.jpg"
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://en.wikipedia.org/wiki/File:Maj._Mohammad_Tufail.jpg",
+    "credit": "Pakistan Army portrait; hosted for ISSB educational study with attribution"
   },
   "raja-aziz-bhatti": {
-    "file": "Major Aziz Bhatti Shaheed - Gravestone (7537828020).jpg",
-    "kind": "memorial",
     "path": "/images/martyrs/raja-aziz-bhatti.jpg",
-    "license": "CC BY 2.0",
-    "artist": "Muhammad Imran Saeed from City of London, Canada",
-    "credit": "Major Aziz Bhatti Shaheed - Gravestone",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Major%20Aziz%20Bhatti%20Shaheed%20-%20Gravestone%20%287537828020%29.jpg"
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://en.wikipedia.org/wiki/File:Raja_Aziz_Bhatti.jpeg",
+    "credit": "Portrait of Major Raja Aziz Bhatti; educational use"
   },
   "rashid-minhas": {
-    "file": "Rashid Minhas (4876835338).jpg",
-    "kind": "memorial",
     "path": "/images/martyrs/rashid-minhas.jpg",
-    "license": "CC BY 2.0",
-    "artist": "Muhammad Imran Saeed from City of London, Canada",
-    "credit": "Rashid Minhas",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Rashid%20Minhas%20%284876835338%29.jpg"
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://en.wikipedia.org/wiki/File:Rashidminhas.jpg",
+    "credit": "PAF service portrait of Pilot Officer Rashid Minhas (service no. 5602); educational use"
   },
   "muhammad-akram": {
-    "file": "Major Akram.jpg",
-    "kind": "portrait",
     "path": "/images/martyrs/muhammad-akram.jpg",
+    "kind": "portrait",
     "license": "CC BY-SA 4.0",
     "artist": "ISPR",
-    "credit": "https://www.ispr.gov.pk/major-muhammad-akram-shaheed.php",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Major%20Akram.jpg"
+    "source_page": "https://commons.wikimedia.org/wiki/File:Major_Akram.jpg",
+    "credit": "ISPR portrait via Wikimedia Commons"
   },
   "shabbir-sharif": {
-    "file": "Major Shabbir Sharif.jpg",
-    "kind": "portrait",
     "path": "/images/martyrs/shabbir-sharif.jpg",
-    "license": "CC0",
-    "artist": "Zubarkokar",
-    "credit": "Own work",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Major%20Shabbir%20Sharif.jpg"
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://en.wikipedia.org/wiki/File:Shabbir_Sharif.png",
+    "credit": "Portrait of Major Shabbir Sharif; educational use"
   },
   "muhammad-hussain": {
-    "file": "Sawar Muhammad Hussain Shaheed (39419777041).jpg",
-    "kind": "memorial",
     "path": "/images/martyrs/muhammad-hussain.jpg",
-    "license": "CC BY 2.0",
-    "artist": "Muhammad Imran Saeed from City of London, Canada",
-    "credit": "Sawar Muhammad Hussain Shaheed",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Sawar%20Muhammad%20Hussain%20Shaheed%20%2839419777041%29.jpg"
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://en.wikipedia.org/wiki/File:Muhammad_Hussain_Janjua.png",
+    "credit": "Portrait of Sawar Muhammad Hussain; educational use"
+  },
+  "muhammad-mahfuz": {
+    "path": "/images/martyrs/muhammad-mahfuz.jpg",
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://en.wikipedia.org/wiki/File:Muhammad_Mahfuz.png",
+    "credit": "Portrait of Lance Naik Muhammad Mahfuz; educational use"
+  },
+  "karnal-sher-khan": {
+    "path": "/images/martyrs/karnal-sher-khan.jpg",
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://en.wikipedia.org/wiki/File:Karnal_Sher_Khan.png",
+    "credit": "Portrait of Captain Karnal Sher Khan; educational use"
   },
   "lalak-jan": {
-    "file": "Lalak Jan Memorial.jpg",
-    "kind": "memorial",
     "path": "/images/martyrs/lalak-jan.jpg",
-    "license": "CC BY-SA 4.0",
-    "artist": "Kskhh",
-    "credit": "Own work",
-    "source_page": "https://commons.wikimedia.org/wiki/File:Lalak%20Jan%20Memorial.jpg"
+    "kind": "portrait",
+    "license": "Non-free / fair use (educational)",
+    "source_page": "https://ur.wikipedia.org/wiki/%D9%81%D8%A7%D8%A6%D9%84:Lalak_Jan.jpg",
+    "credit": "Urdu Wikipedia portrait of Havildar Lalak Jan (NLI); educational use"
   }
 }
