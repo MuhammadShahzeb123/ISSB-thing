@@ -1,0 +1,308 @@
+[
+  {
+    "section": "general-knowledge",
+    "id": "indus-waters-treaty",
+    "title": "Indus Waters Treaty (1960)",
+    "audio": "/audio/gk/indus-waters-treaty.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "geography-pakistan",
+    "title": "Geography of Pakistan",
+    "audio": "/audio/gk/geography-pakistan.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "provinces-territories",
+    "title": "Provinces & territories",
+    "audio": "/audio/gk/provinces-territories.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "rivers-dams",
+    "title": "Rivers, dams & hydropower",
+    "audio": "/audio/gk/rivers-dams.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "borders-neighbours",
+    "title": "Borders & neighbours",
+    "audio": "/audio/gk/borders-neighbours.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "khyber-pass",
+    "title": "Khyber Pass",
+    "audio": "/audio/gk/khyber-pass.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "strategic-passes",
+    "title": "Strategic mountain passes",
+    "audio": "/audio/gk/strategic-passes.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "cpec",
+    "title": "CPEC (China–Pakistan Economic Corridor)",
+    "audio": "/audio/gk/cpec.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "gwadar",
+    "title": "Gwadar Port",
+    "audio": "/audio/gk/gwadar.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "china-pakistan",
+    "title": "China–Pakistan relations",
+    "audio": "/audio/gk/china-pakistan.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "arabian-sea",
+    "title": "Arabian Sea & Pakistan’s coastline",
+    "audio": "/audio/gk/arabian-sea.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "mountains-peaks",
+    "title": "Mountains & peaks",
+    "audio": "/audio/gk/mountains-peaks.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "water-security",
+    "title": "Water security for Pakistan",
+    "audio": "/audio/gk/water-security.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "orgs-memberships",
+    "title": "Pakistan in international organisations",
+    "audio": "/audio/gk/orgs-memberships.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "defence-pact-context",
+    "title": "Saudi–Türkiye–Pakistan defence ties",
+    "audio": "/audio/gk/defence-pact-context.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "paf-fighters",
+    "title": "PAF fighter jets",
+    "audio": "/audio/gk/paf-fighters.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "paf-transport",
+    "title": "PAF transport & tanker aircraft",
+    "audio": "/audio/gk/paf-transport.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "paf-fleet-size",
+    "title": "How many planes does the PAF have?",
+    "audio": "/audio/gk/paf-fleet-size.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "pakistan-air-defence",
+    "title": "Pakistan air-defence systems",
+    "audio": "/audio/gk/pakistan-air-defence.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "recent-paf-military",
+    "title": "Recent PAF & military activity",
+    "audio": "/audio/gk/recent-paf-military.mp3"
+  },
+  {
+    "section": "general-knowledge",
+    "id": "abhinandan-tea-incident",
+    "title": "Captured pilot & “the tea is fantastic”",
+    "audio": "/audio/gk/abhinandan-tea-incident.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "muhammad-sarwar",
+    "title": "Captain Muhammad Sarwar",
+    "audio": "/audio/martyrs/muhammad-sarwar.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "saif-ali-janjua",
+    "title": "Naik Saif Ali Janjua",
+    "audio": "/audio/martyrs/saif-ali-janjua.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "tufail-muhammad",
+    "title": "Major Tufail Muhammad",
+    "audio": "/audio/martyrs/tufail-muhammad.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "raja-aziz-bhatti",
+    "title": "Major Raja Aziz Bhatti",
+    "audio": "/audio/martyrs/raja-aziz-bhatti.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "rashid-minhas",
+    "title": "Pilot Officer Rashid Minhas",
+    "audio": "/audio/martyrs/rashid-minhas.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "muhammad-akram",
+    "title": "Major Muhammad Akram",
+    "audio": "/audio/martyrs/muhammad-akram.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "shabbir-sharif",
+    "title": "Major Shabbir Sharif",
+    "audio": "/audio/martyrs/shabbir-sharif.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "muhammad-hussain",
+    "title": "Sawar Muhammad Hussain",
+    "audio": "/audio/martyrs/muhammad-hussain.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "muhammad-mahfuz",
+    "title": "Lance Naik Muhammad Mahfuz",
+    "audio": "/audio/martyrs/muhammad-mahfuz.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "karnal-sher-khan",
+    "title": "Captain Karnal Sher Khan",
+    "audio": "/audio/martyrs/karnal-sher-khan.mp3"
+  },
+  {
+    "section": "nishan-e-haider",
+    "id": "lalak-jan",
+    "title": "Havildar Lalak Jan",
+    "audio": "/audio/martyrs/lalak-jan.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "long-jump",
+    "title": "Long jump (ditch)",
+    "audio": "/audio/gto/long-jump.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "high-jump",
+    "title": "High jump",
+    "audio": "/audio/gto/high-jump.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "rope-climb",
+    "title": "Rope climb",
+    "audio": "/audio/gto/rope-climb.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "double-rope",
+    "title": "Double rope",
+    "audio": "/audio/gto/double-rope.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "plank",
+    "title": "Plank walk",
+    "audio": "/audio/gto/plank.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "tyre",
+    "title": "Tyre",
+    "audio": "/audio/gto/tyre.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "tarzan-swing",
+    "title": "Tarzan swing",
+    "audio": "/audio/gto/tarzan-swing.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "zig-zag",
+    "title": "Zig-zag",
+    "audio": "/audio/gto/zig-zag.mp3"
+  },
+  {
+    "section": "gto-outdoor",
+    "id": "boxing-ring",
+    "title": "Boxing ring",
+    "audio": "/audio/gto/boxing-ring.mp3"
+  },
+  {
+    "section": "gto-indoor",
+    "id": "indoor-overview",
+    "title": "Indoor practice overview",
+    "audio": "/audio/gto/indoor-overview.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "overview",
+    "title": "Psychological tests overview",
+    "audio": "/audio/psychological/overview.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "wat-overview",
+    "title": "Word association overview",
+    "audio": "/audio/psychological/wat-overview.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "sentence-completion-overview",
+    "title": "Sentence completion overview",
+    "audio": "/audio/psychological/sentence-completion-overview.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "story-writing-overview",
+    "title": "Story writing overview",
+    "audio": "/audio/psychological/story-writing-overview.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "unified-observe-30-write-210",
+    "title": "unified-observe-30-write-210",
+    "audio": "/audio/psychological/unified-observe-30-write-210.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "story-picture-2",
+    "title": "story-picture-2",
+    "audio": "/audio/psychological/story-picture-2.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "story-picture-3",
+    "title": "story-picture-3",
+    "audio": "/audio/psychological/story-picture-3.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "story-picture-4",
+    "title": "story-picture-4",
+    "audio": "/audio/psychological/story-picture-4.mp3"
+  },
+  {
+    "section": "psychological",
+    "id": "story-picture-1",
+    "title": "story-picture-1",
+    "audio": "/audio/psychological/story-picture-1.mp3"
+  }
+]

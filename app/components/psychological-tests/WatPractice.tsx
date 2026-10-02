@@ -10,6 +10,8 @@ import {
   useTimedWritingSession,
 } from "@/app/lib/psychological-tests/useTimedWritingSession";
 import MethodologyNote from "./MethodologyNote";
+import TitleWithAudio from "@/app/components/TitleWithAudio";
+import { psychNarration } from "@/app/lib/narrationCatalog";
 
 const SESSION_WORDS = 175;
 const WORD_SECONDS = 10;
@@ -81,9 +83,14 @@ export default function WatPractice() {
               <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-800">
                 Word Association Test
               </p>
-              <h1 className="mt-3 text-4xl font-black sm:text-6xl">
-                Respond before the word changes.
-              </h1>
+              <TitleWithAudio
+                as="h1"
+                script={psychNarration["wat-overview"]?.script}
+                audioSrc={psychNarration["wat-overview"]?.audio}
+                playLabel="Play word association overview"
+              >
+                <span className="mt-3 text-4xl font-black sm:text-6xl">Respond before the word changes.</span>
+              </TitleWithAudio>
               <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">
                 A simulation selects {SESSION_WORDS} words from the preserved
                 legacy practice bank. Each response autosaves under the word’s

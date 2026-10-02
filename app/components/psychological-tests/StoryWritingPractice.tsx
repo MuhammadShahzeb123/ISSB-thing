@@ -14,6 +14,8 @@ import {
   useTimedWritingSession,
 } from "@/app/lib/psychological-tests/useTimedWritingSession";
 import MethodologyNote from "./MethodologyNote";
+import TitleWithAudio from "@/app/components/TitleWithAudio";
+import { psychNarration } from "@/app/lib/narrationCatalog";
 
 const STORY_PHASES: readonly SessionPhase[] = [
   {
@@ -147,9 +149,17 @@ export default function StoryWritingPractice() {
               <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-800">
                 Story Writing
               </p>
-              <h1 className="mt-3 text-4xl font-black sm:text-6xl">
-                Observe first. Write from memory.
-              </h1>
+              <TitleWithAudio
+                as="h1"
+                className="mt-3"
+                script={psychNarration["story-writing-overview"]?.script}
+                audioSrc={psychNarration["story-writing-overview"]?.audio}
+                playLabel="Play story writing overview"
+              >
+                <span className="text-4xl font-black sm:text-6xl">
+                  Observe first. Write from memory.
+                </span>
+              </TitleWithAudio>
               <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">
                 One fixed session: four pictures followed by two opening
                 sentences. The editor is hidden while observing; the stimulus
@@ -291,7 +301,19 @@ export default function StoryWritingPractice() {
 
         {isObserving ? (
           <section className="mt-6">
-            <PromptPreview prompt={currentPrompt} />
+            {currentPrompt.kind === "picture" && psychNarration[currentPrompt.id] ? (
+                <div className="mb-3">
+                  <TitleWithAudio
+                    as="h2"
+                    script={psychNarration[currentPrompt.id].script}
+                    audioSrc={psychNarration[currentPrompt.id].audio}
+                    playLabel={`Play description of picture ${currentPrompt.sequence}`}
+                  >
+                    Picture {currentPrompt.sequence}
+                  </TitleWithAudio>
+                </div>
+              ) : null}
+              <PromptPreview prompt={currentPrompt} />
             <p className="mt-4 text-center text-sm font-black uppercase tracking-wide text-slate-600">
               Editor locked during observation
             </p>

@@ -86,13 +86,14 @@ export default function CurrentAffairsPage() {
                     <p className="prep-muted mb-2">
                       <time dateTime={brief.date}>{formatDate(brief.date)}</time> · {brief.region}
                     </p>
-                    <h3 className="text-xl font-black">{brief.title}</h3>
-                    <p className="mt-3">{brief.summary}</p>
+                    <div className="prep-ask-block mt-2">
+                      <p className="prep-ask-label">Interview question</p>
+                      <h3 className="prep-ask">{brief.question}</h3>
+                    </div>
+                    <p className="prep-muted mt-3">Context · {brief.title}</p>
+                    <p className="mt-2">{brief.summary}</p>
                     <p className="mt-3">
                       <strong>Why Pakistan:</strong> {brief.whyPakistan}
-                    </p>
-                    <p className="mt-3">
-                      <strong>Likely question:</strong> {brief.question}
                     </p>
                     <details className="prep-details mt-3">
                       <summary>Answer points</summary>

@@ -7,6 +7,8 @@ import PracticeTimer from '../../components/PracticeTimer';
 import { allTopics } from '../../lib/contentBank';
 import { sourcePlanningScenarios } from '../../lib/gtoData';
 import { downloadText } from '../../lib/practice';
+import TitleWithAudio from '../../components/TitleWithAudio';
+import { gtoNarration } from '../../lib/narrationCatalog';
 
 const planningFields = ['Priorities and deadlines', 'People, vehicles and supplies', 'Routes and travel calculations', 'Task allocation and timings', 'Risks, missing facts and alternatives', 'One-minute final group plan'];
 
@@ -30,7 +32,7 @@ export default function IndoorGto() {
   return (
     <div className="neo-page neo-page--leadership prep-page"><div className="prep-shell">
       <DimensionNav active="gto" />
-      <header className="prep-header"><h1>Think clearly. Work as a group.</h1><p>Indoor GTO practice: give a short lecture, discuss a topic and explain a workable group plan.</p></header>
+      <header className="prep-header"><TitleWithAudio as="h1" script={gtoNarration['indoor-overview']?.script} audioSrc={gtoNarration['indoor-overview']?.audio} playLabel="Play indoor GTO overview">Think clearly. Work as a group.</TitleWithAudio><p>Indoor GTO practice: give a short lecture, discuss a topic and explain a workable group plan.</p></header>
       <div className="prep-note">Outdoor obstacles have their own animated walkthroughs: <a href="/gto/outdoor">open outdoor obstacles</a>. The photographed timetable is academy guidance, not a guaranteed ISSB schedule. The official board says activities can change. <a href="https://issb.gov.pk/selection-system" target="_blank" rel="noreferrer">Read the official selection system.</a></div>
       <div className="prep-tabs" aria-label="Indoor GTO activities">{[['lecture', 'Lecture practice'], ['discussion', 'Group discussion'], ['planning', 'Group planning']].map(([id, label]) => <button type="button" key={id} aria-pressed={tab === id} onClick={() => { setTab(id as (typeof TABS)[number]); setPhase('prepare'); }}>{label}</button>)}</div>
       {tab !== 'planning' ? <>
@@ -38,7 +40,7 @@ export default function IndoorGto() {
         <p className="prep-muted mb-5">{topics.length} matching topic entries. The photos label these as discussion topics; the same motions are also available here for a short lecture.</p>
         {selected ? <div className="prep-split"><section className="prep-panel">
           <label className="prep-field">Choose a topic<select value={selected.id} dir={language === 'ur' ? 'rtl' : 'ltr'} lang={language} onChange={(event) => { setTopicId(event.target.value); setPhase('prepare'); }}>{topics.map((topic) => <option key={topic.id} value={topic.id}>{topic.title}</option>)}</select></label>
-          <h2 className="prep-question" lang={selected.language} dir={selected.language === 'ur' ? 'rtl' : 'ltr'}>{selected.title}</h2>
+          <div className="prep-ask-block"><p className="prep-ask-label">{tab === 'lecture' ? 'Lecture topic' : 'Discussion motion'}</p><h2 className="prep-ask" lang={selected.language} dir={selected.language === 'ur' ? 'rtl' : 'ltr'}>{selected.title}</h2></div>
           <a className="prep-source-link" href={`/sources#${selected.sourceImage}`}>Source page {selected.sourcePage}</a>
           <div className="prep-note">A debate motion is not an established fact or this site’s view. You may challenge its premise. Support your own position with reasons and a concrete example.</div>
           <PracticeTimer key={`${tab}-${selected.id}-${phase}`} seconds={tab === 'discussion' ? 900 : 120} label={tab === 'discussion' ? 'Optional 15-minute discussion' : phase === 'prepare' ? '2-minute preparation practice' : '2-minute lecture, as in the source schedule'} />

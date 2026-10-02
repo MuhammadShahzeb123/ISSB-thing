@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import TitleWithAudio from './TitleWithAudio';
+import SpeakButton from './SpeakButton';
+import { gkNarration } from '../lib/narrationCatalog';
 import {
   generalKnowledgeCards,
   gkCategories,
@@ -64,6 +67,15 @@ function TopicCardButton({
         <span className="gk-tile-cta">Open topic →</span>
       </button>
       <div className="gk-tile-toolbar">
+        {gkNarration[topic.id] ? (
+          <span onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}>
+            <SpeakButton
+              script={gkNarration[topic.id].script}
+              audioSrc={gkNarration[topic.id].audio}
+              label={`Play audio for ${topic.title}`}
+            />
+          </span>
+        ) : null}
         <button
           type="button"
           className="gk-mark-btn"
@@ -151,7 +163,15 @@ function GkModal({
         {state.kind === 'topic' ? (
           <article className="gk-modal-body">
             <p className="gk-tile-kicker">{gkCategories[state.topic.category].label}</p>
-            <h2 id={titleId}>{state.topic.title}</h2>
+            <TitleWithAudio
+              as="h2"
+              className="gk-modal-title-row"
+              script={gkNarration[state.topic.id]?.script}
+              audioSrc={gkNarration[state.topic.id]?.audio}
+              playLabel={`Play audio for ${state.topic.title}`}
+            >
+              <span id={titleId}>{state.topic.title}</span>
+            </TitleWithAudio>
             <p className="gk-modal-summary">{state.topic.summary}</p>
             <h3>Key points</h3>
             <ul>
@@ -224,7 +244,10 @@ function GkModal({
               <span className={badgeClass(state.card.status)}>{gkStatusLabels[state.card.status]}</span>
               <span className="gk-badge gk-badge--source">{gkCategories[state.card.category].label}</span>
             </div>
-            <h2 id={titleId}>{state.card.prompt}</h2>
+            <div className="prep-ask-block">
+              <p className="prep-ask-label">Question</p>
+              <h2 id={titleId} className="prep-ask">{state.card.prompt}</h2>
+            </div>
             {state.card.status === 'corrected' && state.card.factCheck && (
               <p className="gk-correction">
                 <strong>Correct answer: </strong>
