@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import GeneralKnowledgeBrowser from "../components/GeneralKnowledgeBrowser";
 import PracticeDisclaimer from "../components/PracticeDisclaimer";
 import { getPreparationArea } from "../lib/siteNavigation";
 
 const area = getPreparationArea("general-knowledge");
+
+export const metadata: Metadata = {
+  title: "General Knowledge - ISSB Prep",
+  description:
+    "Card-based ISSB general knowledge: Indus Waters Treaty, Pakistan geography, Khyber Pass, CPEC, and photo-sourced Q&A with pop-up briefings.",
+};
 
 export default function GeneralKnowledgeOverviewPage() {
   return (
@@ -12,6 +19,9 @@ export default function GeneralKnowledgeOverviewPage() {
         <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-800">Preparation area</p>
         <h1 className="mt-3 text-4xl font-black sm:text-6xl">{area.label}</h1>
         <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">{area.summary}</p>
+        <p className="mt-3 max-w-2xl text-base font-semibold leading-7 text-slate-600">
+          Tap a card for a pop-up briefing — Indus Waters Treaty, Pakistan geography, Khyber Pass, CPEC, and the full Q&amp;A bank.
+        </p>
         <div className="prep-page mt-8 !p-0 text-left">
           <GeneralKnowledgeBrowser />
         </div>

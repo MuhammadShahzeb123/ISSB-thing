@@ -113,7 +113,7 @@ export const siteNavigation = [
     label: "General Knowledge",
     href: "/general-knowledge",
     classification: "preparation-area",
-    summary: "Review Pakistan, world, service, geography, leadership, and current-affairs knowledge.",
+    summary: "Card-based study topics and Q&A: Indus Waters Treaty, Pakistan geography, Khyber Pass, CPEC, and more.",
     resources: [
       {
         label: "Countries",

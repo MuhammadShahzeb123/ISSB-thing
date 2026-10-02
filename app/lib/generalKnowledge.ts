@@ -8,10 +8,10 @@ import { knowledgePages } from './sourceKnowledge';
 // current-affairs briefings, each in exactly one category.
 
 export const gkCategories = {
-  pakistan: { label: 'Pakistan history & affairs', description: 'Founding, constitution, leaders, provinces, dams and borders.' },
-  military: { label: 'Military & defence', description: 'Gallantry awards, ranks, arms and services, and strategic programmes.' },
-  geography: { label: 'World geography', description: 'Capitals, seas, straits, regions and landforms.' },
-  world: { label: 'World affairs & history', description: 'International organisations, treaties and world history.' },
+  pakistan: { label: 'Pakistan history & affairs', description: 'Founding, constitution, leaders, provinces, Indus Waters Treaty, CPEC, dams and borders.' },
+  military: { label: 'Military & defence', description: 'Gallantry awards, ranks, strategic passes, defence diplomacy and services.' },
+  geography: { label: 'Geography', description: 'Pakistan map, Khyber Pass, rivers, mountains, coasts, capitals and landforms.' },
+  world: { label: 'World affairs & history', description: 'International organisations, China–Pakistan ties, treaties and world history.' },
   science: { label: 'Science & technology', description: 'Physics, earth science and everyday science questions.' },
   islamic: { label: 'Islamic studies', description: 'Seerah, Quran, worship and early Islamic history (Urdu notes, fact-checked).' },
   abbreviations: { label: 'Abbreviations', description: 'Acronyms common in interviews and service life.' },

@@ -65,7 +65,7 @@ export default function HomePage() {
             <h2 id="gk-heading" className="mt-2 text-2xl font-black">{generalKnowledge.label}</h2>
             <p className="mt-3 max-w-3xl leading-7 text-slate-700">{generalKnowledge.summary}</p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <Link href="/general-knowledge" className="cta-button cta-button--secondary">Browse by category</Link>
+              <Link href="/general-knowledge" className="cta-button cta-button--secondary">Open card topics</Link>
               <Link href="/study" className="home-dimension-link">Spaced-repetition deck →</Link>
             </div>
           </section>
