@@ -232,6 +232,7 @@ export const knowledgePages: KnowledgePage[] = [
       ['What are the seven emirates of the UAE?', 'Abu Dhabi, Dubai, Sharjah, Ajman, Umm Al Quwain, Ras Al Khaimah and Fujairah. The source omits Umm Al Quwain.'],
       ['Where is Khanpur Dam?', 'On the Haro River near Khanpur in Khyber Pakhtunkhwa.'], ['Where is Tarbela Dam?', 'On the Indus River in Khyber Pakhtunkhwa.'],
       ['Where is Mangla Dam?', 'On the Jhelum River near Mirpur in Azad Jammu and Kashmir.'], ['Where is Warsak Dam?', 'On the Kabul River near Peshawar.'],
+      ['Which is Pakistan’s largest dam?', 'Tarbela Dam on the Indus River in Khyber Pakhtunkhwa (Haripur / Swabi area). Mangla on the Jhelum is the second-largest storage dam.'],
       ['Where is the Ghazi-Barotha project?', 'On the Indus River, using a diversion and power channel near Ghazi and Barotha. It is a run-of-river hydropower scheme.'],
       ['What is Saindak?', 'A copper-gold mining project in Balochistan, not a dam.'],
       ['Where is the Khyber Pass?', 'Near Peshawar, linking Pakistan with Afghanistan.'], ['Where is the Bolan Pass?', 'In Balochistan.'],

@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SpacedRepetitionDeck from './SpacedRepetitionDeck';
 import TitleWithAudio from './TitleWithAudio';
-import { currentAffairs, regionPrimer, researchAsOf, researchCaveat } from '../lib/currentAffairs';
+import CurrentAffairsBrowser from './CurrentAffairsBrowser';
+import { currentAffairs, researchAsOf, researchCaveat } from '../lib/currentAffairs';
 import { awardExplanation, militaryStories, type MilitaryStory } from '../lib/militaryStories';
 import { sourcePhotos } from '../lib/contentBank';
 import { interviewSourcePages } from '../lib/interviewSource';
@@ -13,153 +14,22 @@ import { martyrNarration } from '../lib/narrationCatalog';
 const getStoryId = (story: MilitaryStory) => story.id;
 
 export function CurrentAffairsStudy() {
-  const [region, setRegion] = useState('All');
-  const [query, setQuery] = useState('');
-  const [stale, setStale] = useState(false);
-  useEffect(() => {
-    const timer = window.setTimeout(() => setStale(Date.now() - Date.parse(`${researchAsOf}T00:00:00Z`) > 7 * 86400000), 0);
-    return () => window.clearTimeout(timer);
-  }, []);
-  const briefs = currentAffairs.filter(
-    (brief) =>
-      (region === 'All' || brief.region === region) &&
-      `${brief.title} ${brief.summary} ${brief.question}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
-  );
   return (
-    <>
-      <section className="prep-panel">
-        <h2>Current-affairs briefing</h2>
-        <p>
-          <strong>Research cutoff: {researchAsOf}.</strong> {currentAffairs.length} briefings and {regionPrimer.length}{' '}
-          country primers. This is a dated report, not a live feed.
-        </p>
-        <div className="prep-note">
-          {stale
-            ? 'This snapshot is more than a week old. Check fresh reporting before relying on it in an interview.'
-            : 'Conflicts and government positions change quickly. Recheck each briefing’s watch list before an interview.'}
-        </div>
-        <details className="prep-details">
-          <summary>How to read the evidence</summary>
-          <p>{researchCaveat}</p>
-        </details>
-        <button
-          type="button"
-          className="prep-button prep-button-secondary"
-          onClick={() =>
-            downloadText(
-              `issb-current-affairs-${researchAsOf}.txt`,
-              [
-                researchCaveat,
-                ...currentAffairs.map(
-                  (brief) =>
-                    `${brief.title}\nUpdated source date: ${brief.date}\n${brief.summary}\n\nWhy Pakistan: ${brief.whyPakistan}\nInterview: ${brief.question}\n${brief.answerPoints.join('\n')}\nWatch next:\n${brief.watch.join('\n')}\nSources:\n${brief.sources.map((source) => `${source.title} (${source.publishedAt})\n${source.url}`).join('\n')}`,
-                ),
-              ].join('\n\n'),
-            )
-          }
-        >
-          Download report
-        </button>
-      </section>
-
-      <div className="prep-filters">
-        <label className="prep-field">
-          Region
-          <select value={region} onChange={(event) => setRegion(event.target.value)}>
-            {['All', 'Pakistan', 'Asia', 'Middle East', 'Russia and Ukraine'].map((value) => (
-              <option key={value}>{value}</option>
-            ))}
-          </select>
-        </label>
-        <label className="prep-field">
-          Search the briefing
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Iran, energy, civilians..."
-          />
-        </label>
-      </div>
-      <p className="prep-muted mb-4" role="status">
-        {briefs.length} matching briefings · question shown first on each card
-      </p>
-      {!briefs.length && <div className="prep-panel">No briefing matches. Try a broader search.</div>}
-
-      {briefs.map((brief) => (
-        <article className="prep-panel" key={brief.id}>
-          <div className="prep-status">
-            <span className="prep-muted">{brief.region}</span>
-            <time className="prep-muted" dateTime={brief.date}>
-              Latest cited publication: {brief.date}
-            </time>
-          </div>
-
-          <div className="prep-ask-block">
-            <p className="prep-ask-label">Interview question</p>
-            <h2 className="prep-ask">{brief.question}</h2>
-          </div>
-
-          <p className="prep-muted" style={{ marginBottom: '0.35rem' }}>
-            Context · {brief.title}
-          </p>
-          <p className="prep-secondary" style={{ marginTop: 0 }}>
-            {brief.summary}
-          </p>
-
-          <details className="prep-details">
-            <summary>Answer points &amp; why it matters to Pakistan</summary>
-            <h3>Why it matters to Pakistan</h3>
-            <p>{brief.whyPakistan}</p>
-            <h3>Answer points</h3>
-            <ul>
-              {brief.answerPoints.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
-            <h3>Check before your interview</h3>
-            <ul>
-              {brief.watch.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
-          </details>
-
-          <div className="prep-muted">
-            <strong>Sources</strong>
-            <ul>
-              {brief.sources.map((source) => (
-                <li key={source.url}>
-                  <a href={source.url} target="_blank" rel="noopener noreferrer">
-                    {source.title}
-                  </a>{' '}
-                  <time dateTime={source.publishedAt}>({source.publishedAt})</time>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </article>
-      ))}
-
-      <section className="prep-panel">
-        <h2>Know the region before discussing the news</h2>
-        <p>These country notes are background, not claims that every country is involved in a war.</p>
-        <div className="prep-grid mt-5">
-          {regionPrimer.map((country) => (
-            <details className="prep-details" key={country.country}>
-              <summary>{country.country}</summary>
-              <p>
-                <strong>Capital:</strong> {country.capital}
-              </p>
-              <p>{country.whyItMatters}</p>
-              <a href={country.source} target="_blank" rel="noopener noreferrer">
-                Background source
-              </a>
-            </details>
-          ))}
-        </div>
-      </section>
-    </>
+    <CurrentAffairsBrowser
+      showDownload
+      onDownload={() =>
+        downloadText(
+          `issb-current-affairs-${researchAsOf}.txt`,
+          [
+            researchCaveat,
+            ...currentAffairs.map(
+              (brief) =>
+                `${brief.title}\nUpdated source date: ${brief.date}\n${brief.summary}\n\nWhy Pakistan: ${brief.whyPakistan}\nInterview: ${brief.question}\n${brief.answerPoints.join('\n')}\nWatch next:\n${brief.watch.join('\n')}\nSources:\n${brief.sources.map((source) => `${source.title} (${source.publishedAt})\n${source.url}`).join('\n')}`,
+            ),
+          ].join('\n\n'),
+        )
+      }
+    />
   );
 }
 
