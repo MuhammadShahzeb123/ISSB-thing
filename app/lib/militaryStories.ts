@@ -18,8 +18,8 @@ export interface MilitaryStory {
   memory: string;
   /** Local path under /public, when a free-licensed image is available. */
   image?: string;
-  /** portrait | memorial — memorials used when no free portrait exists. */
-  imageKind?: 'portrait' | 'memorial';
+  /** Card photos are person portraits only (no monuments). */
+  imageKind?: 'portrait';
   imageCredit?: string;
   sources: { title: string; url: string }[];
   caution?: string;
@@ -48,9 +48,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Killed by machine-gun fire during the attack.',
     deathDate: '27 July 1948',
     memory: 'Sarwar: shoulder wound, wire cut, way forward.',
+    
     image: '/images/martyrs/muhammad-sarwar.jpg',
-    imageKind: 'memorial',
-    imageCredit: 'Wikimedia Commons (CC BY 2.0)',
+    imageKind: 'portrait',
+    imageCredit: 'Wikipedia fair-use portrait (Pakistan Army likeness; educational use)',
     sources: [
       {
         title: 'Radio Pakistan: Martyrdom anniversary of Capt. Muhammad Sarwar Shaheed',
@@ -77,9 +78,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Died after being seriously wounded in the battle.',
     deathDate: '26 October 1948',
     memory: 'Janjua: platoon, Kashmir post, equivalent award.',
+    
     image: '/images/martyrs/saif-ali-janjua.jpg',
     imageKind: 'portrait',
-    imageCredit: 'Wikimedia Commons (CC BY 2.0)',
+    imageCredit: 'Wikimedia Commons CC BY 2.0 (portrait crop from battle-account board)',
     sources: [
       {
         title: 'Pakistan Army archived biography: Naik Saif Ali Janjua',
@@ -108,9 +110,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Died from his combat wounds after being taken to hospital.',
     deathDate: '7 August 1958',
     memory: 'Tufail: wounded commander, grenades, post cleared.',
+    
     image: '/images/martyrs/tufail-muhammad.jpg',
-    imageKind: 'memorial',
-    imageCredit: 'Wikimedia Commons (CC BY 2.0)',
+    imageKind: 'portrait',
+    imageCredit: 'Wikipedia fair-use portrait (Pakistan Army likeness; educational use)',
     sources: [
       {
         title: 'Radio Pakistan: Martyrdom anniversary of Major Tufail Muhammad',
@@ -137,9 +140,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Killed by an enemy shell while organizing the defence.',
     deathDate: '12 September 1965',
     memory: 'Bhatti: forward platoon, five days, BRB Canal.',
+    
     image: '/images/martyrs/raja-aziz-bhatti.jpg',
-    imageKind: 'memorial',
-    imageCredit: 'Wikimedia Commons (CC BY 2.0)',
+    imageKind: 'portrait',
+    imageCredit: 'Wikipedia fair-use portrait (educational use)',
     sources: [
       {
         title: 'Radio Pakistan: 60th martyrdom anniversary of Major Aziz Bhatti Shaheed',
@@ -166,9 +170,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Died in the aircraft crash at Goth Ahmed Shah, Sujawal.',
     deathDate: '20 August 1971',
     memory: 'Minhas: training aircraft, struggle for control, border not crossed.',
+    
     image: '/images/martyrs/rashid-minhas.jpg',
-    imageKind: 'memorial',
-    imageCredit: 'Wikimedia Commons (CC BY 2.0)',
+    imageKind: 'portrait',
+    imageCredit: 'Wikipedia fair-use portrait (PAF service photo; educational use)',
     sources: [
       {
         title: 'Pakistan Army archived biography: Pilot Officer Rashid Minhas',
@@ -201,9 +206,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Killed fighting at Hilli.',
     deathDate: '5 December 1971',
     memory: 'Akram: Hilli, company defence, anti-tank party.',
+    
     image: '/images/martyrs/muhammad-akram.jpg',
     imageKind: 'portrait',
-    imageCredit: 'Wikimedia Commons (CC BY-SA 4.0)',
+    imageCredit: 'Wikimedia Commons / ISPR (CC BY-SA 4.0)',
     sources: [
       {
         title: 'Pakistan Army archived biography: Major Mohammad Akram',
@@ -236,9 +242,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Killed by a tank shell during the fighting.',
     deathDate: '6 December 1971',
     memory: 'Shabbir: Sulemanki, take the high ground, hold it.',
+    
     image: '/images/martyrs/shabbir-sharif.jpg',
     imageKind: 'portrait',
-    imageCredit: 'Wikimedia Commons (CC0)',
+    imageCredit: 'Wikipedia fair-use portrait (educational use)',
     sources: [
       {
         title: 'Pakistan Army archived biography: Major Shabbir Sharif',
@@ -271,9 +278,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Killed by machine-gun fire while directing the guns.',
     deathDate: '10 December 1971',
     memory: 'Hussain: driver, tank spotter, fire guide.',
+    
     image: '/images/martyrs/muhammad-hussain.jpg',
-    imageKind: 'memorial',
-    imageCredit: 'Wikimedia Commons (CC BY 2.0)',
+    imageKind: 'portrait',
+    imageCredit: 'Wikipedia fair-use portrait (educational use)',
     sources: [
       {
         title: 'ISPR archived biography: Sowar Muhammad Hussain Shaheed',
@@ -302,6 +310,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Killed by bayonet wounds during close combat inside the bunker, according to Radio Pakistan.',
     deathDate: 'Night of 17 to 18 December 1971',
     memory: 'Mahfuz: broken gun, bunker assault; remembered on 18 December.',
+    
+    image: '/images/martyrs/muhammad-mahfuz.jpg',
+    imageKind: 'portrait',
+    imageCredit: 'Wikipedia fair-use portrait (educational use)',
     sources: [
       {
         title: 'Radio Pakistan: Martyrdom anniversary of Lance Naik Muhammad Mehfooz',
@@ -309,7 +321,7 @@ export const militaryStories: MilitaryStory[] = [
       },
     ],
     caution:
-      'The action occurred during the night of 17 to 18 December. The martyrdom anniversary is commemorated on 18 December. No free-licensed portrait was available on Wikimedia Commons for local hosting.',
+      'The action occurred during the night of 17 to 18 December. The martyrdom anniversary is commemorated on 18 December. Portrait hosted for educational ISSB study use with attribution; re-check licence before commercial reuse.',
   },
   {
     id: 'karnal-sher-khan',
@@ -330,6 +342,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Killed fighting during the Kargil conflict.',
     deathDate: '5 July 1999',
     memory: 'Captain Sher Khan: mountain post, counterattack; Karnal is his name.',
+    
+    image: '/images/martyrs/karnal-sher-khan.jpg',
+    imageKind: 'portrait',
+    imageCredit: 'Wikipedia fair-use portrait (educational use)',
     sources: [
       {
         title: 'Pakistan Army archived biography: Captain Karnal Sher Khan',
@@ -341,7 +357,7 @@ export const militaryStories: MilitaryStory[] = [
       },
     ],
     caution:
-      'His actual rank was Captain. Karnal was part of his name, not the rank Colonel. No free-licensed portrait was available on Wikimedia Commons for local hosting.',
+      'His actual rank was Captain. Karnal was part of his name, not the rank Colonel. Portrait hosted for educational ISSB study use with attribution; re-check licence before commercial reuse.',
   },
   {
     id: 'lalak-jan',
@@ -362,9 +378,10 @@ export const militaryStories: MilitaryStory[] = [
     death: 'Died from severe combat wounds while remaining at his post.',
     deathDate: '7 July 1999',
     memory: 'Lalak Jan: volunteered forward, wounded, held the post.',
+    
     image: '/images/martyrs/lalak-jan.jpg',
-    imageKind: 'memorial',
-    imageCredit: 'Wikimedia Commons (CC BY-SA 4.0)',
+    imageKind: 'portrait',
+    imageCredit: 'Urdu Wikipedia fair-use portrait (educational use)',
     sources: [
       {
         title: 'Pakistan Army archived biography: Havildar Lalak Jan',

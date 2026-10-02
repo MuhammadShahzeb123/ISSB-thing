@@ -96,6 +96,11 @@ export const siteNavigation = [
         description: "Compact photo cards for all eleven recipients: rank, unit, place, date, and short stories.",
       },
       {
+        label: "World affairs & wars",
+        href: "/current-affairs",
+        description: "Compact, sourced briefings on Middle East, Asia, defence pacts, and Pakistan-related conflicts.",
+      },
+      {
         label: "Biodata practice",
         href: "/biodata",
         description: "Privately organise and review your personal record in this browser.",
@@ -139,6 +144,11 @@ export const siteNavigation = [
         label: "Nishan-e-Haider martyrs",
         href: "/nishan-e-haider",
         description: "All recipients of Pakistan's highest gallantry award, with photos and short stories.",
+      },
+      {
+        label: "World affairs & wars",
+        href: "/current-affairs",
+        description: "Latest international politics and wars briefing for ISSB GK and interview prep.",
       },
       {
         label: "Army ranks",

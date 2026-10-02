@@ -1,4 +1,4 @@
-export const researchAsOf = '2026-09-19';
+export const researchAsOf = '2026-10-02';
 
 export interface AffairsSource {
   title: string;
@@ -8,7 +8,7 @@ export interface AffairsSource {
 
 export interface AffairsBrief {
   id: string;
-  region: 'Pakistan' | 'Middle East' | 'Russia and Ukraine';
+  region: 'Pakistan' | 'Middle East' | 'Asia' | 'Russia and Ukraine';
   title: string;
   date: string;
   summary: string;
@@ -19,7 +19,7 @@ export interface AffairsBrief {
   sources: AffairsSource[];
 }
 
-export const researchCaveat = 'Research cutoff: 19 September 2026. This is an ISSB interview study snapshot, not a live news feed. A briefing date is its latest cited publication date, not proof that every event happened that day. Most reporting is from September 2026; the IMF decision of 8 May is explicitly background. Publication dates, reporting periods and republication dates can differ. UN verified casualty figures are minimum documented counts, not complete totals. Official statements and anonymous-source reports are attributed, not treated as independent proof. My assessment and Analysis label suggested reasoning, not news or an official Pakistani position. Limited-access pages are used only for details visible in indexed extracts; public syndications are preferred. Country-primer links support background geography, while dated briefings support current events. Inclusion does not mean a country is at war. Recheck the watch items before an interview, and say when you do not know.';
+export const researchCaveat = 'Research cutoff: 2 October 2026. This is an ISSB interview study snapshot, not a live news feed. A briefing date is its latest cited publication date, not proof that every event happened that day. Core snapshot items remain from September 2026; newer October items cover the Mecca defence pact follow-up, India–Pakistan freeze, Afghanistan border strikes, and Hormuz shipping recovery. The IMF decision of 8 May is explicitly background. Publication dates, reporting periods and republication dates can differ. UN verified casualty figures are minimum documented counts, not complete totals. Official statements and anonymous-source reports are attributed, not treated as independent proof. My assessment and Analysis label suggested reasoning, not news or an official Pakistani position. Limited-access pages are used only for details visible in indexed extracts; public syndications are preferred. Country-primer links support background geography, while dated briefings support current events. Inclusion does not mean a country is at war. Recheck the watch items before an interview, and say when you do not know.';
 
 const evidence = {
   pakistanFinance: {
@@ -176,6 +176,41 @@ const evidence = {
     title: 'Anadolu: New law authorizes Russia sanctions and targeted tariffs, signed 18 September',
     url: 'https://aa.com.tr/en/world/trump-signs-russia-sanctions-bill-into-law-white-house/4061647',
     publishedAt: '2026-09-19',
+  },
+  meccaDefencePact: {
+    title: 'Reuters: Saudi Arabia, Turkey, Pakistan sign Mecca Joint Defence Agreement',
+    url: 'https://www.reuters.com/world/asia-pacific/saudi-arabia-turkey-pakistan-sign-joint-defence-deal-amid-regional-turmoil-2026-08-07/',
+    publishedAt: '2026-08-07',
+  },
+  meccaPactExpand: {
+    title: 'Reuters: Turkish speaker says Mecca pact could expand; ratification still pending',
+    url: 'https://www.reuters.com/world/middle-east/pact-with-saudi-pakistan-could-expand-muslim-world-iran-turkish-speaker-says-2026-09-25/',
+    publishedAt: '2026-09-25',
+  },
+  saudiPakistan2025: {
+    title: 'Reuters: 2025 Saudi-Pakistan Strategic Mutual Defence Agreement and nuclear-umbrella debate',
+    url: 'https://www.reuters.com/business/aerospace-defense/saudi-pact-puts-pakistans-nuclear-umbrella-into-middle-east-security-picture-2025-09-19/',
+    publishedAt: '2025-09-19',
+  },
+  indiaPakistanYearOn: {
+    title: 'BBC: One year after May 2025 India-Pakistan conflict, ceasefire holds but diplomacy frozen',
+    url: 'https://www.bbc.com/news/articles/c4g4093dy39o',
+    publishedAt: '2026-05-07',
+  },
+  indiaPakistanIWT: {
+    title: 'Pakistan Today: Pakistan rejects India IWT claims, stresses dialogue (2 October 2026)',
+    url: 'https://www.pakistantoday.com.pk/2026/10/02/pakistan-rejects-indias-iwt-claims-stresses-dialogue-to-resolve-regional-disputes',
+    publishedAt: '2026-10-02',
+  },
+  afghanistanStrikesOct: {
+    title: 'Al Jazeera / Reuters: Pakistan air strikes in Afghanistan; conflicting casualty accounts',
+    url: 'https://www.aljazeera.com/news/2026/10/1/afghanistan-says-nine-killed-in-pakistani-air-raids-on-kunar-helmand',
+    publishedAt: '2026-10-01',
+  },
+  hormuzFlowsOct: {
+    title: 'Foreign Policy: Hormuz crude flows recover toward prewar levels; refined fuels still lag',
+    url: 'https://foreignpolicy.com/2026/10/01/oil-strait-hormuz-iran-trump-war-gulf-gas-diesel-prices/',
+    publishedAt: '2026-10-01',
   },
 } satisfies Record<string, AffairsSource>;
 
@@ -620,6 +655,94 @@ export const currentAffairs: AffairsBrief[] = [
     ],
     sources: [evidence.russiaSanctionsReuters, evidence.russiaSanctionsAA],
   },
+
+  {
+    id: 'asia-mecca-defence-pact',
+    region: 'Asia',
+    title: 'Defence: Mecca Joint Defence Agreement (Saudi Arabia–Türkiye–Pakistan)',
+    date: '2026-09-25',
+    summary: 'Reported facts: On 7 August 2026 in Mecca, Saudi Arabia, Türkiye and Pakistan signed the Mecca Joint Defence Agreement. Their joint statement said an armed attack on one would be treated as an attack on all, but did not publish detailed operational commitments. The pact builds on the September 2025 Saudi–Pakistan Strategic Mutual Defence Agreement. A 25 September 2026 Reuters report said Turkish officials discussed possible expansion and that parliamentary ratification in Türkiye was still expected.',
+    whyPakistan: 'Analysis: The pact is a major interview topic. It sits beside energy security, Iran mediation roles, and Pakistan’s need to avoid automatic escalation into every Gulf fight.',
+    question: 'What is the Saudi–Türkiye–Pakistan defence pact, and what does it require of Pakistan?',
+    answerPoints: [
+      'Fact: Reuters reported a trilateral mutual-defence wording signed in Mecca on 7 August 2026 by Saudi Crown Prince Mohammed bin Salman, Turkish President Erdoğan and Prime Minister Shehbaz Sharif.',
+      'Limit: The published statement did not spell out troop deployments, nuclear guarantees or automatic war plans. Do not invent those details.',
+      'Background: A bilateral Saudi–Pakistan mutual-defence pact was signed in September 2025. Pakistan publicly played down claims that its nuclear deterrent was being extended to allies.',
+      'Dated update: On 25 September 2026 Reuters reported Turkish political talk of wider Muslim-world membership, while ratification and operational frameworks were still unfinished.',
+      'My assessment: Explain collective deterrence, honour lawful commitments, keep diplomacy open with neighbours, and separate political symbolism from verified military orders.',
+    ],
+    watch: [
+      'Official texts, ratification votes and any published implementing protocols.',
+      'Pakistani government statements if a partner is attacked.',
+      'How the pact interacts with existing US, NATO (Türkiye) and Gulf security arrangements.',
+    ],
+    sources: [evidence.meccaDefencePact, evidence.meccaPactExpand, evidence.saudiPakistan2025],
+  },
+  {
+    id: 'asia-india-pakistan-freeze',
+    region: 'Asia',
+    title: 'India–Pakistan: ceasefire holds, diplomacy stays frozen',
+    date: '2026-10-02',
+    summary: 'Reported facts: A BBC review published on 7 May 2026 said the May 2025 India–Pakistan conflict lasted about four days before a ceasefire, after which formal diplomacy, trade, cricket and the Indus Waters Treaty framework remained largely frozen. Border incidents and political signalling continued under a “brittle equilibrium.” On 2 October 2026, Pakistani reporting rejected Indian claims about the Indus Waters Treaty and stressed dialogue on regional disputes.',
+    whyPakistan: 'Analysis: ISSB interviews often test whether a candidate can describe India–Pakistan tensions calmly, without slogans, and link security to water, trade and escalation risk.',
+    question: 'How would you describe India–Pakistan relations after the 2025 conflict?',
+    answerPoints: [
+      'Fact: The May 2025 crisis was short but severe. The BBC’s one-year review said the ceasefire held while normalisation did not return.',
+      'Reported effects: Border closures, suspended trade, severed cricket ties and the Indus Waters Treaty remaining in abeyance were central markers of the freeze.',
+      'Discipline: Separate verified ceasefire status from unverified LoC claim-and-counterclaim on any single day.',
+      'Dated update: Pakistani media on 2 October 2026 emphasised dialogue on water and regional disputes while rejecting India’s IWT narrative — treat this as an attributed position, not a court verdict.',
+      'My assessment: Prefer restraint, evidence-led security answers, and practical de-escalation channels without denying real threats or core interests.',
+    ],
+    watch: [
+      'Official statements on LoC incidents and any back-channel contacts.',
+      'Indus Waters Treaty technical and legal developments.',
+      'Any renewed trade, visa or sports signals — or their continued absence.',
+    ],
+    sources: [evidence.indiaPakistanYearOn, evidence.indiaPakistanIWT],
+  },
+  {
+    id: 'asia-afghanistan-border-strikes',
+    region: 'Asia',
+    title: 'Afghanistan: cross-border strikes and disputed civilian harm',
+    date: '2026-10-01',
+    summary: 'Reported facts: On 1 October 2026, Al Jazeera and Reuters reported Pakistani air strikes inside Afghanistan. Pakistan’s Information Ministry said it hit TTP and BLA hideouts and killed 22 fighters. Afghan Taliban spokesman Zabihullah Mujahid said at least nine civilians were killed. UNAMA said at least ten civilians, mostly children, were killed. The accounts conflict; independent verification of every casualty claim was not available in the same reports.',
+    whyPakistan: 'Analysis: Border militancy, Afghan denial of harbouring TTP, and civilian protection are recurring ISSB themes. Candidates must hold two ideas at once: security needs and international-law restraints.',
+    question: 'How should Pakistan handle TTP threats without deepening the Afghanistan crisis?',
+    answerPoints: [
+      'Attributed Pakistani position: Strikes were described as calibrated action against TTP and BLA camps based on intelligence.',
+      'Attributed Afghan and UN positions: Kabul called the raids aggression; UNAMA reported civilian deaths and urged de-escalation.',
+      'Evidence discipline: Do not present one side’s death toll as settled fact when the same story records conflicting figures.',
+      'Context: Islamabad links Afghan soil to cross-border attacks; Kabul denies harbouring those groups. Both claims need evidence, not slogans.',
+      'My assessment: Target lawful military objectives, minimise civilian harm, publish credible evidence where possible, and keep diplomatic channels open with Kabul and mediators.',
+    ],
+    watch: [
+      'UNAMA and verified hospital or local authority casualty updates.',
+      'Any resumed Turkey/Qatar or other mediation tracks.',
+      'TTP/BLA attack patterns inside Pakistan after the strikes.',
+    ],
+    sources: [evidence.afghanistanStrikesOct, evidence.kohatAP],
+  },
+  {
+    id: 'middle-east-hormuz-recovery-oct',
+    region: 'Middle East',
+    title: 'Energy: Hormuz crude recovers, but fuel prices stay fragile',
+    date: '2026-10-01',
+    summary: 'Reported facts: Early October 2026 reporting said crude tanker flows through the Strait of Hormuz had returned toward prewar levels under naval escort, while refined-fuel (gasoline and diesel) exports still lagged. Markets therefore remained sensitive even as headline crude volumes improved.',
+    whyPakistan: 'Analysis: Pakistan’s import bill and household fuel prices track Gulf disruption. Crude recovery helps, but diesel and LNG shortfalls can still hurt transport and power.',
+    question: 'If Hormuz crude is flowing again, why can Pakistani fuel still feel expensive?',
+    answerPoints: [
+      'Fact: Crude transit volume and refined-product availability are different. Recovery of one does not automatically fix the other.',
+      'Link: Earlier September reporting had already shown expensive Asian spot LNG and Pakistani austerity measures during Gulf disruption.',
+      'My assessment: Watch confirmed cargo arrivals, diesel stocks and official price notifications — not only global crude headlines.',
+      'Interview habit: Separate shipping-lane status, cargo contracts and domestic subsidy policy.',
+    ],
+    watch: [
+      'Daily or weekly Hormuz transit figures from reputable maritime trackers.',
+      'Pakistan LNG and diesel arrival schedules.',
+      'Any renewed attacks on tankers or energy infrastructure.',
+    ],
+    sources: [evidence.hormuzFlowsOct, evidence.pakistanEnergy],
+  },
 ];
 
 export const regionPrimer: { country: string; capital: string; whyItMatters: string; source: string }[] = [
@@ -628,6 +751,18 @@ export const regionPrimer: { country: string; capital: string; whyItMatters: str
     capital: 'Islamabad',
     whyItMatters: 'Home-country focus: connect foreign energy costs with household prices, public finances, security and climate resilience. Remittances and overseas Pakistanis also make regional stability important.',
     source: 'https://www.britannica.com/summary/Pakistan',
+  },
+  {
+    country: 'India',
+    capital: 'New Delhi',
+    whyItMatters: 'Pakistan\'s eastern neighbour and the other nuclear-armed South Asian state. After the May 2025 conflict, study ceasefire status, LoC incidents, water diplomacy and frozen trade without turning the answer into slogans.',
+    source: 'https://www.britannica.com/place/India',
+  },
+  {
+    country: 'Afghanistan',
+    capital: 'Kabul',
+    whyItMatters: 'Western neighbour whose territory is central to Pakistan\'s TTP debate, refugee questions and cross-border strikes. Distinguish the Taliban government, Afghan civilians and Pakistani militant groups.',
+    source: 'https://www.britannica.com/place/Afghanistan',
   },
   {
     country: 'Saudi Arabia',
