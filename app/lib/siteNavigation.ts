@@ -68,7 +68,7 @@ export const siteNavigation = [
       {
         label: "Indoor GTO practice",
         href: "/gto/indoor",
-        description: "Lecture topics, group discussion motions, and planning exercises from the study photos.",
+        description: "Lecture topics, group discussion, and ten ISSB group planning tasks with sketch maps.",
       },
       {
         label: "Outdoor obstacles",
