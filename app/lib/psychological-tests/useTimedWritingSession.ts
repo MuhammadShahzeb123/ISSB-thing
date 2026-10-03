@@ -175,6 +175,14 @@ export function useTimedWritingSession<TPrompt extends { id: string }>({
 
   const reset = useCallback(() => setSession(null), []);
 
+  const finish = useCallback(() => {
+    setSession((current) =>
+      current && current.status === "running"
+        ? { ...current, status: "finished" }
+        : current,
+    );
+  }, []);
+
   const updateAnswer = useCallback((promptId: string, answer: string) => {
     setSession((current) =>
       current
@@ -205,6 +213,7 @@ export function useTimedWritingSession<TPrompt extends { id: string }>({
     secondsLeft,
     start,
     reset,
+    finish,
     updateAnswer,
   };
 }
