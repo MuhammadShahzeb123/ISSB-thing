@@ -837,6 +837,84 @@ a {
   color: #171717 !important;
 }
 
+/* While the phone keyboard is open, pin the live word and the answer
+   box to the visual viewport so the next word cannot scroll off the top. */
+.wat-keyboard-fit {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.65rem 1rem 0.5rem;
+  overflow: hidden;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(rgba(23, 23, 23, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 23, 23, 0.055) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+}
+.wat-keyboard-fit .wat-word-stage {
+  flex: 1 1 auto;
+  min-height: 4.25rem;
+  margin-top: 0.45rem;
+  padding: 0.65rem 0.75rem;
+}
+.wat-keyboard-fit .wat-word {
+  font-size: clamp(1.85rem, 14vw, 3.25rem) !important;
+  line-height: 1.05;
+}
+.wat-keyboard-fit textarea.wat-response {
+  flex: 0 0 auto;
+  min-height: 3.25rem !important;
+  max-height: 5.75rem;
+  margin-top: 0.45rem;
+}
+.wat-keyboard-fit > header,
+.wat-keyboard-fit .wat-run-footer,
+.wat-keyboard-fit textarea.wat-response {
+  flex-shrink: 0;
+}
+.wat-keyboard-fit > header > div:last-child {
+  height: 2.75rem;
+  width: 2.75rem;
+}
+.wat-keyboard-fit > header > div:last-child > span {
+  height: 2.1rem;
+  width: 2.1rem;
+  font-size: 1.15rem;
+}
+.wat-keyboard-fit .wat-run-footer {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  padding-bottom: 0;
+}
+.wat-keyboard-fit .wat-run-footer button {
+  padding: 0.45rem 0.7rem;
+  white-space: nowrap;
+}
+.wat-keyboard-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  color: #171717;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.wat-keyboard-toggle input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.12rem;
+  flex-shrink: 0;
+  accent-color: #1d4ed8;
+}
+
 
 @media (min-width: 640px) {
   .psych-test-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
