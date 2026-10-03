@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import WritingAssessmentPanel from "@/app/components/WritingAssessmentPanel";
 import { watContent } from "@/app/content/psychological-tests/wat";
 import type { WatPrompt } from "@/app/lib/psychological-tests/content";
@@ -15,6 +15,50 @@ import { psychNarration } from "@/app/lib/narrationCatalog";
 
 const WORD_SECONDS = 12;
 const SESSION_LENGTH = 200;
+const KEEP_ABOVE_KEYBOARD_KEY = "issb-wat-keep-above-keyboard";
+/** Gap below this is browser chrome, not an on-screen keyboard. */
+const KEYBOARD_GAP_PX = 100;
+
+type KeyboardLift = { top: number; height: number };
+
+function readKeepAboveKeyboard() {
+  try {
+    const stored = window.localStorage.getItem(KEEP_ABOVE_KEYBOARD_KEY);
+    if (stored === "0") return false;
+    if (stored === "1") return true;
+  } catch {
+    /* private mode */
+  }
+  return true;
+}
+
+function measureKeyboardLift(
+  baselineHeight: number,
+  answerFocused: boolean,
+): { lift: KeyboardLift | null; baselineHeight: number } {
+  const viewport = window.visualViewport;
+  if (!viewport) return { lift: null, baselineHeight };
+  const height = viewport.height;
+  const gap = window.innerHeight - height;
+  let nextBaseline = baselineHeight;
+  if (height > nextBaseline) nextBaseline = height;
+  // Only refresh the resting height while the answer box is not focused.
+  // Otherwise a browser that shrinks innerHeight with the keyboard looks "closed".
+  if (!answerFocused && gap < KEYBOARD_GAP_PX) nextBaseline = height;
+  const keyboardOpen =
+    gap >= KEYBOARD_GAP_PX || height < nextBaseline - KEYBOARD_GAP_PX;
+  if (!keyboardOpen) return { lift: null, baselineHeight: nextBaseline };
+  return {
+    lift: { top: viewport.offsetTop, height },
+    baselineHeight: nextBaseline,
+  };
+}
+
+function liftsMatch(left: KeyboardLift | null, right: KeyboardLift | null) {
+  if (left === right) return true;
+  if (!left || !right) return false;
+  return Math.abs(left.top - right.top) < 0.5 && Math.abs(left.height - right.height) < 0.5;
+}
 const WAT_PHASES: readonly SessionPhase[] = [
   { id: "writing", durationSeconds: WORD_SECONDS },
 ];
@@ -60,8 +104,32 @@ function shuffledSessionIds(prompts: readonly WatPrompt[]) {
   return ids.slice(0, Math.min(SESSION_LENGTH, ids.length));
 }
 
+function KeepAboveKeyboardToggle({
+  checked,
+  onChange,
+}: {
+  checked: boolean;
+  onChange: (next: boolean) => void;
+}) {
+  return (
+    <label className="wat-keyboard-toggle">
+      <input
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        type="checkbox"
+      />
+      <span>Keep word and answer above keyboard</span>
+    </label>
+  );
+}
+
 export default function WatPractice() {
   const responseRef = useRef<HTMLTextAreaElement>(null);
+  const keepAboveRef = useRef(true);
+  const restingHeightRef = useRef(0);
+  const [keepAboveKeyboard, setKeepAboveKeyboard] = useState(true);
+  const [keyboardLift, setKeyboardLift] = useState<KeyboardLift | null>(null);
+  keepAboveRef.current = keepAboveKeyboard;
   const prompts = useMemo(() => sessionBank(watContent.prompts), []);
   const promptById = useMemo(
     () => new Map<string, WatPrompt>(prompts.map((prompt) => [prompt.id, prompt])),
@@ -85,13 +153,63 @@ export default function WatPractice() {
   });
 
   useEffect(() => {
+    setKeepAboveKeyboard(readKeepAboveKeyboard());
+  }, []);
+
+  const setKeepAbove = useCallback((next: boolean) => {
+    setKeepAboveKeyboard(next);
+    keepAboveRef.current = next;
+    try {
+      window.localStorage.setItem(KEEP_ABOVE_KEYBOARD_KEY, next ? "1" : "0");
+    } catch {
+      /* private mode */
+    }
+    if (!next) setKeyboardLift(null);
+  }, []);
+
+  useEffect(() => {
     if (!currentPrompt || session?.status !== "running") return;
     const field = responseRef.current;
     if (!field) return;
-    field.focus();
+    // preventScroll stops the browser from shoving the new word above the keyboard.
+    field.focus({ preventScroll: keepAboveRef.current });
     const length = field.value.length;
     field.setSelectionRange(length, length);
   }, [currentPrompt, session?.status]);
+
+  useEffect(() => {
+    if (session?.status !== "running" || !keepAboveKeyboard) {
+      setKeyboardLift(null);
+      return;
+    }
+
+    let frame = 0;
+    const apply = () => {
+      const answerFocused = document.activeElement === responseRef.current;
+      const measured = measureKeyboardLift(restingHeightRef.current, answerFocused);
+      restingHeightRef.current = measured.baselineHeight;
+      setKeyboardLift((previous) =>
+        liftsMatch(previous, measured.lift) ? previous : measured.lift,
+      );
+    };
+    apply();
+    // The keyboard inset often lands a frame or two after the word (and focus) changes.
+    frame = window.requestAnimationFrame(() => {
+      apply();
+      frame = window.requestAnimationFrame(apply);
+    });
+
+    const viewport = window.visualViewport;
+    viewport?.addEventListener("resize", apply);
+    viewport?.addEventListener("scroll", apply);
+    window.addEventListener("resize", apply);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      viewport?.removeEventListener("resize", apply);
+      viewport?.removeEventListener("scroll", apply);
+      window.removeEventListener("resize", apply);
+    };
+  }, [currentPrompt?.id, keepAboveKeyboard, session?.status]);
 
   const reviewedIds = useMemo(() => {
     if (!session) return [];
@@ -185,6 +303,12 @@ export default function WatPractice() {
               >
                 Start {SESSION_LENGTH} words
               </button>
+              <div className="mt-4">
+                <KeepAboveKeyboardToggle
+                  checked={keepAboveKeyboard}
+                  onChange={setKeepAbove}
+                />
+              </div>
             </section>
           </div>
         </div>
@@ -266,9 +390,22 @@ export default function WatPractice() {
   const response = session.answers[currentPrompt.id] ?? "";
   const sweep = Math.max(0, Math.min(1, secondsLeft / WORD_SECONDS)) * 360;
 
+  const aboveKeyboard = keyboardLift !== null;
+
   return (
     <main className="neo-page min-h-[100dvh] px-4 py-4 sm:px-6">
-      <div className="mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col">
+      <div
+        className={
+          aboveKeyboard
+            ? "wat-keyboard-fit"
+            : "mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col"
+        }
+        style={
+          aboveKeyboard
+            ? { top: keyboardLift.top, height: keyboardLift.height }
+            : undefined
+        }
+      >
         <header className="flex items-center justify-between gap-3">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-blue-800">
             {session.promptIndex + 1} / {session.promptIds.length}
@@ -309,10 +446,18 @@ export default function WatPractice() {
           ref={responseRef}
           value={response}
         />
-        <div className="mt-3 flex flex-col gap-3 pb-2 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm font-semibold text-slate-600">
-            Next word at 0. Timer restarts at {WORD_SECONDS}.
-          </p>
+        <div className="wat-run-footer mt-3 flex flex-col gap-3 pb-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-2">
+            {aboveKeyboard ? null : (
+              <p className="text-sm font-semibold text-slate-600">
+                Next word at 0. Timer restarts at {WORD_SECONDS}.
+              </p>
+            )}
+            <KeepAboveKeyboardToggle
+              checked={keepAboveKeyboard}
+              onChange={setKeepAbove}
+            />
+          </div>
           <button
             className="wat-secondary border-2 border-slate-950 px-4 py-3 text-sm font-black shadow-[3px_3px_0_#171717]"
             onClick={finish}
