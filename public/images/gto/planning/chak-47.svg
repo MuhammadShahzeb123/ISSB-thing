@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-labelledby="t d">
+  <title id="t">Chak 47 sketch</title>
+  <desc id="d">Practice sketch map. Not a survey. No people are shown.</desc>
+  <rect width="900" height="560" fill="#f6f1e6"/>
+  <rect x="8" y="8" width="884" height="544" fill="none" stroke="#1c1915" stroke-width="2"/>
+  <text x="24" y="36" font-size="18" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">Chak 47 sketch</text>
+  <text x="24" y="54" font-size="12" font-family="Segoe UI, sans-serif" fill="#5c5346">Practice sketch. Not to survey scale. North is up.</text>
+  <polygon points="48,78 58,108 38,108" fill="#1c1915"/>
+  <text x="44" y="124" font-size="12" font-weight="700" font-family="Segoe UI, sans-serif">N</text>
+  <line x1="24" y1="520" x2="164" y2="520" stroke="#1c1915" stroke-width="3"/>
+  <line x1="24" y1="512" x2="24" y2="528" stroke="#1c1915" stroke-width="2"/>
+  <line x1="164" y1="512" x2="164" y2="528" stroke="#1c1915" stroke-width="2"/>
+  <text x="24" y="508" font-size="12" font-family="Segoe UI, sans-serif">Labels give the distances to use.</text>
+  <rect x="720" y="48" width="164" height="148" fill="#fffaf0" stroke="#1c1915" stroke-width="1.5"/>
+  <text x="732" y="68" font-size="12" font-weight="700" font-family="Segoe UI, sans-serif">Legend</text>
+  <line x1="742" y1="78" x2="760" y2="78" stroke="#2f3438" stroke-width="6"/><line x1="742" y1="78" x2="760" y2="78" stroke="#fff" stroke-width="1.2"/><text x="768" y="82" font-size="12" font-family="Segoe UI, sans-serif" fill="#1c1915">Metalled road</text><line x1="742" y1="106" x2="760" y2="106" stroke="#8a5a2b" stroke-width="4" stroke-dasharray="6 4"/><text x="768" y="110" font-size="12" font-family="Segoe UI, sans-serif" fill="#1c1915">Kacha road</text><line x1="742" y1="134" x2="760" y2="134" stroke="#4b5563" stroke-width="3" stroke-dasharray="2 4"/><text x="768" y="138" font-size="12" font-family="Segoe UI, sans-serif" fill="#1c1915">Foot track</text><path d="M742 156 L756 168 M756 156 L742 168" stroke="#9b2c2c" stroke-width="2"/><text x="768" y="166" font-size="12" font-family="Segoe UI, sans-serif" fill="#1c1915">Broken culvert</text>
+  
+<path d="M 160 250 L 360 250 L 360 140" fill="none" stroke="#2f3438" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/><path d="M 160 250 L 360 250 L 360 140" fill="none" stroke="#f6f1e6" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M 360 140 L 560 140" fill="none" stroke="#8a5a2b" stroke-width="5" stroke-dasharray="10 7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 560 180 L 430 300" fill="none" stroke="#4b5563" stroke-width="3" stroke-dasharray="2 6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 160 250 L 160 400" fill="none" stroke="#2f3438" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/><path d="M 160 250 L 160 400" fill="none" stroke="#f6f1e6" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M430 280 l14 14 M444 280 l-14 14" stroke="#9b2c2c" stroke-width="3"/><text x="448" y="292" font-size="12" font-weight="700" fill="#9b2c2c" font-family="Segoe UI, sans-serif">Culvert broken. Ford unsafe.</text>
+<rect x="40" y="220" width="132" height="48" rx="2" fill="#fff8e8" stroke="#1c1915" stroke-width="1.6"/><text x="48" y="240" font-size="13" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">TOWN</text><text x="48" y="256" font-size="11" font-family="Segoe UI, sans-serif" fill="#5c5346">Coaster and pickup</text>
+<rect x="300" y="90" width="132" height="48" rx="2" fill="#fff8e8" stroke="#1c1915" stroke-width="1.6"/><text x="308" y="110" font-size="13" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">CANAL HEAD</text><text x="308" y="126" font-size="11" font-family="Segoe UI, sans-serif" fill="#5c5346">Trolley waits here</text>
+<rect x="560" y="100" width="132" height="48" rx="2" fill="#fff8e8" stroke="#1c1915" stroke-width="1.6"/><text x="568" y="120" font-size="13" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">SCHOOL</text><text x="568" y="136" font-size="11" font-family="Segoe UI, sans-serif" fill="#5c5346">13 people</text>
+<rect x="40" y="390" width="132" height="48" rx="2" fill="#fff8e8" stroke="#1c1915" stroke-width="1.6"/><text x="48" y="410" font-size="13" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">WORKSHOP</text><text x="48" y="426" font-size="11" font-family="Segoe UI, sans-serif" fill="#5c5346">Generator</text>
+<text x="180" y="235" font-size="12" font-weight="700" fill="#1c1915" font-family="Segoe UI, sans-serif">10 km metalled</text>
+<text x="400" y="125" font-size="12" font-weight="700" fill="#1c1915" font-family="Segoe UI, sans-serif">6 km kacha</text>
+<text x="70" y="340" font-size="12" font-weight="700" fill="#1c1915" font-family="Segoe UI, sans-serif">8 km metalled</text>
+
+</svg>

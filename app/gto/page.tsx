@@ -9,6 +9,7 @@ export default function GtoOverviewPage() {
       resources={[
         { label: 'Outdoor obstacles', href: '/gto/outdoor', description: 'Animated, step-by-step technique for all nine individual obstacles.' },
         { label: 'Indoor practice room', href: '/gto/indoor', description: 'Lecture topics, discussion motions and planning problems in one place.' },
+        { label: 'ISSB group planning', href: '/gto/indoor?tab=planning', description: 'Ten sketch-map tasks. Each briefing includes a 15 minute limit. The worked plan stays hidden until you open it.' },
       ]}
     >
       <section className="prep-panel mt-8" aria-labelledby="gto-hssc">

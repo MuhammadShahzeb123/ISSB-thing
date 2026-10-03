@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-labelledby="t d">
+  <title id="t">Mehrabad siding sketch</title>
+  <desc id="d">Practice sketch map. Not a survey. No people are shown.</desc>
+  <rect width="900" height="560" fill="#f6f1e6"/>
+  <rect x="8" y="8" width="884" height="544" fill="none" stroke="#1c1915" stroke-width="2"/>
+  <text x="24" y="36" font-size="18" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">Mehrabad siding sketch</text>
+  <text x="24" y="54" font-size="12" font-family="Segoe UI, sans-serif" fill="#5c5346">Practice sketch. Not to survey scale. North is up.</text>
+  <polygon points="48,78 58,108 38,108" fill="#1c1915"/>
+  <text x="44" y="124" font-size="12" font-weight="700" font-family="Segoe UI, sans-serif">N</text>
+  <line x1="24" y1="520" x2="164" y2="520" stroke="#1c1915" stroke-width="3"/>
+  <line x1="24" y1="512" x2="24" y2="528" stroke="#1c1915" stroke-width="2"/>
+  <line x1="164" y1="512" x2="164" y2="528" stroke="#1c1915" stroke-width="2"/>
+  <text x="24" y="508" font-size="12" font-family="Segoe UI, sans-serif">The kacha bypass avoids the level crossing.</text>
+  <rect x="720" y="48" width="164" height="148" fill="#fffaf0" stroke="#1c1915" stroke-width="1.5"/>
+  <text x="732" y="68" font-size="12" font-weight="700" font-family="Segoe UI, sans-serif">Legend</text>
+  <line x1="742" y1="78" x2="760" y2="78" stroke="#2f3438" stroke-width="6"/><line x1="742" y1="78" x2="760" y2="78" stroke="#fff" stroke-width="1.2"/><text x="768" y="82" font-size="12" font-family="Segoe UI, sans-serif" fill="#1c1915">Metalled road</text><line x1="742" y1="106" x2="760" y2="106" stroke="#8a5a2b" stroke-width="4" stroke-dasharray="6 4"/><text x="768" y="110" font-size="12" font-family="Segoe UI, sans-serif" fill="#1c1915">Kacha bypass</text><line x1="742" y1="134" x2="760" y2="134" stroke="#4b5563" stroke-width="3" stroke-dasharray="2 4"/><text x="768" y="138" font-size="12" font-family="Segoe UI, sans-serif" fill="#1c1915">Jeep track</text><path d="M742 156 L756 168 M756 156 L742 168" stroke="#9b2c2c" stroke-width="2"/><text x="768" y="166" font-size="12" font-family="Segoe UI, sans-serif" fill="#1c1915">Closed level crossing</text>
+  
+<path d="M 180 250 L 180 90" fill="none" stroke="#4b5563" stroke-width="3" stroke-dasharray="2 6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 220 270 L 520 270" fill="none" stroke="#2f3438" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/><path d="M 220 270 L 520 270" fill="none" stroke="#f6f1e6" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M 560 270 L 720 270" fill="none" stroke="#2f3438" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/><path d="M 560 270 L 720 270" fill="none" stroke="#f6f1e6" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M 220 290 L 220 430 L 720 430 L 720 290" fill="none" stroke="#8a5a2b" stroke-width="5" stroke-dasharray="10 7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M500 250 l14 14 M514 250 l-14 14" stroke="#9b2c2c" stroke-width="3"/><text x="518" y="262" font-size="12" font-weight="700" fill="#9b2c2c" font-family="Segoe UI, sans-serif">Level crossing shut until winch clears it</text>
+<rect x="40" y="230" width="160" height="48" rx="2" fill="#fff8e8" stroke="#1c1915" stroke-width="1.6"/><text x="48" y="250" font-size="13" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">YARD</text><text x="48" y="266" font-size="11" font-family="Segoe UI, sans-serif" fill="#5c5346">Jeep and winch truck</text>
+<rect x="80" y="60" width="150" height="48" rx="2" fill="#fff8e8" stroke="#1c1915" stroke-width="1.6"/><text x="88" y="80" font-size="13" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">SIDING</text><text x="88" y="96" font-size="11" font-family="Segoe UI, sans-serif" fill="#5c5346">Injured attendant</text>
+<rect x="430" y="300" width="150" height="48" rx="2" fill="#fff8e8" stroke="#1c1915" stroke-width="1.6"/><text x="438" y="320" font-size="13" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">CROSSING</text><text x="438" y="336" font-size="11" font-family="Segoe UI, sans-serif" fill="#5c5346">Bus waits far side</text>
+<rect x="680" y="200" width="120" height="48" rx="2" fill="#fff8e8" stroke="#1c1915" stroke-width="1.6"/><text x="688" y="220" font-size="13" font-weight="700" font-family="Segoe UI, sans-serif" fill="#1c1915">HOSPITAL</text><text x="688" y="236" font-size="11" font-family="Segoe UI, sans-serif" fill="#5c5346">Far side</text>
+<text x="200" y="150" font-size="12" font-weight="700" fill="#1c1915" font-family="Segoe UI, sans-serif">6 km jeep track</text>
+<text x="300" y="255" font-size="12" font-weight="700" fill="#1c1915" font-family="Segoe UI, sans-serif">8 km metalled to crossing</text>
+<text x="600" y="255" font-size="12" font-weight="700" fill="#1c1915" font-family="Segoe UI, sans-serif">12 km metalled</text>
+<text x="360" y="450" font-size="12" font-weight="700" fill="#1c1915" font-family="Segoe UI, sans-serif">Bypass 12 km kacha</text>
+
+</svg>
