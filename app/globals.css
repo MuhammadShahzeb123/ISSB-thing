@@ -741,6 +741,107 @@ a {
 .dimension-progress dd { font-family: "Courier New", monospace; font-size: 1.6rem; font-weight: 900; }
 .dimension-chip { border: 2px solid var(--ink); background: var(--paper-bright); padding: 0.3rem 0.65rem; font-size: 0.9rem; font-weight: 700; }
 
+/* Psychological hub: named tests first, random draw below them. */
+.psych-tests { margin-top: 2rem; }
+.psych-test-list {
+  list-style: none !important;
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0 0;
+  padding: 0 !important;
+}
+.psych-test-list > li { margin: 0 !important; min-width: 0; }
+.psych-test-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  border: 3px solid var(--ink);
+  background: #fff;
+  padding: 1.15rem 1.2rem 1rem;
+  box-shadow: 6px 6px 0 var(--ink);
+  color: #171717;
+  text-decoration: none;
+  transition: transform 140ms ease, background-color 140ms ease;
+}
+.psych-test-card h3 {
+  margin: 0;
+  color: #171717;
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.psych-test-card p {
+  margin: 0.5rem 0 0;
+  color: #171717;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.psych-test-meta {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  color: #0057a8;
+  font-weight: 900;
+}
+.psych-test-card:hover,
+.psych-test-card:focus-visible {
+  background: var(--yellow);
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+  transform: translate(-2px, -2px);
+}
+.psych-random {
+  margin-top: 1.5rem;
+  border: 2px solid var(--ink);
+  background: var(--paper-bright);
+  padding: 1.1rem 1.15rem 1.25rem;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.psych-random .dimension-start-actions {
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* WAT: neo-page remaps text-white to ink, so a dark stage becomes black on black.
+   These rules stay light paper with dark ink, and beat that remap. */
+.neo-page .wat-word-stage {
+  background-color: #fffaf0 !important;
+  color: #171717 !important;
+}
+.neo-page .wat-word-stage h1,
+.neo-page .wat-word,
+.neo-page .wat-review-word,
+.neo-page .wat-review-text {
+  color: #171717 !important;
+}
+.neo-page .wat-timer-value {
+  background-color: #ffffff !important;
+  color: #171717 !important;
+}
+.neo-page textarea.wat-response {
+  background-color: #ffffff !important;
+  color: #171717 !important;
+  caret-color: #171717;
+}
+.neo-page textarea.wat-response::placeholder {
+  color: #4a453c !important;
+  opacity: 1;
+}
+.neo-page button.wat-primary {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+.neo-page button.wat-secondary {
+  background-color: #ffffff !important;
+  color: #171717 !important;
+}
+
+
+@media (min-width: 640px) {
+  .psych-test-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (min-width: 768px) {
   .home-hero { grid-template-columns: minmax(0, 1fr) auto; }
   .dimension-start { grid-template-columns: minmax(0, 1fr) minmax(15rem, auto); align-items: center; }

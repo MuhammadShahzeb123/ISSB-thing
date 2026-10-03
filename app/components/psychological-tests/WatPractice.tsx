@@ -179,7 +179,7 @@ export default function WatPractice() {
                 <li>Review word and response when you finish.</li>
               </ul>
               <button
-                className="mt-8 w-full border-2 border-slate-950 bg-blue-700 px-5 py-4 text-lg font-black text-white shadow-[4px_4px_0_#171717] transition hover:-translate-y-0.5"
+                className="wat-primary mt-8 w-full border-2 border-slate-950 px-5 py-4 text-lg font-black shadow-[4px_4px_0_#171717] transition hover:-translate-y-0.5"
                 onClick={startRun}
                 type="button"
               >
@@ -222,10 +222,10 @@ export default function WatPractice() {
                   <p className="text-xs font-black uppercase tracking-wide text-blue-800">
                     {index + 1} / {session.promptIds.length}
                   </p>
-                  <p className="mt-1 text-2xl font-black leading-none text-slate-950">
+                  <p className="wat-review-word mt-1 text-2xl font-black leading-none">
                     {prompt?.word}
                   </p>
-                  <p className="mt-2 whitespace-pre-wrap text-base leading-7 text-slate-800">
+                  <p className="wat-review-text mt-2 whitespace-pre-wrap text-base leading-7">
                     {text || "No response"}
                   </p>
                 </article>
@@ -243,14 +243,14 @@ export default function WatPractice() {
           ) : null}
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button
-              className="border-2 border-slate-950 bg-blue-700 px-5 py-3 font-black text-white shadow-[4px_4px_0_#171717]"
+              className="wat-primary border-2 border-slate-950 px-5 py-3 font-black shadow-[4px_4px_0_#171717]"
               onClick={startRun}
               type="button"
             >
               Start another {SESSION_LENGTH}
             </button>
             <button
-              className="border-2 border-slate-950 bg-white px-5 py-3 font-black shadow-[4px_4px_0_#171717]"
+              className="wat-secondary border-2 border-slate-950 px-5 py-3 font-black shadow-[4px_4px_0_#171717]"
               onClick={reset}
               type="button"
             >
@@ -281,13 +281,13 @@ export default function WatPractice() {
               background: `conic-gradient(#1d4ed8 ${sweep}deg, #e5e7eb 0deg)`,
             }}
           >
-            <span className="grid h-12 w-12 place-items-center rounded-full bg-white text-2xl font-black tabular-nums">
+            <span className="wat-timer-value grid h-12 w-12 place-items-center rounded-full text-2xl font-black tabular-nums">
               {secondsLeft}
             </span>
           </div>
         </header>
-        <section className="mt-4 flex flex-1 flex-col items-center justify-center border-2 border-slate-950 bg-neutral-950 px-4 py-10 text-center text-white shadow-[8px_8px_0_#2563eb]">
-          <h1 className="break-words text-5xl font-black leading-none sm:text-8xl">
+        <section className="wat-word-stage mt-4 flex flex-1 flex-col items-center justify-center border-2 border-slate-950 px-4 py-10 text-center shadow-[8px_8px_0_#2563eb]">
+          <h1 className="wat-word break-words text-5xl font-black leading-none sm:text-8xl">
             {currentPrompt.word}
           </h1>
         </section>
@@ -298,7 +298,7 @@ export default function WatPractice() {
           aria-label={`Response to ${currentPrompt.word}`}
           autoComplete="off"
           autoCorrect="on"
-          className="mt-4 min-h-28 w-full border-2 border-slate-950 bg-white p-4 text-base leading-7 outline-none focus:shadow-[6px_6px_0_#2563eb] sm:min-h-32 sm:text-lg"
+          className="wat-response mt-4 min-h-28 w-full border-2 border-slate-950 p-4 text-base leading-7 outline-none focus:shadow-[6px_6px_0_#2563eb] sm:min-h-32 sm:text-lg"
           enterKeyHint="done"
           id="wat-response"
           key={currentPrompt.id}
@@ -314,7 +314,7 @@ export default function WatPractice() {
             Next word at 0. Timer restarts at {WORD_SECONDS}.
           </p>
           <button
-            className="border-2 border-slate-950 bg-white px-4 py-3 text-sm font-black shadow-[3px_3px_0_#171717]"
+            className="wat-secondary border-2 border-slate-950 px-4 py-3 text-sm font-black shadow-[3px_3px_0_#171717]"
             onClick={finish}
             type="button"
           >
