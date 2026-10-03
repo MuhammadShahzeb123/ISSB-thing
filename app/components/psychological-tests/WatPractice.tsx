@@ -14,10 +14,42 @@ import TitleWithAudio from "@/app/components/TitleWithAudio";
 import { psychNarration } from "@/app/lib/narrationCatalog";
 
 const WORD_SECONDS = 12;
-const SET_SIZE = 20;
+const SESSION_LENGTH = 200;
 const WAT_PHASES: readonly SessionPhase[] = [
   { id: "writing", durationSeconds: WORD_SECONDS },
 ];
+
+function isSinglePracticeWord(word: string) {
+  return /^[A-Za-z][A-Za-z'-]*$/.test(word.trim());
+}
+
+/** Unique single words, repeated with fresh ids only if the bank is shorter than a full run. */
+function sessionBank(prompts: readonly WatPrompt[]): WatPrompt[] {
+  const seen = new Set<string>();
+  const usable: WatPrompt[] = [];
+  for (const prompt of prompts) {
+    const word = prompt.word.trim().toUpperCase();
+    if (!isSinglePracticeWord(word) || seen.has(word)) continue;
+    seen.add(word);
+    usable.push({ ...prompt, word });
+  }
+  if (usable.length === 0) return [];
+  if (usable.length >= SESSION_LENGTH) return usable;
+
+  const expanded = [...usable];
+  let round = 1;
+  while (expanded.length < SESSION_LENGTH) {
+    for (const prompt of usable) {
+      if (expanded.length >= SESSION_LENGTH) break;
+      expanded.push({
+        ...prompt,
+        id: `${prompt.id}-cycle-${round}`,
+      });
+    }
+    round += 1;
+  }
+  return expanded;
+}
 
 function shuffledSessionIds(prompts: readonly WatPrompt[]) {
   const ids = prompts.map((prompt) => prompt.id);
@@ -25,11 +57,16 @@ function shuffledSessionIds(prompts: readonly WatPrompt[]) {
     const swapIndex = Math.floor(Math.random() * (index + 1));
     [ids[index], ids[swapIndex]] = [ids[swapIndex], ids[index]];
   }
-  return ids.slice(0, Math.min(SET_SIZE, ids.length));
+  return ids.slice(0, Math.min(SESSION_LENGTH, ids.length));
 }
 
 export default function WatPractice() {
   const responseRef = useRef<HTMLTextAreaElement>(null);
+  const prompts = useMemo(() => sessionBank(watContent.prompts), []);
+  const promptById = useMemo(
+    () => new Map<string, WatPrompt>(prompts.map((prompt) => [prompt.id, prompt])),
+    [prompts],
+  );
   const phasesForPrompt = useCallback(() => WAT_PHASES, []);
   const {
     hydrated,
@@ -41,11 +78,12 @@ export default function WatPractice() {
     finish,
     updateAnswer,
   } = useTimedWritingSession({
-    storageKey: "issb-psychological-wat-session-v2",
+    storageKey: "issb-psychological-wat-session-v3",
     contentVersion: watContent.contentVersion,
-    prompts: watContent.prompts,
+    prompts,
     phasesForPrompt,
   });
+
   useEffect(() => {
     if (!currentPrompt || session?.status !== "running") return;
     const field = responseRef.current;
@@ -69,6 +107,10 @@ export default function WatPractice() {
       }),
     [reviewedIds, session],
   );
+
+  const startRun = useCallback(() => {
+    start(shuffledSessionIds(prompts));
+  }, [prompts, start]);
 
   if (!hydrated) {
     return (
@@ -97,49 +139,51 @@ export default function WatPractice() {
                 playLabel="Play word association overview"
               >
                 <span className="mt-3 text-4xl font-black sm:text-6xl">
-                  One word. Twelve seconds. Write it down.
+                  One word. Twelve seconds. Then the next.
                 </span>
               </TitleWithAudio>
               <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">
-                A set shows {SET_SIZE} words from the practice bank, one at a
-                time. Type a sentence while the word is on screen. When the
-                countdown hits zero the next word appears and your line is
-                saved. At the end you can read every word next to what you
+                A full run is {SESSION_LENGTH} words. Only the current word is
+                on screen. Type your sentence while it is up. At zero the
+                response is saved, the next word appears, and the timer starts
+                again at {WORD_SECONDS}. When all {SESSION_LENGTH} are done, or
+                if you stop early, you can read every word next to what you
                 wrote.
               </p>
               <div className="mt-8">
                 <MethodologyNote>
                   The official ISSB page says English words appear in quick
-                  succession for 10 seconds each. This practice uses{" "}
-                  {WORD_SECONDS} seconds and sets of {SET_SIZE} so you can
-                  finish and review. The word bank is practice content, not
-                  claimed official ISSB material.
+                  succession for about 10 seconds each. This practice uses{" "}
+                  {WORD_SECONDS} seconds and a run of {SESSION_LENGTH} words.
+                  The word bank is practice content, not claimed official ISSB
+                  material.
                 </MethodologyNote>
               </div>
             </section>
             <section className="border-2 border-slate-950 bg-white p-6 shadow-[7px_7px_0_#171717]">
               <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-800">
-                Practice set
+                Full practice
               </p>
               <h2 className="mt-3 text-2xl font-black">
-                {SET_SIZE} words · {WORD_SECONDS}s each
+                {SESSION_LENGTH} words · {WORD_SECONDS}s each
               </h2>
               <p className="mt-3 leading-7 text-slate-700">
-                {watContent.prompts.length} words in the bank. Each set is a
-                fresh shuffle. About {Math.round((SET_SIZE * WORD_SECONDS) / 60)}{" "}
-                minutes, then a full review.
+                {prompts.length} practice words available. Each run picks{" "}
+                {SESSION_LENGTH}. About{" "}
+                {Math.round((SESSION_LENGTH * WORD_SECONDS) / 60)} minutes,
+                then a full review.
               </p>
               <ul className="mt-6 space-y-2 font-semibold text-slate-700">
-                <li>Visible countdown on every word</li>
-                <li>Type your sentence before it advances</li>
-                <li>Review word and response when the set ends</li>
+                <li>One word on screen. No list during the run.</li>
+                <li>Timer resets to {WORD_SECONDS} on every word.</li>
+                <li>Review word and response when you finish.</li>
               </ul>
               <button
                 className="mt-8 w-full border-2 border-slate-950 bg-blue-700 px-5 py-4 text-lg font-black text-white shadow-[4px_4px_0_#171717] transition hover:-translate-y-0.5"
-                onClick={() => start(shuffledSessionIds(watContent.prompts))}
+                onClick={startRun}
                 type="button"
               >
-                Start slideshow
+                Start {SESSION_LENGTH} words
               </button>
             </section>
           </div>
@@ -150,6 +194,7 @@ export default function WatPractice() {
 
   if (session.status === "finished") {
     const answered = completedResponses.length;
+    const finishedAll = reviewedIds.length >= session.promptIds.length;
     return (
       <main className="neo-page min-h-[100dvh] px-4 py-8 sm:px-6 sm:py-12">
         <div className="mx-auto max-w-3xl">
@@ -160,20 +205,25 @@ export default function WatPractice() {
             {answered} of {reviewedIds.length} written
           </h1>
           <p className="mt-3 font-semibold text-slate-700">
-            Check each word against the sentence you typed. Blank lines were
-            left empty when the clock moved on.
+            {finishedAll
+              ? `All ${session.promptIds.length} words are here.`
+              : `Stopped at word ${reviewedIds.length} of ${session.promptIds.length}.`}{" "}
+            Blank lines were left empty when the clock moved on.
           </p>
-          <div className="mt-8 grid gap-3">
+          <div className="mt-8 grid gap-2">
             {reviewedIds.map((id, index) => {
-              const prompt = watContent.prompts.find((item) => item.id === id);
+              const prompt = promptById.get(id);
               const text = session.answers[id]?.trim();
               return (
                 <article
-                  className="border-2 border-slate-950 bg-white p-4"
-                  key={id}
+                  className="border-2 border-slate-950 bg-white px-3 py-3 sm:px-4"
+                  key={`${index}-${id}`}
                 >
                   <p className="text-xs font-black uppercase tracking-wide text-blue-800">
-                    {index + 1}. {prompt?.word}
+                    {index + 1} / {session.promptIds.length}
+                  </p>
+                  <p className="mt-1 text-2xl font-black leading-none text-slate-950">
+                    {prompt?.word}
                   </p>
                   <p className="mt-2 whitespace-pre-wrap text-base leading-7 text-slate-800">
                     {text || "No response"}
@@ -194,10 +244,10 @@ export default function WatPractice() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button
               className="border-2 border-slate-950 bg-blue-700 px-5 py-3 font-black text-white shadow-[4px_4px_0_#171717]"
-              onClick={() => start(shuffledSessionIds(watContent.prompts))}
+              onClick={startRun}
               type="button"
             >
-              Another set
+              Start another {SESSION_LENGTH}
             </button>
             <button
               className="border-2 border-slate-950 bg-white px-5 py-3 font-black shadow-[4px_4px_0_#171717]"
@@ -221,7 +271,7 @@ export default function WatPractice() {
       <div className="mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col">
         <header className="flex items-center justify-between gap-3">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-blue-800">
-            Word {session.promptIndex + 1} of {session.promptIds.length}
+            {session.promptIndex + 1} / {session.promptIds.length}
           </p>
           <div
             aria-label={`${secondsLeft} seconds left`}
@@ -236,31 +286,32 @@ export default function WatPractice() {
             </span>
           </div>
         </header>
-        <section className="mt-4 flex flex-1 flex-col items-center justify-center border-2 border-slate-950 bg-neutral-950 px-4 py-8 text-center text-white shadow-[8px_8px_0_#2563eb]">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-blue-300">
-            Write a sentence
-          </p>
-          <h1 className="mt-4 break-words text-5xl font-black leading-none sm:text-7xl">
+        <section className="mt-4 flex flex-1 flex-col items-center justify-center border-2 border-slate-950 bg-neutral-950 px-4 py-10 text-center text-white shadow-[8px_8px_0_#2563eb]">
+          <h1 className="break-words text-5xl font-black leading-none sm:text-8xl">
             {currentPrompt.word}
           </h1>
         </section>
-        <label className="mt-4 block text-sm font-black text-slate-800" htmlFor="wat-response">
-          Your response
+        <label className="sr-only" htmlFor="wat-response">
+          Your sentence for {currentPrompt.word}
         </label>
         <textarea
           aria-label={`Response to ${currentPrompt.word}`}
-          className="mt-2 min-h-28 w-full border-2 border-slate-950 bg-white p-4 text-base leading-7 outline-none focus:shadow-[6px_6px_0_#2563eb] sm:min-h-32 sm:text-lg"
+          autoComplete="off"
+          autoCorrect="on"
+          className="mt-4 min-h-28 w-full border-2 border-slate-950 bg-white p-4 text-base leading-7 outline-none focus:shadow-[6px_6px_0_#2563eb] sm:min-h-32 sm:text-lg"
+          enterKeyHint="done"
           id="wat-response"
+          key={currentPrompt.id}
           onChange={(event) =>
             updateAnswer(currentPrompt.id, event.target.value)
           }
-          placeholder="Type your sentence before the timer ends…"
+          placeholder="Type your sentence…"
           ref={responseRef}
           value={response}
         />
         <div className="mt-3 flex flex-col gap-3 pb-2 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm font-semibold text-slate-600">
-            Saves when the {WORD_SECONDS}s countdown ends.
+            Next word at 0. Timer restarts at {WORD_SECONDS}.
           </p>
           <button
             className="border-2 border-slate-950 bg-white px-4 py-3 text-sm font-black shadow-[3px_3px_0_#171717]"
