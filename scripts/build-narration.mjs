@@ -166,7 +166,7 @@ for (const t of topics) {
     t.summary,
     pointsToProse(t.keyPoints),
     `Remember ${t.remember}`,
-    `Why interviewers ask this. ${t.whyIssb}`,
+    `Why this matters. ${t.whyIssb}`,
   );
   assertClean(script, t.id);
   gkSpoken[t.id] = script;
