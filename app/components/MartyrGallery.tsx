@@ -29,8 +29,7 @@ export default function MartyrGallery() {
       </section>
 
       <p className="prep-muted mt-6 mb-4" role="status">
-        {militaryStories.length} recipients · scan the cards, play the audio, then open details if you need the six
-        recall points
+        {militaryStories.length} recipients · read the hook, open the story, play the audio
       </p>
 
       <div className="martyr-grid">
@@ -91,28 +90,13 @@ export default function MartyrGallery() {
                   </div>
                 </dl>
                 <p className="martyr-card-summary">{story.summary}</p>
-                <p className="prep-note">
-                  <strong>Remember:</strong> {story.memory}
-                </p>
                 <details className="prep-details">
-                  <summary>Six details to recall</summary>
-                  <dl>
-                    {(
-                      [
-                        ['Name', `${story.rank} ${story.name}`],
-                        ['What he did', story.what],
-                        ['How he did it', story.how],
-                        ['Local benefit', story.result],
-                        ['How he died', story.death],
-                        ['When he died', story.deathDate],
-                      ] as const
-                    ).map(([label, value]) => (
-                      <div key={label} className="mb-3">
-                        <dt className="font-bold">{label}</dt>
-                        <dd>{value}</dd>
-                      </div>
+                  <summary>Read the story</summary>
+                  <div className="martyr-story-body">
+                    {story.story.split(/\n\n+/).map((para, index) => (
+                      <p key={index}>{para}</p>
                     ))}
-                  </dl>
+                  </div>
                   {story.caution && <p className="prep-muted">{story.caution}</p>}
                 </details>
                 {story.imageCredit && <p className="martyr-card-credit">Image: {story.imageCredit}</p>}

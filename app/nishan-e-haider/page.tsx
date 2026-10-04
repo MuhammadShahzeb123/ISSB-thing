@@ -5,7 +5,7 @@ import MartyrGallery from '../components/MartyrGallery';
 export const metadata: Metadata = {
   title: 'Nishan-e-Haider Martyrs - ISSB Prep',
   description:
-    'Compact profiles of all eleven Nishan-e-Haider recipients: rank, unit, place, date, short stories, and spoken audio for interview preparation.',
+    'Story cards for all eleven Nishan-e-Haider recipients: rank, unit, place, date, full spoken-style stories, and audio for interview preparation.',
 };
 
 export default function NishanEHaiderPage() {
@@ -16,8 +16,8 @@ export default function NishanEHaiderPage() {
         <h1 className="mt-3 text-4xl font-black leading-none sm:text-6xl">Nishan-e-Haider</h1>
         <p className="mt-5 max-w-3xl text-lg font-semibold leading-8 text-slate-700">
           Pakistan&apos;s highest military gallantry award. Eleven men are honoured at this level (ten Army, one Air
-          Force). Use these compact cards to remember rank, place, action, and date — then tell each story in your own
-          words. Tap Play beside a name to listen.
+          Force). Each card opens into a full story. No key-point lists. Tap Play beside a name to listen, then tell
+          the story in your own words.
         </p>
 
         <MartyrGallery />
