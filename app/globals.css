@@ -1720,8 +1720,8 @@ button.gk-tile { font: inherit; }
   cursor: pointer;
   box-shadow: 5px 5px 0 #171717;
 }
-.neo-page .dpi-record { color: #fffaf0; background: #b42318; }
-.neo-page .dpi-record[aria-pressed="true"] { background: #171717; color: #ffe14a; }
+.neo-page button.dpi-record { color: #fffaf0; background: #b42318; }
+.neo-page button.dpi-record[aria-pressed="true"] { background: #171717; color: #ffe14a; }
 .dpi-record:focus-visible { outline: 3px solid #0057a8; outline-offset: 3px; }
 .dpi-status { margin: 0.55rem 0 0; font-weight: 700; line-height: 1.5; }
 .dpi-error {
@@ -1935,7 +1935,7 @@ button.gk-tile { font: inherit; }
 }
 .live-meter-fill--dp { background: #0057a8; }
 .live-controls { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-.neo-page .live-end { background: #b42318; color: #fffaf0; }
+.neo-page button.live-end { background: #b42318; color: #fffaf0; }
 .live-transcript {
   list-style: none !important;
   display: grid;

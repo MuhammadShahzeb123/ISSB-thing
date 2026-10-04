@@ -108,12 +108,16 @@ export async function POST(request: Request) {
     throw error;
   }
 
+  // One shared deadline keeps every fallback attempt inside maxDuration.
+  const deadline = Date.now() + 54_000;
   for (const model of MODELS) {
+    const remaining = deadline - Date.now();
+    if (remaining < 8_000) break;
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
       cache: 'no-store',
-      signal: AbortSignal.timeout(45_000),
+      signal: AbortSignal.timeout(Math.min(40_000, remaining)),
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: prompt(settings.mode, settings.minutes, turns) }] }],
         generationConfig: { temperature: 0.4, responseMimeType: 'application/json', responseSchema: schema },
