@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import TitleWithAudio from './TitleWithAudio';
 import { awardExplanation, militaryStories, type MilitaryStory } from '../lib/militaryStories';
 import { martyrNarration } from '../lib/narrationCatalog';
@@ -41,9 +41,22 @@ function StoryMeta({ story }: { story: MilitaryStory }) {
   );
 }
 
-function MartyrModal({ story, onClose }: { story: MilitaryStory; onClose: () => void }) {
+const DONE_STORAGE_KEY = 'issb-nh-stories-done-v1';
+
+function MartyrModal({
+  story,
+  done,
+  onClose,
+  onAudioEnded,
+}: {
+  story: MilitaryStory;
+  done: boolean;
+  onClose: () => void;
+  onAudioEnded: () => string | void;
+}) {
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const narr = martyrNarration[story.id];
 
   useEffect(() => {
@@ -60,11 +73,19 @@ function MartyrModal({ story, onClose }: { story: MilitaryStory; onClose: () => 
     };
   }, [onClose]);
 
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    dialog.scrollTop = 0;
+    dialog.querySelector<HTMLElement>('.gk-modal-body')?.scrollTo(0, 0);
+  }, [story.id]);
+
   return (
     <div className="gk-modal-root" role="presentation">
       <button type="button" className="gk-modal-backdrop" aria-label="Close dialog" onClick={onClose} />
-      <div className="gk-modal" role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <div ref={dialogRef} className="gk-modal" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <div className="gk-modal-header">
+          {done ? <span className="gk-badge gk-done-badge gk-modal-done">Done</span> : null}
           <button ref={closeRef} type="button" className="gk-modal-close" onClick={onClose}>
             Close
           </button>
@@ -77,6 +98,7 @@ function MartyrModal({ story, onClose }: { story: MilitaryStory; onClose: () => 
             script={narr?.script ?? story.spokenScript}
             audioSrc={narr?.audio}
             playLabel={`Play story of ${story.rank} ${story.name}`}
+            onEnded={onAudioEnded}
           >
             <span id={titleId}>
               {story.rank} {story.name}
@@ -108,13 +130,56 @@ function MartyrModal({ story, onClose }: { story: MilitaryStory; onClose: () => 
 
 export default function MartyrGallery() {
   const [openStory, setOpenStory] = useState<MilitaryStory | null>(null);
+  const [doneIds, setDoneIds] = useState<Record<string, true>>({});
+  const hydrated = useRef(false);
+  const openStoryRef = useRef(openStory);
+  useEffect(() => {
+    openStoryRef.current = openStory;
+  }, [openStory]);
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(DONE_STORAGE_KEY);
+      // Load after mount so the server render matches an empty client first paint.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- persisted device state
+      if (raw) setDoneIds(JSON.parse(raw) as Record<string, true>);
+    } catch {
+      // private browsing / blocked storage
+    } finally {
+      hydrated.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated.current) return;
+    try {
+      window.localStorage.setItem(DONE_STORAGE_KEY, JSON.stringify(doneIds));
+    } catch {
+      // ignore
+    }
+  }, [doneIds]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const hash = window.location.hash.replace(/^#/, '');
     if (!hash) return;
     const match = militaryStories.find((story) => story.id === hash);
+    // Deep link only; reading location.hash during render would mismatch the server HTML.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hash open
     if (match) setOpenStory(match);
+  }, []);
+
+  const closeStory = useCallback(() => setOpenStory(null), []);
+
+  const onStoryAudioEnded = useCallback((): string | void => {
+    const current = openStoryRef.current;
+    if (!current) return;
+    const index = militaryStories.findIndex((story) => story.id === current.id);
+    const next = index >= 0 ? militaryStories[index + 1] : undefined;
+    setDoneIds((prev) => (prev[current.id] ? prev : { ...prev, [current.id]: true }));
+    if (!next) return;
+    setOpenStory(next);
+    return martyrNarration[next.id]?.audio;
   }, []);
 
   return (
@@ -126,7 +191,8 @@ export default function MartyrGallery() {
           Every card shows a portrait of the person (face and uniform), not a monument or grave. Some images are
           free-licensed Commons/ISPR files; others are fair-use Wikipedia portraits hosted here for educational
           ISSB study with clear attribution in the story popup. Tap a card to open the full spoken-style story.
-          Tap <strong>Play</strong> beside the name in the popup to hear it aloud.
+          Tap <strong>Play</strong> beside the name in the popup to hear it aloud. When that
+          story finishes, it is marked done and the next story opens on its own.
         </p>
         <p className="mt-4">
           <Link href="/interview?tab=stories">Open interview recall practice →</Link>
@@ -134,12 +200,12 @@ export default function MartyrGallery() {
       </section>
 
       <p className="prep-muted mt-6 mb-4" role="status">
-        {militaryStories.length} recipients · read the hook, open the story popup, play the audio
+        {militaryStories.length} recipients · {Object.keys(doneIds).length} done · play a story and the next opens when the audio ends
       </p>
 
       <div className="martyr-grid">
         {militaryStories.map((story) => (
-          <article key={story.id} className="martyr-card" id={story.id}>
+          <article key={story.id} className={`martyr-card${doneIds[story.id] ? ' martyr-card--done' : ''}`} id={story.id}>
             <button
               type="button"
               className="martyr-card-open"
@@ -166,7 +232,10 @@ export default function MartyrGallery() {
               </div>
 
               <div className="martyr-card-body">
-                <p className="martyr-card-award">{story.award}</p>
+                <p className="martyr-award-row">
+                  <span className="martyr-card-award">{story.award}</span>
+                  {doneIds[story.id] ? <span className="gk-badge gk-done-badge">Done</span> : null}
+                </p>
                 <h2 className="martyr-card-title">
                   {story.rank} {story.name}
                 </h2>
@@ -179,7 +248,14 @@ export default function MartyrGallery() {
         ))}
       </div>
 
-      {openStory ? <MartyrModal story={openStory} onClose={() => setOpenStory(null)} /> : null}
+      {openStory ? (
+        <MartyrModal
+          story={openStory}
+          done={Boolean(doneIds[openStory.id])}
+          onClose={closeStory}
+          onAudioEnded={onStoryAudioEnded}
+        />
+      ) : null}
     </>
   );
 }
