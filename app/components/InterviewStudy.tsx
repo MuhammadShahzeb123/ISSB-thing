@@ -40,29 +40,13 @@ function StoryDetail({ story }: { story: MilitaryStory }) {
         {story.service} · {story.unit} · {story.conflict}
       </p>
       <p>{story.summary}</p>
-      <p className="prep-note">
-        <strong>Remember:</strong> {story.memory}
-      </p>
       <details className="prep-details">
-        <summary>Full story and six details to recall</summary>
-        <p>{story.story}</p>
-        <dl>
-          {(
-            [
-              ['Name', `${story.rank} ${story.name}`],
-              ['What he did', story.what],
-              ['How he did it', story.how],
-              ['Local benefit', story.result],
-              ['How he died', story.death],
-              ['When he died', story.deathDate],
-            ] as const
-          ).map(([label, value]) => (
-            <div key={label} className="mb-3">
-              <dt className="font-bold">{label}</dt>
-              <dd>{value}</dd>
-            </div>
+        <summary>Read the story</summary>
+        <div className="martyr-story-body">
+          {story.story.split(/\n\n+/).map((para, index) => (
+            <p key={index}>{para}</p>
           ))}
-        </dl>
+        </div>
         {story.caution && <p className="prep-muted">{story.caution}</p>}
       </details>
       <ul className="prep-muted">
@@ -82,7 +66,7 @@ export function MilitaryStoriesStudy() {
   const [mode, setMode] = useState('read');
   const [query, setQuery] = useState('');
   const filtered = militaryStories.filter((story) =>
-    `${story.rank} ${story.name} ${story.place} ${story.unit} ${story.memory}`
+    `${story.rank} ${story.name} ${story.place} ${story.unit} ${story.summary} ${story.story}`
       .toLocaleLowerCase()
       .includes(query.toLocaleLowerCase()),
   );
@@ -92,8 +76,8 @@ export function MilitaryStoriesStudy() {
         <h2>11 people. Remember the action.</h2>
         <p>{awardExplanation}</p>
         <p className="mt-4">
-          Learn the person, place and action first. Tell the story in your own words, then recall how and when he died.
-          Birth dates and long career timelines are deliberately left out.
+          Learn the person, place and action first. Tell the full story in your own words.
+          Birth dates and long career timelines are deliberately left out. There are no key-point lists on these cards.
         </p>
         <p className="mt-3">
           <a href="/nishan-e-haider">Open the photo card gallery →</a>
@@ -115,7 +99,7 @@ export function MilitaryStoriesStudy() {
           accentColor="amber"
           renderFront={(story) => (
             <div>
-              <p className="text-sm mb-4">Tell the story: action, method, benefit and sacrifice.</p>
+              <p className="text-sm mb-4">Tell the story in your own words.</p>
               <p>
                 {story.rank} {story.name}
               </p>
