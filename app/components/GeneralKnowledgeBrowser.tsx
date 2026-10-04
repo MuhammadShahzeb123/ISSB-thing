@@ -184,7 +184,11 @@ function GkModal({
             >
               <span id={titleId}>{state.topic.title}</span>
             </TitleWithAudio>
-            <p className="gk-modal-summary">{state.topic.summary}</p>
+            <div className="martyr-story-body affairs-story-body">
+              {state.topic.summary.split(/\n\n+/).map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
             <h3>Highlights</h3>
             <ul>
               {state.topic.keyPoints.map((point) => (

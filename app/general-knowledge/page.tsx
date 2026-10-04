@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CurrentAffairsBrowser from "../components/CurrentAffairsBrowser";
 import GeneralKnowledgeBrowser from "../components/GeneralKnowledgeBrowser";
 import PracticeDisclaimer from "../components/PracticeDisclaimer";
 import { getPreparationArea } from "../lib/siteNavigation";
@@ -9,7 +10,7 @@ const area = getPreparationArea("general-knowledge");
 export const metadata: Metadata = {
   title: "General Knowledge - ISSB Prep",
   description:
-    "Card-based ISSB general knowledge: PAF aircraft, air defence, Indus Waters Treaty, geography, CPEC, and photo-sourced Q&A with done/remaining tracking.",
+    "Current affairs stories with audio, then card-based ISSB general knowledge: Indus Waters Treaty, PAF aircraft, air defence, geography, CPEC and a sourced Q&A bank.",
 };
 
 export default function GeneralKnowledgeOverviewPage() {
@@ -20,9 +21,17 @@ export default function GeneralKnowledgeOverviewPage() {
         <h1 className="mt-3 text-4xl font-black sm:text-6xl">{area.label}</h1>
         <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">{area.summary}</p>
         <p className="mt-3 max-w-2xl text-base font-semibold leading-7 text-slate-600">
-          Tap a card for a pop-up briefing — Indus Waters Treaty, PAF fighters &amp; transport, air defence, Khyber Pass, CPEC, and the full Q&amp;A bank. Mark topics done or remaining.
+          Start with this year&apos;s current affairs, then the core topics below. Tap any card to read it, press Play to
+          listen, and mark it done when you know it.
         </p>
         <div className="prep-page mt-8 !p-0 text-left">
+          <CurrentAffairsBrowser />
+        </div>
+        <h2 className="mt-14 text-3xl font-black sm:text-4xl">Core general knowledge</h2>
+        <p className="mt-3 max-w-2xl text-base font-semibold leading-7 text-slate-600">
+          The Indus Waters Treaty, borders and passes, CPEC, PAF aircraft, air defence and the full question bank.
+        </p>
+        <div className="prep-page mt-6 !p-0 text-left">
           <GeneralKnowledgeBrowser />
         </div>
         <h2 className="mt-12 text-2xl font-black">More study tools</h2>

@@ -45,20 +45,26 @@ const ministers: Minister[] = [
   { name: "Sardar Muhammad Yousaf", portfolio: "Religious Affairs & Interfaith Harmony", party: "PML(N)" },
 ];
 
+// Checked 4 October 2026.
 const topOfficials = [
   { name: "Asif Ali Zardari", role: "President of Pakistan", party: "PPP" },
   { name: "Mian Muhammad Shehbaz Sharif", role: "Prime Minister", party: "PML(N)" },
   { name: "Justice Yahya Afridi", role: "Chief Justice of Pakistan", party: "N/A" },
+  { name: "Justice Aminuddin Khan", role: "Chief Justice, Federal Constitutional Court", party: "N/A" },
   { name: "Syed Yousaf Raza Gillani", role: "Chairman Senate", party: "PPP" },
   { name: "Sardar Ayaz Sadiq", role: "Speaker National Assembly", party: "PML(N)" },
+  { name: "Mahmood Khan Achakzai", role: "Leader of the Opposition, National Assembly", party: "PkMAP" },
+  { name: "Sikandar Sultan Raja", role: "Chief Election Commissioner", party: "N/A" },
 ];
 
+// The Chairman Joint Chiefs of Staff Committee post ended on 27 November 2025 (27th Amendment).
 const armedForces = [
-  { name: "General Asim Munir", role: "Chief of Army Staff (COAS)", branch: "Pakistan Army" },
-  { name: "Air Chief Marshal Zaheer Ahmad Babar", role: "Chief of Air Staff", branch: "Pakistan Air Force" },
+  { name: "Field Marshal Asim Munir", role: "Chief of Defence Forces and Chief of Army Staff", branch: "Pakistan Army" },
+  { name: "Air Chief Marshal Zaheer Ahmed Babar Sidhu", role: "Chief of Air Staff", branch: "Pakistan Air Force" },
   { name: "Admiral Naveed Ashraf", role: "Chief of Naval Staff", branch: "Pakistan Navy" },
-  { name: "General Sahir Shamshad Mirza", role: "Chairman Joint Chiefs of Staff Committee", branch: "Joint" },
+  { name: "General Syed Aamer Raza", role: "Commander, National Strategic Command", branch: "Joint" },
   { name: "Lt. Gen. Muhammad Asim Malik", role: "Director General ISI", branch: "Pakistan Army" },
+  { name: "Lt. Gen. Ahmed Sharif Chaudhry", role: "Director General ISPR", branch: "Pakistan Army" },
 ];
 
 type Tab = 'top' | 'ministers' | 'forces';

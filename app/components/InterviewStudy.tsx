@@ -4,7 +4,7 @@ import { useState } from 'react';
 import SpacedRepetitionDeck from './SpacedRepetitionDeck';
 import TitleWithAudio from './TitleWithAudio';
 import CurrentAffairsBrowser from './CurrentAffairsBrowser';
-import { currentAffairs, researchAsOf, researchCaveat } from '../lib/currentAffairs';
+import { affairsAsOf, affairsSections, affairsStories, formatAffairsDate } from '../lib/affairsStories';
 import { awardExplanation, militaryStories, type MilitaryStory } from '../lib/militaryStories';
 import { sourcePhotos } from '../lib/contentBank';
 import { interviewSourcePages } from '../lib/interviewSource';
@@ -19,14 +19,14 @@ export function CurrentAffairsStudy() {
       showDownload
       onDownload={() =>
         downloadText(
-          `issb-current-affairs-${researchAsOf}.txt`,
+          `issb-current-affairs-${affairsAsOf}.txt`,
           [
-            researchCaveat,
-            ...currentAffairs.map(
-              (brief) =>
-                `${brief.title}\nUpdated source date: ${brief.date}\n${brief.summary}\n\nWhy Pakistan: ${brief.whyPakistan}\nInterview: ${brief.question}\n${brief.answerPoints.join('\n')}\nWatch next:\n${brief.watch.join('\n')}\nSources:\n${brief.sources.map((source) => `${source.title} (${source.publishedAt})\n${source.url}`).join('\n')}`,
+            `ISSB current affairs, researched up to ${formatAffairsDate(affairsAsOf)}. Check the sources before quoting a number.`,
+            ...affairsStories.map(
+              (story) =>
+                `${story.title}\n${affairsSections[story.section].label} · ${formatAffairsDate(story.date)}\n\n${story.story}\n\nPoints to remember:\n${story.keyFacts.map((fact) => `- ${fact}`).join('\n')}\n\nThink about it: ${story.question}\n\nSources:\n${story.sources.map((source) => `${source.title} (${source.publishedAt})\n${source.url}`).join('\n')}`,
             ),
-          ].join('\n\n'),
+          ].join('\n\n----------\n\n'),
         )
       }
     />

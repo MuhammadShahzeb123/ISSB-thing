@@ -1129,6 +1129,16 @@ a {
   cursor: pointer;
   flex: 1;
 }
+/* The tile itself is the card; its inner open button must not pick up the global .neo-page button chrome. */
+.neo-page button.gk-tile-open,
+.neo-page button.gk-tile-open:hover,
+.neo-page button.gk-tile-open:focus-visible {
+  border: 0;
+  box-shadow: none;
+  transform: none;
+  background: transparent;
+}
+.neo-page button.gk-tile-open:focus-visible { outline: 3px solid #0057a8; outline-offset: 4px; }
 .gk-tile--qa { min-height: 9.5rem; }
 .gk-tile-kicker {
   margin: 0;
@@ -1710,8 +1720,8 @@ button.gk-tile { font: inherit; }
   cursor: pointer;
   box-shadow: 5px 5px 0 #171717;
 }
-.neo-page .dpi-record { color: #fffaf0; background: #b42318; }
-.neo-page .dpi-record[aria-pressed="true"] { background: #171717; color: #ffe14a; }
+.neo-page button.dpi-record { color: #fffaf0; background: #b42318; }
+.neo-page button.dpi-record[aria-pressed="true"] { background: #171717; color: #ffe14a; }
 .dpi-record:focus-visible { outline: 3px solid #0057a8; outline-offset: 3px; }
 .dpi-status { margin: 0.55rem 0 0; font-weight: 700; line-height: 1.5; }
 .dpi-error {
@@ -1803,4 +1813,175 @@ button.gk-tile { font: inherit; }
   line-height: 1.65;
   color: #1e293b;
   white-space: pre-line;
+}
+
+/* Live deputy president interview (Gemini Live) */
+.live-dpi { margin-top: 1.75rem; }
+.live-setup { display: grid; gap: 1.1rem; }
+.live-hero {
+  border: 3px solid var(--ink);
+  background: var(--yellow);
+  box-shadow: 6px 6px 0 var(--ink);
+  padding: clamp(1rem, 3vw, 1.6rem);
+}
+.live-hero h2 { margin: 0.25rem 0 0.6rem; font-size: clamp(1.5rem, 4vw, 2.3rem); line-height: 1.15; }
+.live-hero p { margin: 0; max-width: 46rem; font-weight: 650; line-height: 1.65; }
+.live-kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0057a8;
+}
+.live-hero .live-kicker { color: var(--ink); }
+.live-fieldset {
+  min-width: 0;
+  border: 2px solid var(--ink);
+  background: var(--paper-bright);
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 1rem clamp(0.85rem, 2.5vw, 1.25rem) 1.1rem;
+}
+.live-fieldset legend { padding: 0 0.4rem; font-weight: 900; font-size: 1.05rem; }
+.live-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14.5rem), 1fr));
+  gap: 0.65rem;
+  margin-top: 0.4rem;
+}
+.live-choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  border: 2px solid var(--ink);
+  background: #fff;
+  padding: 0.7rem 0.8rem;
+  cursor: pointer;
+  min-height: 100%;
+}
+.live-choice input { position: absolute; opacity: 0; pointer-events: none; }
+.live-choice strong { font-weight: 900; line-height: 1.25; }
+.live-choice span { color: var(--muted); font-size: 0.86rem; font-weight: 600; line-height: 1.45; }
+.live-choice.is-selected { background: #c8e9ff; box-shadow: 3px 3px 0 var(--ink); }
+.live-choice:focus-within { outline: 3px solid #0057a8; outline-offset: 2px; }
+.live-inline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.9rem; }
+.live-inline-label { font-weight: 900; margin-right: 0.25rem; }
+.live-pill {
+  min-height: 40px;
+  border: 2px solid var(--ink);
+  background: #fff;
+  padding: 0.3rem 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+.live-pill[aria-pressed="true"] { background: var(--yellow); box-shadow: 2px 2px 0 var(--ink); }
+.live-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: 0 0.9rem;
+  margin-top: 0.4rem;
+}
+.live-form-grid .prep-field { margin-bottom: 0.7rem; }
+.live-form-grid textarea { min-height: 4.2rem; }
+.live-field--wide { grid-column: 1 / -1; }
+.live-check { display: flex; gap: 0.65rem; align-items: flex-start; margin-top: 0.6rem; line-height: 1.55; cursor: pointer; }
+.live-check input { width: 1.25rem; height: 1.25rem; margin-top: 0.15rem; flex: 0 0 auto; accent-color: #0057a8; }
+.live-start { margin-top: 0; }
+
+.live-stage {
+  border: 3px solid var(--ink);
+  background: var(--paper-bright);
+  box-shadow: 6px 6px 0 var(--ink);
+  padding: clamp(0.85rem, 3vw, 1.4rem);
+}
+.live-topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; }
+.live-topbar-title { font-weight: 900; flex: 1 1 14rem; }
+.live-badge {
+  border: 2px solid var(--ink);
+  background: var(--paper-deep);
+  padding: 0.15rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.live-badge.is-on { background: #b42318; color: #fffaf0; }
+.live-clock { font-family: var(--font-mono); font-weight: 900; font-size: 1.05rem; }
+.live-status {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0;
+  border: 3px solid var(--ink);
+  padding: 1rem;
+  background: #fff;
+  transition: background-color 0.2s ease;
+}
+.live-status--dp { background: #c8e9ff; }
+.live-status--candidate { background: #e3f1ce; }
+.live-status--wait { background: var(--paper-deep); }
+.live-status-text { margin: 0; text-align: center; font-size: clamp(1.1rem, 3.2vw, 1.45rem); font-weight: 900; line-height: 1.35; }
+.live-meter-row { display: grid; grid-template-columns: 6.5rem 1fr; align-items: center; gap: 0.6rem; }
+.live-meter-label { font-size: 0.8rem; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.live-meter { position: relative; height: 0.85rem; border: 2px solid var(--ink); background: var(--paper); overflow: hidden; }
+.live-meter-fill {
+  --level: 0;
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: scaleX(var(--level));
+  background: #2f8f3a;
+  transition: transform 0.08s linear;
+}
+.live-meter-fill--dp { background: #0057a8; }
+.live-controls { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.neo-page button.live-end { background: #b42318; color: #fffaf0; }
+.live-transcript {
+  list-style: none !important;
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0 0;
+  padding: 0 !important;
+  max-height: 22rem;
+  overflow: auto;
+}
+.live-transcript--review { max-height: none; overflow: visible; }
+.live-line { display: grid; gap: 0.15rem; border: 2px solid var(--ink); padding: 0.55rem 0.7rem; background: #fff; margin: 0 !important; }
+.live-line--dp { background: #eef7ff; margin-right: 12% !important; }
+.live-line--candidate { background: #f3f9ea; margin-left: 12% !important; }
+.live-line.is-open { border-style: dashed; }
+.live-line-who { font-size: 0.72rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: #0057a8; }
+.live-line--candidate .live-line-who { color: #25632a; }
+.live-line-text { line-height: 1.6; font-weight: 600; overflow-wrap: anywhere; }
+.live-transcript-end { height: 1px; border: 0 !important; padding: 0 !important; background: none !important; }
+.live-review { display: grid; gap: 0; }
+.live-verdict {
+  display: inline-block;
+  margin: 0 0 0.8rem;
+  border: 2px solid var(--ink);
+  padding: 0.25rem 0.7rem;
+  font-weight: 900;
+  background: var(--yellow);
+}
+.live-verdict--strong { background: var(--lime); }
+.live-verdict--needs-work { background: #ffd0c8; }
+.live-report ul.live-scores { list-style: none !important; padding: 0 !important; display: grid; gap: 0.6rem; }
+.live-scores li { display: grid; grid-template-columns: minmax(9rem, 13rem) auto 1fr; gap: 0.35rem 0.8rem; align-items: center; margin: 0 !important; }
+.live-score-name { font-weight: 900; }
+.live-score-bar { display: inline-flex; gap: 3px; }
+.live-score-bar span { width: 1.05rem; height: 0.8rem; border: 2px solid var(--ink); background: var(--paper); }
+.live-score-bar span.is-on { background: #0057a8; }
+.live-score-note { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+.live-rework { padding-inline-start: 1.2rem; }
+.live-rework li { margin-top: 0.8rem; }
+.live-rework p { margin: 0.2rem 0; }
+@media (max-width: 640px) {
+  .live-scores li { grid-template-columns: 1fr auto; }
+  .live-score-note { grid-column: 1 / -1; }
+  .live-line--dp { margin-right: 0 !important; }
+  .live-line--candidate { margin-left: 0 !important; }
+  .live-meter-row { grid-template-columns: 4.5rem 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-meter-fill, .live-status { transition: none; }
 }

@@ -1,5 +1,5 @@
 import { sourcePhotos } from './contentBank';
-import { currentAffairs, researchAsOf } from './currentAffairs';
+import { affairsAsOf, affairsStories, formatAffairsDate } from './affairsStories';
 import { englishCardFactChecks, knowledgeFactChecks, type FactCheckStatus } from './knowledgeFactCheck';
 import { knowledgePages } from './sourceKnowledge';
 
@@ -16,7 +16,7 @@ export const gkCategories = {
   islamic: { label: 'Islamic studies', description: 'Seerah, Quran, worship and early Islamic history (Urdu notes, fact-checked).' },
   abbreviations: { label: 'Abbreviations', description: 'Acronyms common in interviews and service life.' },
   general: { label: 'Sports & general', description: 'Cricket, word origins and miscellaneous questions.' },
-  current: { label: 'Current affairs', description: `Dated briefings, research cut-off ${researchAsOf}.` },
+  current: { label: 'Current affairs', description: `Dated stories, researched up to ${formatAffairsDate(affairsAsOf)}.` },
 } as const;
 
 export type GkCategory = keyof typeof gkCategories;
@@ -113,16 +113,16 @@ const urduCards: GkCard[] = sourcePhotos.flatMap((photo) => photo.sections
     };
   })));
 
-const currentCards: GkCard[] = currentAffairs.map((brief) => ({
-  id: `affairs-${brief.id}`,
+const currentCards: GkCard[] = affairsStories.map((story) => ({
+  id: `affairs-${story.id}`,
   category: 'current',
   language: 'en',
-  prompt: brief.title,
-  answer: `${brief.summary}\n\nWhy it matters to Pakistan: ${brief.whyPakistan}`,
+  prompt: story.question,
+  answer: `${story.hook}\n\n${story.keyFacts.join('\n')}`,
   status: 'dated',
-  factCheck: `Latest cited publication ${brief.date}. Recheck before an interview: ${brief.watch.join(' ')}`,
-  sourceHref: brief.sources[0]?.url ?? '/interview?tab=affairs',
-  sourceLabel: brief.sources[0] ? `${brief.sources[0].title} (${brief.sources[0].publishedAt})` : 'Current-affairs briefing',
+  factCheck: `From the story "${story.title}", dated ${formatAffairsDate(story.date)}. News moves fast, so check the latest source before an interview.`,
+  sourceHref: `/current-affairs#${story.id}`,
+  sourceLabel: `Read the full story: ${story.title}`,
 }));
 
 export const generalKnowledgeCards: readonly GkCard[] = [...englishCards, ...urduCards, ...currentCards];
