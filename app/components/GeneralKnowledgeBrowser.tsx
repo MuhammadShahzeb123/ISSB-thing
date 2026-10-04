@@ -173,7 +173,7 @@ function GkModal({
               <span id={titleId}>{state.topic.title}</span>
             </TitleWithAudio>
             <p className="gk-modal-summary">{state.topic.summary}</p>
-            <h3>Key points</h3>
+            <h3>Highlights</h3>
             <ul>
               {state.topic.keyPoints.map((point) => (
                 <li key={point}>{point}</li>
@@ -205,7 +205,7 @@ function GkModal({
               {state.topic.remember}
             </p>
             <p>
-              <strong>Why ISSB asks: </strong>
+              <strong>Why this matters: </strong>
               {state.topic.whyIssb}
             </p>
             {state.topic.watch && state.topic.watch.length > 0 && (
