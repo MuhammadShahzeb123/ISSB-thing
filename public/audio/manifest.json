@@ -63,199 +63,331 @@
     "section": "affairs",
     "id": "reserves-remittances-reforms-2026",
     "title": "Record reserves, borrowed time and big reforms",
-    "audio": "/audio/affairs/reserves-remittances-reforms-2026.mp3"
+    "audio": "/audio/affairs/reserves-remittances-reforms-2026.mp3",
+    "sha": "290486da3e69cad4",
+    "model": "gemini-3.8-live",
+    "seconds": 325,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "kp-kohat-attack-terror-surge-2026",
     "title": "Kohat attack and Pakistan's hardest fight against terror",
-    "audio": "/audio/affairs/kp-kohat-attack-terror-surge-2026.mp3"
+    "audio": "/audio/affairs/kp-kohat-attack-terror-surge-2026.mp3",
+    "sha": "cdfbc6f2cb6e3852",
+    "model": "gemini-3.8-live",
+    "seconds": 355,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "balochistan-attacks-dialogue-2026",
     "title": "Balochistan under attack, and the door left open",
-    "audio": "/audio/affairs/balochistan-attacks-dialogue-2026.mp3"
+    "audio": "/audio/affairs/balochistan-attacks-dialogue-2026.mp3",
+    "sha": "48dfb2c3f4348896",
+    "model": "gemini-3.8-live",
+    "seconds": 329,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "ttp-afghan-link-city-attacks-2026",
     "title": "Why Pakistan says its terror problem crosses the border",
-    "audio": "/audio/affairs/ttp-afghan-link-city-attacks-2026.mp3"
+    "audio": "/audio/affairs/ttp-afghan-link-city-attacks-2026.mp3",
+    "sha": "0d767b4cfd4c5880",
+    "model": "gemini-3.8-live",
+    "seconds": 304,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "military-command-structure-2026",
     "title": "How Pakistan rebuilt its top military command",
-    "audio": "/audio/affairs/military-command-structure-2026.mp3"
+    "audio": "/audio/affairs/military-command-structure-2026.mp3",
+    "sha": "f7644458c8e74b24",
+    "model": "gemini-3.8-live",
+    "seconds": 298,
+    "match": 0.964
   },
   {
     "section": "affairs",
     "id": "military-modernisation-after-may-2025",
     "title": "New rockets, submarines and jets after May 2025",
-    "audio": "/audio/affairs/military-modernisation-after-may-2025.mp3"
+    "audio": "/audio/affairs/military-modernisation-after-may-2025.mp3",
+    "sha": "7a8fba914e4e6318",
+    "model": "gemini-3.8-live",
+    "seconds": 297,
+    "match": 0.995
   },
   {
     "section": "affairs",
     "id": "defence-budget-drills-partners-2026",
     "title": "Drills, partners and a 3 trillion rupee budget",
-    "audio": "/audio/affairs/defence-budget-drills-partners-2026.mp3"
+    "audio": "/audio/affairs/defence-budget-drills-partners-2026.mp3",
+    "sha": "644a2711fdc66fdb",
+    "model": "gemini-3.8-live",
+    "seconds": 318,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "floods-climate-buner-to-chitral-2026",
     "title": "From Buner to Chitral, floods teach hard lessons",
-    "audio": "/audio/affairs/floods-climate-buner-to-chitral-2026.mp3"
+    "audio": "/audio/affairs/floods-climate-buner-to-chitral-2026.mp3",
+    "sha": "bc5615ed856408af",
+    "model": "gemini-3.8-live",
+    "seconds": 297,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "first-astronaut-space-tech-2026",
     "title": "Pakistan's first astronaut is almost ready to fly",
-    "audio": "/audio/affairs/first-astronaut-space-tech-2026.mp3"
+    "audio": "/audio/affairs/first-astronaut-space-tech-2026.mp3",
+    "sha": "aeeb50aa6dd3ef1a",
+    "model": "gemini-3.8-live",
+    "seconds": 288,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "polio-census-children-2026",
     "title": "Pakistan cuts polio to 5 cases, but not zero",
-    "audio": "/audio/affairs/polio-census-children-2026.mp3"
+    "audio": "/audio/affairs/polio-census-children-2026.mp3",
+    "sha": "2c406f5d4ba5878e",
+    "model": "gemini-3.8-live",
+    "seconds": 249,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "asian-games-2026-pakistan-medals",
     "title": "Pakistan's best Asian Games since 2002, but no gold",
-    "audio": "/audio/affairs/asian-games-2026-pakistan-medals.mp3"
+    "audio": "/audio/affairs/asian-games-2026-pakistan-medals.mp3",
+    "sha": "5c95fd3835b094cf",
+    "model": "gemini-3.8-live",
+    "seconds": 272,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "pahalgam-to-ceasefire-may-2025",
     "title": "From Pahalgam to the ceasefire of 10 May 2025",
-    "audio": "/audio/affairs/pahalgam-to-ceasefire-may-2025.mp3"
+    "audio": "/audio/affairs/pahalgam-to-ceasefire-may-2025.mp3",
+    "sha": "52967884e2dafe97",
+    "model": "gemini-3.8-live",
+    "seconds": 322,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "indus-waters-treaty-hague-2026",
     "title": "The Indus Waters Treaty still stands, says Hague court",
-    "audio": "/audio/affairs/indus-waters-treaty-hague-2026.mp3"
+    "audio": "/audio/affairs/indus-waters-treaty-hague-2026.mp3",
+    "sha": "8284c3a0123146a1",
+    "model": "gemini-3.8-live",
+    "seconds": 299,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "india-cold-peace-kashmir-2026",
     "title": "Kashmir, borders and a cold peace with India",
-    "audio": "/audio/affairs/india-cold-peace-kashmir-2026.mp3"
+    "audio": "/audio/affairs/india-cold-peace-kashmir-2026.mp3",
+    "sha": "4861b4fd94add6aa",
+    "model": "gemini-3.8-live",
+    "seconds": 289,
+    "match": 0.997
   },
   {
     "section": "affairs",
     "id": "pakistan-afghanistan-conflict-2026",
     "title": "Pakistan and Afghanistan after a year of fighting",
-    "audio": "/audio/affairs/pakistan-afghanistan-conflict-2026.mp3"
+    "audio": "/audio/affairs/pakistan-afghanistan-conflict-2026.mp3",
+    "sha": "b8edda4413075399",
+    "model": "gemini-3.8-live",
+    "seconds": 320,
+    "match": 0.998
   },
   {
     "section": "affairs",
     "id": "afghan-refugee-returns-2026",
     "title": "Afghan families leave the only home they know",
-    "audio": "/audio/affairs/afghan-refugee-returns-2026.mp3"
+    "audio": "/audio/affairs/afghan-refugee-returns-2026.mp3",
+    "sha": "85618958020bd6a5",
+    "model": "gemini-3.8-live",
+    "seconds": 295,
+    "match": 0.995
   },
   {
     "section": "affairs",
     "id": "pakistan-iran-neighbour-in-war-2026",
     "title": "Iran, a brotherly neighbour in a time of war",
-    "audio": "/audio/affairs/pakistan-iran-neighbour-in-war-2026.mp3"
+    "audio": "/audio/affairs/pakistan-iran-neighbour-in-war-2026.mp3",
+    "sha": "434d0986444a643a",
+    "model": "gemini-3.8-live",
+    "seconds": 273,
+    "match": 0.995
   },
   {
     "section": "affairs",
     "id": "saudi-turkiye-makkah-defence-pact",
     "title": "From Riyadh to Makkah, a defence promise grows",
-    "audio": "/audio/affairs/saudi-turkiye-makkah-defence-pact.mp3"
+    "audio": "/audio/affairs/saudi-turkiye-makkah-defence-pact.mp3",
+    "sha": "3ebbd46146e21dc7",
+    "model": "gemini-3.8-live",
+    "seconds": 306,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "pakistan-us-ties-2026",
     "title": "Pakistan and America grow close again",
-    "audio": "/audio/affairs/pakistan-us-ties-2026.mp3"
+    "audio": "/audio/affairs/pakistan-us-ties-2026.mp3",
+    "sha": "cd2329d98bb0f5af",
+    "model": "gemini-3.8-live",
+    "seconds": 315,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "pakistan-china-75-years-cpec-2",
     "title": "Pakistan and China mark 75 years together",
-    "audio": "/audio/affairs/pakistan-china-75-years-cpec-2.mp3"
+    "audio": "/audio/affairs/pakistan-china-75-years-cpec-2.mp3",
+    "sha": "1b213da4f9813a98",
+    "model": "gemini-3.8-live",
+    "seconds": 283,
+    "match": 0.998
   },
   {
     "section": "affairs",
     "id": "pakistan-un-security-council-2025-2026",
     "title": "Pakistan's voice on the UN Security Council",
-    "audio": "/audio/affairs/pakistan-un-security-council-2025-2026.mp3"
+    "audio": "/audio/affairs/pakistan-un-security-council-2025-2026.mp3",
+    "sha": "56441dd191a17b47",
+    "model": "gemini-3.8-live",
+    "seconds": 316,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "pakistan-sco-chair-russia-2026",
     "title": "Pakistan leads the SCO as Russia ties move slowly",
-    "audio": "/audio/affairs/pakistan-sco-chair-russia-2026.mp3"
+    "audio": "/audio/affairs/pakistan-sco-chair-russia-2026.mp3",
+    "sha": "195331983e7e8b30",
+    "model": "gemini-3.8-live",
+    "seconds": 261,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "pakistan-bangladesh-ties-2026",
     "title": "Pakistan and Bangladesh, talking like brothers again",
-    "audio": "/audio/affairs/pakistan-bangladesh-ties-2026.mp3"
+    "audio": "/audio/affairs/pakistan-bangladesh-ties-2026.mp3",
+    "sha": "953f71deaf8684ad",
+    "model": "gemini-3.8-live",
+    "seconds": 266,
+    "match": 0.991
   },
   {
     "section": "affairs",
     "id": "iran-war-islamabad-mediation",
     "title": "The US-Iran war and Islamabad's bid for peace",
-    "audio": "/audio/affairs/iran-war-islamabad-mediation.mp3"
+    "audio": "/audio/affairs/iran-war-islamabad-mediation.mp3",
+    "sha": "89173a3072522dc8",
+    "model": "gemini-3.8-live",
+    "seconds": 332,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "gaza-ceasefire-one-year-on",
     "title": "Gaza after a year of ceasefire",
-    "audio": "/audio/affairs/gaza-ceasefire-one-year-on.mp3"
+    "audio": "/audio/affairs/gaza-ceasefire-one-year-on.mp3",
+    "sha": "c34d8d2029f24928",
+    "model": "gemini-3.8-live",
+    "seconds": 299,
+    "match": 0.995
   },
   {
     "section": "affairs",
     "id": "houthis-saudi-war-yemen-2026",
     "title": "Houthi attacks on Saudi Arabia and the holy cities",
-    "audio": "/audio/affairs/houthis-saudi-war-yemen-2026.mp3"
+    "audio": "/audio/affairs/houthis-saudi-war-yemen-2026.mp3",
+    "sha": "3235e504d267e399",
+    "model": "gemini-3.8-live",
+    "seconds": 253,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "russia-ukraine-talks-sanctions-2026",
     "title": "Ukraine war talks return as US sanctions tighten",
-    "audio": "/audio/affairs/russia-ukraine-talks-sanctions-2026.mp3"
+    "audio": "/audio/affairs/russia-ukraine-talks-sanctions-2026.mp3",
+    "sha": "985ca3ad07ee8d52",
+    "model": "gemini-3.8-live",
+    "seconds": 322,
+    "match": 0.998
   },
   {
     "section": "affairs",
     "id": "us-tariffs-courts-midterms-2026",
     "title": "Trump's tariff wall, the courts and the voters",
-    "audio": "/audio/affairs/us-tariffs-courts-midterms-2026.mp3"
+    "audio": "/audio/affairs/us-tariffs-courts-midterms-2026.mp3",
+    "sha": "84c60133139bf234",
+    "model": "gemini-3.8-live",
+    "seconds": 270,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "us-china-summits-taiwan-seas-2026",
     "title": "Trump and Xi calm trade, but not the seas",
-    "audio": "/audio/affairs/us-china-summits-taiwan-seas-2026.mp3"
+    "audio": "/audio/affairs/us-china-summits-taiwan-seas-2026.mp3",
+    "sha": "773bf3b73d53f1e9",
+    "model": "gemini-3.8-live",
+    "seconds": 265,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "un-secretary-general-race-2026",
     "title": "The secret race to lead the United Nations",
-    "audio": "/audio/affairs/un-secretary-general-race-2026.mp3"
+    "audio": "/audio/affairs/un-secretary-general-race-2026.mp3",
+    "sha": "fd29bdbb608c042d",
+    "model": "gemini-3.8-live",
+    "seconds": 251,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "bangladesh-after-hasina-2026",
     "title": "Bangladesh chooses a new leader after the uprising",
-    "audio": "/audio/affairs/bangladesh-after-hasina-2026.mp3"
+    "audio": "/audio/affairs/bangladesh-after-hasina-2026.mp3",
+    "sha": "349a7f775c73abfa",
+    "model": "gemini-3.8-live",
+    "seconds": 253,
+    "match": 0.998
   },
   {
     "section": "affairs",
     "id": "nepal-gen-z-to-glacier-flood-2026",
     "title": "Nepal's Gen Z uprising, a young leader, a flood",
-    "audio": "/audio/affairs/nepal-gen-z-to-glacier-flood-2026.mp3"
+    "audio": "/audio/affairs/nepal-gen-z-to-glacier-flood-2026.mp3",
+    "sha": "9de5bec89ee29360",
+    "model": "gemini-3.8-live",
+    "seconds": 297,
+    "match": 1
   },
   {
     "section": "affairs",
     "id": "india-2026-elections-tariffs-china",
     "title": "India's year of elections, tariffs and China talks",
-    "audio": "/audio/affairs/india-2026-elections-tariffs-china.mp3"
+    "audio": "/audio/affairs/india-2026-elections-tariffs-china.mp3",
+    "sha": "de004322ba1d4e3c",
+    "model": "gemini-3.8-live",
+    "seconds": 252,
+    "match": 1
   },
   {
     "section": "affairs",
@@ -271,127 +403,211 @@
     "section": "gk",
     "id": "indus-waters-treaty",
     "title": "Indus Waters Treaty (1960)",
-    "audio": "/audio/gk/indus-waters-treaty.mp3"
+    "audio": "/audio/gk/indus-waters-treaty.mp3",
+    "sha": "4012d1b12fa1b9d8",
+    "model": "gemini-3.8-live",
+    "seconds": 252,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "geography-pakistan",
     "title": "Geography of Pakistan",
-    "audio": "/audio/gk/geography-pakistan.mp3"
+    "audio": "/audio/gk/geography-pakistan.mp3",
+    "sha": "778efabf99b6a7e5",
+    "model": "gemini-3.8-live",
+    "seconds": 198,
+    "match": 0.998
   },
   {
     "section": "gk",
     "id": "provinces-territories",
     "title": "Provinces & territories",
-    "audio": "/audio/gk/provinces-territories.mp3"
+    "audio": "/audio/gk/provinces-territories.mp3",
+    "sha": "975ab35e1b840914",
+    "model": "gemini-3.8-live",
+    "seconds": 199,
+    "match": 0.998
   },
   {
     "section": "gk",
     "id": "rivers-dams",
     "title": "Rivers, dams & hydropower",
-    "audio": "/audio/gk/rivers-dams.mp3"
+    "audio": "/audio/gk/rivers-dams.mp3",
+    "sha": "3bc75fe6c12ebea9",
+    "model": "gemini-3.8-live",
+    "seconds": 213,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "borders-neighbours",
     "title": "Borders & neighbours",
-    "audio": "/audio/gk/borders-neighbours.mp3"
+    "audio": "/audio/gk/borders-neighbours.mp3",
+    "sha": "8b61f90f2193021e",
+    "model": "gemini-3.8-live",
+    "seconds": 238,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "khyber-pass",
     "title": "Khyber Pass",
-    "audio": "/audio/gk/khyber-pass.mp3"
+    "audio": "/audio/gk/khyber-pass.mp3",
+    "sha": "bdf5ba54baf120b5",
+    "model": "gemini-3.8-live",
+    "seconds": 205,
+    "match": 0.998
   },
   {
     "section": "gk",
     "id": "strategic-passes",
     "title": "Strategic mountain passes",
-    "audio": "/audio/gk/strategic-passes.mp3"
+    "audio": "/audio/gk/strategic-passes.mp3",
+    "sha": "41ca82a9b2d3471e",
+    "model": "gemini-3.8-live",
+    "seconds": 178,
+    "match": 0.993
   },
   {
     "section": "gk",
     "id": "cpec",
     "title": "CPEC (China Pakistan Economic Corridor)",
-    "audio": "/audio/gk/cpec.mp3"
+    "audio": "/audio/gk/cpec.mp3",
+    "sha": "94cdee52c0be9fd2",
+    "model": "gemini-3.8-live",
+    "seconds": 222,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "gwadar",
     "title": "Gwadar Port",
-    "audio": "/audio/gk/gwadar.mp3"
+    "audio": "/audio/gk/gwadar.mp3",
+    "sha": "bde02181d95c6768",
+    "model": "gemini-3.8-live",
+    "seconds": 190,
+    "match": 0.988
   },
   {
     "section": "gk",
     "id": "china-pakistan",
     "title": "China-Pakistan relations",
-    "audio": "/audio/gk/china-pakistan.mp3"
+    "audio": "/audio/gk/china-pakistan.mp3",
+    "sha": "4f60f1619db88f5c",
+    "model": "gemini-3.8-live",
+    "seconds": 217,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "arabian-sea",
     "title": "Arabian Sea & Pakistan's coastline",
-    "audio": "/audio/gk/arabian-sea.mp3"
+    "audio": "/audio/gk/arabian-sea.mp3",
+    "sha": "215212c475db2c20",
+    "model": "gemini-3.8-live",
+    "seconds": 193,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "mountains-peaks",
     "title": "Mountains & peaks",
-    "audio": "/audio/gk/mountains-peaks.mp3"
+    "audio": "/audio/gk/mountains-peaks.mp3",
+    "sha": "45768855e85e052f",
+    "model": "gemini-3.8-live",
+    "seconds": 222,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "water-security",
     "title": "Water security for Pakistan",
-    "audio": "/audio/gk/water-security.mp3"
+    "audio": "/audio/gk/water-security.mp3",
+    "sha": "c8613f2eb004813c",
+    "model": "gemini-3.8-live",
+    "seconds": 210,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "orgs-memberships",
     "title": "Pakistan in international organisations",
-    "audio": "/audio/gk/orgs-memberships.mp3"
+    "audio": "/audio/gk/orgs-memberships.mp3",
+    "sha": "734eefa6452a5cdc",
+    "model": "gemini-3.8-live",
+    "seconds": 235,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "defence-pact-context",
     "title": "Saudi-Türkiye-Pakistan defence ties",
-    "audio": "/audio/gk/defence-pact-context.mp3"
+    "audio": "/audio/gk/defence-pact-context.mp3",
+    "sha": "c9cd6061ed57f497",
+    "model": "gemini-3.8-live",
+    "seconds": 226,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "paf-fighters",
     "title": "PAF fighter jets",
-    "audio": "/audio/gk/paf-fighters.mp3"
+    "audio": "/audio/gk/paf-fighters.mp3",
+    "sha": "dd33824ad231cec0",
+    "model": "gemini-3.8-live",
+    "seconds": 232,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "paf-transport",
     "title": "PAF transport & tanker aircraft",
-    "audio": "/audio/gk/paf-transport.mp3"
+    "audio": "/audio/gk/paf-transport.mp3",
+    "sha": "d64de80b6753ea68",
+    "model": "gemini-3.8-live",
+    "seconds": 207,
+    "match": 0.998
   },
   {
     "section": "gk",
     "id": "paf-fleet-size",
     "title": "How many planes does the PAF have?",
-    "audio": "/audio/gk/paf-fleet-size.mp3"
+    "audio": "/audio/gk/paf-fleet-size.mp3",
+    "sha": "7b48d1d2534c0dce",
+    "model": "gemini-3.8-live",
+    "seconds": 225,
+    "match": 0.991
   },
   {
     "section": "gk",
     "id": "pakistan-air-defence",
     "title": "Pakistan air-defence systems",
-    "audio": "/audio/gk/pakistan-air-defence.mp3"
+    "audio": "/audio/gk/pakistan-air-defence.mp3",
+    "sha": "e525f7f6532f6e49",
+    "model": "gemini-3.8-live",
+    "seconds": 225,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "recent-paf-military",
     "title": "Recent PAF & military activity",
-    "audio": "/audio/gk/recent-paf-military.mp3"
+    "audio": "/audio/gk/recent-paf-military.mp3",
+    "sha": "b5f2fc25ae6487ee",
+    "model": "gemini-3.8-live",
+    "seconds": 247,
+    "match": 1
   },
   {
     "section": "gk",
     "id": "abhinandan-tea-incident",
     "title": "Captured pilot & \"the tea is fantastic\"",
-    "audio": "/audio/gk/abhinandan-tea-incident.mp3"
+    "audio": "/audio/gk/abhinandan-tea-incident.mp3",
+    "sha": "1a72d1d938cd2d4a",
+    "model": "gemini-3.8-live",
+    "seconds": 222,
+    "match": 0.98
   },
   {
     "section": "gto",
