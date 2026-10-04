@@ -101,9 +101,9 @@ export const siteNavigation = [
         description: "Compact, sourced briefings on Middle East, Asia, defence pacts, and Pakistan-related conflicts.",
       },
       {
-        label: "Biodata practice",
+        label: "Bio data",
         href: "/biodata",
-        description: "Privately organise and review your personal record in this browser.",
+        description: "Preview of the civilian personal information questionnaire and the events list from item 15.",
       },
     ],
   },

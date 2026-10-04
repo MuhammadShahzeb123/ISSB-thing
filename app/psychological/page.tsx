@@ -8,6 +8,13 @@ export default function PsychologicalOverviewPage() {
       dimension="psychological"
       title="Psychological tests"
       summary="Word association, picture stories, sentence completion, self-reflection and mechanical aptitude. Timed sessions use fixed deadlines and save drafts automatically."
+      resources={[
+        {
+          label: 'Bio data',
+          href: '/biodata',
+          description: 'Read the civilian personal information questionnaire the way it is asked, including the events list from item 15. This is a preview, not a submission.',
+        },
+      ]}
     >
       <div className="mt-6 max-w-3xl">
         <PsychAudioHeader

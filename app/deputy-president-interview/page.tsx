@@ -7,7 +7,7 @@ export default function DeputyPresidentInterviewOverviewPage() {
       title="Deputy President Interview"
       summary="Know your own record, answer quick calculations and explain what is happening in Pakistan and the world. Honest, direct answers matter more than memorised ones."
       resources={[
-        { label: 'Biodata practice', href: '/biodata', description: 'Privately organise and review your personal record in this browser.' },
+        { label: 'Bio data', href: '/biodata', description: 'See every question on the civilian personal information form, plus the 24 events from item 15. A local draft only — nothing is sent to ISSB.' },
         { label: 'Interview preparation room', href: '/interview', description: 'All interview practice tabs in one place.' },
         { label: 'Nishan-e-Haider martyrs', href: '/nishan-e-haider', description: 'Photo cards and compact stories for all eleven recipients.' },
         { label: 'World affairs cards', href: '/current-affairs', description: 'Short card + popup briefings (India–Pakistan, defence pact, Middle East).' },
