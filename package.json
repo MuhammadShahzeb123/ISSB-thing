@@ -6,7 +6,8 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "narration": "node --experimental-strip-types --no-warnings scripts/build-tts.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
