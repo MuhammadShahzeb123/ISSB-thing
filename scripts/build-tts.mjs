@@ -498,8 +498,8 @@ async function narrateLive(key, job) {
         if (!best || match > best.match) best = { ...result, match };
         if (match >= 0.9 && result.pcm.length > 24000) break;
         log(`${job.section}/${job.id}: chunk ${index + 1} drifted (match ${match.toFixed(2)}), re-reading`);
-        // A fresh session forgets the drift.
-        await reopen();
+        // Re-read in the same session first; a new session forgets the drift but can wait a minute for a free slot.
+        if (attempt >= 2) await reopen();
       }
       if (!best || best.match < 0.85) throw new Error(`chunk ${index + 1} could not be read verbatim (best match ${best?.match.toFixed(2) ?? 'none'})`);
       pieces.push(trimSilence(best.pcm));
