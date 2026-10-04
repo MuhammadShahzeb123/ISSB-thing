@@ -649,9 +649,13 @@ a {
     padding-block: 0.55rem;
   }
 
-  .site-nav-links,
-  .site-nav-cta--desktop {
+  .site-nav-links {
     display: none;
+  }
+
+  /* Keep the header compact on phones; Random test lives in the drawer. */
+  .site-nav-inner > .site-nav-cta--desktop {
+    display: none !important;
   }
 
   .site-nav-toggle {
@@ -691,6 +695,7 @@ a {
   }
 
   .site-nav-cta--drawer {
+    display: inline-flex;
     width: 100%;
     margin-top: 0.35rem;
     min-height: 44px;
