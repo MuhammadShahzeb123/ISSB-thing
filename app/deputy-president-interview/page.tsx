@@ -3,10 +3,12 @@ import Link from "next/link";
 import DimensionProgress from "../components/DimensionProgress";
 import PracticeDisclaimer from "../components/PracticeDisclaimer";
 import DeputyPresidentPractice from "./DeputyPresidentPractice";
+import LiveInterview from "./LiveInterview";
 
 export const metadata: Metadata = {
   title: "Deputy President Interview - ISSB Prep",
-  description: "Eight deputy president interview styles. Record your answers in the browser. Nothing is uploaded.",
+  description:
+    "Sit a live, spoken Deputy President interview with an AI interviewer that follows up on your answers, then get a transcript and written feedback. Or record yourself offline.",
 };
 
 const resources = [
@@ -24,9 +26,15 @@ export default function DeputyPresidentInterviewOverviewPage() {
         <p className="text-sm font-black uppercase tracking-[0.2em] text-blue-800">Core assessor dimension</p>
         <h1 className="mt-3 text-4xl font-black leading-tight sm:text-6xl">Deputy President Interview</h1>
         <p className="mt-5 max-w-3xl text-lg font-semibold leading-8 text-slate-700">
-          Pick a style and answer out loud. Each question stays up until you move on. Recordings stay in this browser so you can hear yourself and try again.
+          Talk to a live deputy president. He listens, follows up on what you say and moves through the interview the way a real board does. Prefer to practise alone? Record yourself further down.
         </p>
 
+        <LiveInterview />
+
+        <h2 className="mt-12 text-2xl font-black">Practise on your own</h2>
+        <p className="mt-2 max-w-3xl leading-7 text-slate-700">
+          No interviewer, no internet needed. Read a question, answer out loud, then play your answer back. These recordings stay in this browser.
+        </p>
         <DeputyPresidentPractice />
 
         <section className="mt-8 grid gap-4 sm:grid-cols-2" aria-label="Supporting material">
