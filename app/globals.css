@@ -1486,3 +1486,127 @@ button.gk-tile { font: inherit; }
 .gp-badge--medium { background: #fff1bc; }
 .gp-badge--hard { background: #ffd0c8; }
 #gp-task { scroll-margin-top: 5rem; }
+
+/* Deputy president recorded interviews */
+.dpi { margin-top: 1.75rem; }
+.dpi-lead { max-width: 42rem; line-height: 1.7; font-weight: 650; }
+.dpi-type-list {
+  list-style: none !important;
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0 0;
+  padding: 0 !important;
+}
+.dpi-type-list > li { margin: 0 !important; min-width: 0; }
+.dpi-type-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+  color: #171717;
+  border: 3px solid var(--ink);
+  background: #fff;
+  padding: 1.15rem 1.2rem 1rem;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.dpi-type-card h3 {
+  margin: 0;
+  color: #171717;
+  font-size: 1.28rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.dpi-type-card p {
+  margin: 0.5rem 0 0;
+  color: #171717;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.dpi-type-meta {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  color: #0057a8;
+  font-weight: 900;
+}
+.dpi-type-card:hover,
+.dpi-type-card:focus-visible {
+  background: var(--yellow);
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+.dpi-session-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-bottom: 0.9rem;
+}
+.dpi-session-bar p { margin: 0; font-weight: 800; }
+.dpi-question {
+  font-size: clamp(1.35rem, 4vw, 2rem);
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+}
+.dpi-cue { margin: 0 0 0.6rem; line-height: 1.6; }
+.dpi-note { margin: 0.4rem 0 0; color: var(--muted); line-height: 1.6; font-size: 0.95rem; }
+.dpi-record {
+  width: 100%;
+  min-height: 4.75rem;
+  margin-top: 1rem;
+  padding: 1rem 1.2rem;
+  border: 3px solid #171717;
+  background: #b42318;
+  color: #fffaf0;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 #171717;
+}
+.neo-page .dpi-record { color: #fffaf0; background: #b42318; }
+.neo-page .dpi-record[aria-pressed="true"] { background: #171717; color: #ffe14a; }
+.dpi-record:focus-visible { outline: 3px solid #0057a8; outline-offset: 3px; }
+.dpi-status { margin: 0.55rem 0 0; font-weight: 700; line-height: 1.5; }
+.dpi-error {
+  margin: 0.7rem 0 0;
+  padding: 0.7rem 0.8rem;
+  border: 2px solid #171717;
+  background: #ffd0c8;
+  font-weight: 800;
+  line-height: 1.45;
+}
+.dpi-playback { margin-top: 0.9rem; }
+.dpi-playback audio,
+.dpi-review audio { width: 100%; margin-top: 0.4rem; }
+.dpi-actions { margin-top: 1rem; }
+.dpi-actions .prep-button { min-height: 3rem; }
+.dpi-text-button {
+  margin-top: 0.8rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #0057a8;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.dpi-review { margin: 1rem 0 0; padding-inline-start: 1.2rem; }
+.dpi-review li { margin-top: 1rem; }
+.dpi-review-q { font-weight: 800; line-height: 1.45; margin: 0; }
+.dpi-jump {
+  margin: 0 0 1rem;
+  padding: 1rem 1.1rem;
+  border: 3px solid var(--ink);
+  background: #fff;
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.dpi-jump p { margin: 0.35rem 0 0.8rem; line-height: 1.6; }
+@media (min-width: 800px) {
+  .dpi-type-list { grid-template-columns: 1fr 1fr; }
+}

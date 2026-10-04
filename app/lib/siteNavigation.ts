@@ -86,6 +86,11 @@ export const siteNavigation = [
     summary: "Organise your personal record, motivations, awareness, and interview responses.",
     resources: [
       {
+        label: "Recorded interview styles",
+        href: "/deputy-president-interview",
+        description: "Eight deputy-president styles. Record your answer in the browser and play it back. Nothing is uploaded.",
+      },
+      {
         label: "Interview preparation",
         href: "/interview",
         description: "Introduction practice, quick mental maths, sourced current affairs, and gallantry stories.",
