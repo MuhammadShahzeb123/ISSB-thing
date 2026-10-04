@@ -1257,7 +1257,8 @@ a {
     border-bottom: 2px solid var(--ink);
     background: var(--paper-bright);
   }
-  .gk-modal-header .gk-mark-btn {
+  .gk-modal-header .gk-mark-btn,
+  .gk-modal-header .gk-modal-done {
     margin-right: auto;
   }
   .gk-modal-body {
@@ -1429,6 +1430,14 @@ a {
   padding: 1rem 1.05rem 1.15rem;
 }
 
+.martyr-card--done { background: #e8f5e1; }
+.martyr-award-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+}
 .martyr-card-award {
   margin: 0;
   color: #0057a8;

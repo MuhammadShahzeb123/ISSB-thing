@@ -9,60 +9,120 @@ type SpeakButtonProps = {
   audioSrc?: string;
   label?: string;
   className?: string;
+  /**
+   * Called only when narration actually finishes (audio `ended`, or speech fallback `onend`).
+   * Not called when the user stops, pauses, or the control unmounts.
+   * Return the next audio URL to keep playing on the same element (autoplay continuation).
+   */
+  onEnded?: () => string | void;
 };
 
 /**
  * One-tap play control intended beside a story/section title.
  * Prefers an audio file when provided; otherwise uses Web Speech API.
  */
-export default function SpeakButton({ script, audioSrc, label = 'Play audio', className = '' }: SpeakButtonProps) {
+export default function SpeakButton({
+  script,
+  audioSrc,
+  label = 'Play audio',
+  className = '',
+  onEnded,
+}: SpeakButtonProps) {
   const [playing, setPlaying] = useState(false);
   const [supported, setSupported] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const onEndedRef = useRef(onEnded);
+  const ignoreEndRef = useRef(false);
+  const activeSrcRef = useRef<string | null>(null);
+  const audioSrcRef = useRef(audioSrc);
+  const scriptRef = useRef(script);
 
-  useEffect(() => {
-    return () => {
-      stopAll();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  onEndedRef.current = onEnded;
+  audioSrcRef.current = audioSrc;
+  scriptRef.current = script;
 
-  function stopAll() {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current = null;
-    }
+  function cancelSpeech() {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
     utterRef.current = null;
+  }
+
+  function stopAll() {
+    ignoreEndRef.current = true;
+    if (audioRef.current) {
+      const audio = audioRef.current;
+      audio.onended = null;
+      audio.onerror = null;
+      audio.pause();
+      audioRef.current = null;
+    }
+    cancelSpeech();
+    activeSrcRef.current = null;
     setPlaying(false);
   }
 
-  function playFile(src: string) {
-    stopAll();
-    const audio = new Audio(src);
+  function continueWith(nextSrc: string) {
+    const audio = audioRef.current ?? new Audio();
     audioRef.current = audio;
-    audio.onended = () => setPlaying(false);
-    audio.onerror = () => {
-      setPlaying(false);
-      playSpeech();
-    };
-    void audio.play().then(() => setPlaying(true)).catch(() => playSpeech());
+    ignoreEndRef.current = true;
+    audio.onended = handleFileEnded;
+    audio.onerror = handleFileError;
+    activeSrcRef.current = nextSrc;
+    audio.src = nextSrc;
+    ignoreEndRef.current = false;
+    setPlaying(true);
+    void audio.play().catch(() => setPlaying(false));
+  }
+
+  function handleFileEnded() {
+    if (ignoreEndRef.current) return;
+    const nextSrc = onEndedRef.current?.();
+    if (typeof nextSrc === 'string' && nextSrc) {
+      continueWith(nextSrc);
+      return;
+    }
+    setPlaying(false);
+  }
+
+  function handleFileError() {
+    if (ignoreEndRef.current) return;
+    setPlaying(false);
+    playSpeech();
+  }
+
+  function playFile(src: string) {
+    ignoreEndRef.current = true;
+    cancelSpeech();
+    ignoreEndRef.current = false;
+    continueWith(src);
   }
 
   function playSpeech() {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window) || !scriptRef.current.trim()) {
       setSupported(false);
       return;
     }
-    stopAll();
-    const utter = new SpeechSynthesisUtterance(script);
+    ignoreEndRef.current = true;
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    cancelSpeech();
+    ignoreEndRef.current = false;
+    activeSrcRef.current = audioSrcRef.current ? `speech:${audioSrcRef.current}` : 'speech';
+    const utter = new SpeechSynthesisUtterance(scriptRef.current);
     utter.rate = 0.95;
     utter.pitch = 1;
-    utter.onend = () => setPlaying(false);
+    utter.onend = () => {
+      if (ignoreEndRef.current) return;
+      const nextSrc = onEndedRef.current?.();
+      if (typeof nextSrc === 'string' && nextSrc) {
+        playFile(nextSrc);
+        return;
+      }
+      setPlaying(false);
+    };
     utter.onerror = () => setPlaying(false);
     utterRef.current = utter;
     setPlaying(true);
@@ -78,6 +138,29 @@ export default function SpeakButton({ script, audioSrc, label = 'Play audio', cl
     if (audioSrc) playFile(audioSrc);
     else playSpeech();
   }
+
+  useEffect(() => {
+    if (activeSrcRef.current && audioSrc && activeSrcRef.current !== audioSrc) {
+      stopAll();
+    }
+    // Stop leftover audio if the story changes without a playback handoff.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioSrc]);
+
+  useEffect(() => {
+    return () => {
+      ignoreEndRef.current = true;
+      if (audioRef.current) {
+        audioRef.current.onended = null;
+        audioRef.current.onerror = null;
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   if (!script.trim() && !audioSrc) return null;
   if (!supported && !audioSrc) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import TitleWithAudio from './TitleWithAudio';
 import SpeakButton from './SpeakButton';
 import { gkNarration } from '../lib/narrationCatalog';
@@ -122,14 +122,18 @@ function GkModal({
   done,
   onClose,
   onToggleDone,
+  onAudioEnded,
 }: {
   state: Exclude<ModalState, null>;
   done: boolean;
   onClose: () => void;
   onToggleDone: (id: string) => void;
+  onAudioEnded?: () => string | void;
 }) {
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const storyKey = state.kind === 'topic' ? state.topic.id : state.card.id;
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -145,10 +149,17 @@ function GkModal({
     };
   }, [onClose]);
 
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    dialog.scrollTop = 0;
+    dialog.querySelector<HTMLElement>('.gk-modal-body')?.scrollTo(0, 0);
+  }, [storyKey]);
+
   return (
     <div className="gk-modal-root" role="presentation">
       <button type="button" className="gk-modal-backdrop" aria-label="Close dialog" onClick={onClose} />
-      <div className="gk-modal" role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <div ref={dialogRef} className="gk-modal" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <div className="gk-modal-header">
           {state.kind === 'topic' && (
             <button type="button" className="gk-mark-btn" onClick={() => onToggleDone(state.topic.id)}>
@@ -169,6 +180,7 @@ function GkModal({
               script={gkNarration[state.topic.id]?.script}
               audioSrc={gkNarration[state.topic.id]?.audio}
               playLabel={`Play audio for ${state.topic.title}`}
+              onEnded={onAudioEnded}
             >
               <span id={titleId}>{state.topic.title}</span>
             </TitleWithAudio>
@@ -302,6 +314,8 @@ export default function GeneralKnowledgeBrowser() {
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(DONE_STORAGE_KEY);
+      // Load after mount so the server render matches an empty client first paint.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- persisted device state
       if (raw) setDoneIds(JSON.parse(raw) as Record<string, true>);
     } catch {
       // private browsing / blocked storage
@@ -372,6 +386,28 @@ export default function GeneralKnowledgeBrowser() {
   const topicCountFor = (key: GkCategory | 'all') =>
     key === 'all' ? gkTopics.length : gkTopics.filter((topic) => topic.category === key).length;
 
+  const modalRef = useRef(modal);
+  const topicsRef = useRef(topics);
+  useEffect(() => {
+    modalRef.current = modal;
+    topicsRef.current = topics;
+  }, [modal, topics]);
+
+  const closeModal = useCallback(() => setModal(null), []);
+
+  const onTopicAudioEnded = useCallback((): string | void => {
+    const current = modalRef.current;
+    if (!current || current.kind !== 'topic') return;
+    const id = current.topic.id;
+    const list = topicsRef.current;
+    const index = list.findIndex((topic) => topic.id === id);
+    const next = index >= 0 ? list[index + 1] : undefined;
+    setDoneIds((prev) => (prev[id] ? prev : { ...prev, [id]: true }));
+    if (!next) return;
+    setModal({ kind: 'topic', topic: next });
+    return gkNarration[next.id]?.audio;
+  }, []);
+
   const modalDone = modal?.kind === 'topic' ? Boolean(doneIds[modal.topic.id]) : false;
 
   return (
@@ -381,7 +417,8 @@ export default function GeneralKnowledgeBrowser() {
         <p>
           {gkTopics.length} compact study topics plus {generalKnowledgeCards.length} Q&amp;A cards across{' '}
           {Object.keys(gkCategories).length} categories. Tap a card to open a pop-up — no drop-downs. Mark topics{' '}
-          <strong>done</strong> or leave them <strong>remaining</strong> (saved on this device).
+          <strong>done</strong> or leave them <strong>remaining</strong> (saved on this device). When a study
+          story finishes playing, it is marked done and the next one opens on its own.
         </p>
         <div className="prep-note">
           Start with the <strong>Study topics</strong> (Indus Waters Treaty, Pakistan geography, Khyber Pass, CPEC,
@@ -499,7 +536,7 @@ export default function GeneralKnowledgeBrowser() {
       {mode === 'topics' ? (
         <>
           <p className="prep-muted mb-5" role="status">
-            {topics.length} study topics · click a card for the compact briefing · mark done/remaining on each card
+            {topics.length} study topics · play a story and the next opens when the audio ends · done marks stay on this device
           </p>
           {!topics.length && (
             <p className="prep-panel">No topics match. Clear the search or pick another filter.</p>
@@ -574,8 +611,9 @@ export default function GeneralKnowledgeBrowser() {
         <GkModal
           state={modal}
           done={modalDone}
-          onClose={() => setModal(null)}
+          onClose={closeModal}
           onToggleDone={toggleDone}
+          onAudioEnded={modal.kind === 'topic' ? onTopicAudioEnded : undefined}
         />
       )}
     </>
