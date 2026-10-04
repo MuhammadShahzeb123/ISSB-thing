@@ -4,7 +4,8 @@ import { BodyError, errorResponse, jsonResponse, readJson, rateLimited, rejectFo
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
-const MODELS = ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
+// Best first. Busy models answer 503 within seconds; the lite models are fast fallbacks that still follow the schema.
+const MODELS = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash-lite', 'gemini-flash-lite-latest'];
 const QUALITIES = [
   'Power of expression',
   'Self-confidence',
@@ -112,19 +113,22 @@ export async function POST(request: Request) {
   const deadline = Date.now() + 54_000;
   for (const model of MODELS) {
     const remaining = deadline - Date.now();
-    if (remaining < 8_000) break;
+    if (remaining < 6_000) break;
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
       cache: 'no-store',
-      signal: AbortSignal.timeout(Math.min(40_000, remaining)),
+      // Cap each attempt so one slow model cannot use up the time the fallbacks need.
+      signal: AbortSignal.timeout(Math.min(22_000, remaining)),
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: prompt(settings.mode, settings.minutes, turns) }] }],
         generationConfig: { temperature: 0.4, responseMimeType: 'application/json', responseSchema: schema },
       }),
     }).catch(() => null);
-    if (!response) continue;
-    if (response.status === 429 || response.status >= 500) continue;
+    if (!response || response.status === 429 || response.status >= 500) {
+      console.warn(`live-interview report: ${model} ${response ? response.status : 'timed out'}`);
+      continue;
+    }
     if (!response.ok) break;
     const payload = (await response.json().catch(() => null)) as {
       candidates?: { content?: { parts?: { text?: string; thought?: boolean }[] } }[];
