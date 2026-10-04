@@ -39,7 +39,7 @@ export const militaryStories: MilitaryStory[] = [
     award: 'Nishan-e-Haider',
     unit: '2 Punjab Regiment',
     service: 'Pakistan Army',
-    conflict: 'Indo-Pakistani War of 1947–48',
+    conflict: 'Indo-Pakistani War of 1947-48',
     place: 'Tilpatra, Kashmir',
     summary: 'He cut the wire under fire so his company could move.',
     story: `Start in Kashmir in 1948.
@@ -109,7 +109,7 @@ He is the first man to receive Pakistan's highest gallantry award.`,
     award: 'Nishan-e-Haider',
     unit: '18 Azad Kashmir Regiment',
     service: 'Pakistan Army',
-    conflict: 'Indo-Pakistani War of 1947–48',
+    conflict: 'Indo-Pakistani War of 1947-48',
     place: 'Bhudha Khanna, Kashmir',
     summary: 'A platoon leader who held a Kashmir post until his wounds took him.',
     story: `Now to Bhudha Khanna in Kashmir.

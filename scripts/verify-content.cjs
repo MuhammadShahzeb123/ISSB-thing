@@ -52,24 +52,27 @@ console.log(`Photo coverage: ${sourcePhotos.length}/${files.length}; ${sectionId
 const { militaryStories } = loadModule('../app/lib/militaryStories.ts');
 assert.equal(militaryStories.length, 11);
 assert.equal(new Set(militaryStories.map((story) => story.id)).size, 11);
-assert.equal(militaryStories.filter((story) => story.award === 'Nishan-e-Haider').length, 10);
+assert.equal(militaryStories.filter((story) => story.award === 'Nishan-e-Haider').length, 11);
 assert.ok(militaryStories.every((story) => story.what && story.how && story.result && story.death && story.deathDate && story.memory && story.sources.length));
-const { currentAffairs, researchAsOf, regionPrimer } = loadModule('../app/lib/currentAffairs.ts');
-assert.ok(currentAffairs.length >= 12);
-assert.equal(researchAsOf, '2026-09-19');
-assert.ok(currentAffairs.some((brief) => brief.region === 'Pakistan'));
-assert.ok(currentAffairs.some((brief) => brief.region === 'Russia and Ukraine'));
+const { affairsStories, affairsAsOf, affairsSections } = loadModule('../app/lib/affairsStories.ts');
+const { regionPrimer } = loadModule('../app/lib/currentAffairs.ts');
+assert.ok(affairsStories.length >= 30, 'Keep a substantial current-affairs story bank.');
+assert.equal(new Set(affairsStories.map((story) => story.id)).size, affairsStories.length);
+for (const section of Object.keys(affairsSections)) {
+  assert.ok(affairsStories.filter((story) => story.section === section).length >= 8, `Section ${section} needs stories.`);
+}
 assert.ok(regionPrimer.length >= 16);
-for (const brief of currentAffairs) {
-  assert.ok(brief.summary && brief.whyPakistan && brief.question && brief.answerPoints.length && brief.sources.length);
-  assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(brief.date) && brief.date <= researchAsOf);
-  for (const source of brief.sources) {
-    assert.ok(/^https:\/\//.test(source.url));
-    assert.ok(source.publishedAt && source.publishedAt <= researchAsOf);
+for (const story of affairsStories) {
+  assert.ok(story.title && story.hook && story.story && story.question && story.keyFacts.length && story.sources.length, story.id);
+  assert.ok(story.story.split(/\n\n+/).length >= 8, `${story.id} should read as a story in short paragraphs.`);
+  assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(story.date) && story.date <= affairsAsOf, story.id);
+  for (const source of story.sources) {
+    assert.ok(/^https?:\/\//.test(source.url), `${story.id}: ${source.url}`);
+    assert.ok(source.publishedAt && source.publishedAt <= affairsAsOf, `${story.id}: ${source.publishedAt}`);
   }
 }
-for (const text of [JSON.stringify(sourcePhotos), JSON.stringify(militaryStories), JSON.stringify(currentAffairs)]) {
+for (const text of [JSON.stringify(sourcePhotos), JSON.stringify(militaryStories), JSON.stringify(affairsStories)]) {
   assert.ok(!/[\u2013\u2014]/.test(text), 'Study content must not contain en or em dashes.');
   assert.ok(!/<img\b|data:image\//i.test(text), 'Photo content must be text, not embedded images.');
 }
-console.log(`Interview content: ${militaryStories.length} sourced stories, ${currentAffairs.length} briefings and ${regionPrimer.length} regional primers passed.`);
+console.log(`Interview content: ${militaryStories.length} sourced stories, ${affairsStories.length} current-affairs stories and ${regionPrimer.length} regional primers passed.`);

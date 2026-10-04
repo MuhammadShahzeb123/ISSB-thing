@@ -2,52 +2,32 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import PracticeDisclaimer from '../components/PracticeDisclaimer';
 import CurrentAffairsBrowser from '../components/CurrentAffairsBrowser';
-import { currentAffairs, regionPrimer, researchAsOf } from '../lib/currentAffairs';
+import { affairsAsOf, affairsStories, formatAffairsDate } from '../lib/affairsStories';
+import { regionPrimer } from '../lib/currentAffairs';
 
 export const metadata: Metadata = {
-  title: 'World Affairs & Wars - ISSB Prep',
+  title: 'Current Affairs - ISSB Prep',
   description:
-    'Compact, sourced current-affairs briefings for ISSB interviews: Middle East conflicts, Asia, Saudi-Türkiye-Pakistan defence ties, India-Pakistan, and Afghanistan.',
+    'Current affairs told as simple, sourced stories with audio: Pakistan politics, economy and security, India, Afghanistan, Iran, the Gulf, China, the US and world affairs.',
 };
-
-function formatDate(iso: string) {
-  const [y, m, d] = iso.split('-').map(Number);
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  return `${d} ${months[m - 1]} ${y}`;
-}
 
 export default function CurrentAffairsPage() {
   return (
     <div className="neo-page px-4 py-10 sm:px-6 sm:py-14">
       <div className="mx-auto max-w-5xl">
         <p className="text-sm font-black uppercase tracking-[0.22em] text-blue-800">Current affairs</p>
-        <h1 className="mt-3 text-4xl font-black leading-none sm:text-6xl">World affairs &amp; wars</h1>
+        <h1 className="mt-3 text-4xl font-black leading-none sm:text-6xl">Pakistan &amp; the world</h1>
         <p className="mt-5 max-w-3xl text-lg font-semibold leading-8 text-slate-700">
-          Card grid for ISSB general knowledge and the Deputy President interview — same style as General Knowledge.
-          Focus: Middle East, Asia, Saudi Arabia–Türkiye–Pakistan defence ties, India–Pakistan, and Afghanistan. Dated
-          study snapshot (cutoff {formatDate(researchAsOf)}), not a live ticker. {currentAffairs.length} briefings ·{' '}
-          {regionPrimer.length} primers.
+          {affairsStories.length} stories in simple English, each with audio and its sources. Researched up to{' '}
+          {formatAffairsDate(affairsAsOf)}. {regionPrimer.length} country primers are at the bottom.
         </p>
 
         <p className="mt-4">
-          <Link href="/interview?tab=affairs">Open interactive interview practice →</Link>
+          <Link href="/deputy-president-interview">Practise these with a live deputy president →</Link>
         </p>
 
-        <div className="mt-8">
-          <CurrentAffairsBrowser />
+        <div className="prep-page mt-8 !p-0 text-left">
+          <CurrentAffairsBrowser showPrimers />
         </div>
 
         <div className="mt-8 max-w-3xl">
