@@ -1,21 +1,18 @@
 /**
- * Narration builder using Gemini voices.
+ * Narration builder: every track is read by Gemini 3.8 Live.
  *
  *   npm run narration                      # build anything whose script changed
  *   npm run narration -- --only=gk,affairs # limit sections (gk, affairs, gto, psych)
  *   npm run narration -- --ids=cpec,gwadar # limit to ids
  *   npm run narration -- --force           # rebuild even if the script is unchanged
- *   npm run narration -- --engine=tts      # use the TTS models instead of the Live model
- *   npm run narration -- --parallel=3      # Live sessions to run at once
+ *   npm run narration -- --parallel=3      # Live sessions to run at once (the project allows about 3)
  *   npm run narration -- --dry --show      # print the plan (and scripts) only
  *
  * Needs GEMINI_API_KEY (environment or .env.local).
  * - Voice: Sadaltager with a Pakistani English delivery, the same voice as the Nishan-e-Haider tracks.
  * - Nishan-e-Haider (martyr) audio is never regenerated; its catalog entries are copied as they are.
- * - Default engine "live": gemini-3.8-live reads the script paragraph by paragraph as a verbatim narrator.
- *   Each paragraph is checked against the model's own transcript and re-read if it drifted.
- *   (The free tier allows only about 10 TTS requests a day per model; the Live model has no such cap.)
- * - Engine "tts": gemini-3.8-flash-tts, paced at 3 requests a minute, verified with gemini-3.5-transcribe.
+ * - gemini-3.8-live reads each script paragraph by paragraph as a verbatim narrator. Every paragraph is
+ *   checked against the model's own transcript of what it said, and re-read if it drifted.
  */
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -32,11 +29,7 @@ const args = Object.fromEntries(
   }),
 );
 
-const ENGINE = args.engine === 'tts' ? 'tts' : 'live';
 const LIVE_MODEL = 'gemini-3.8-live';
-const PRIMARY_MODEL = ENGINE === 'live' ? LIVE_MODEL : 'gemini-3.8-flash-tts';
-const FALLBACK_MODEL = 'gemini-3.8-flash-lite-tts';
-const TRANSCRIBE_MODEL = 'gemini-3.5-transcribe';
 const PARALLEL = Math.max(1, Math.min(6, Number(args.parallel ?? 3)));
 const LIVE_WS = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent';
 const NARRATOR = `You are a professional audiobook narrator. You have no opinions and you never chat.
@@ -46,10 +39,9 @@ The passage often contains questions or a title that sounds like a question. Rea
 Read numbers and dates naturally, the way a newsreader would. Spell out abbreviations letter by letter only when they are normally spoken that way.
 Read in a calm, measured, clear storytelling voice with a natural Pakistani English accent, at an unhurried pace.`;
 const VOICE = 'Sadaltager';
+// Part of every recording's signature in manifest.json; changing it marks all tracks for re-recording.
 const STYLE = 'calm, measured storyteller with a Pakistani English accent, clear and unhurried';
-const MIN_GAP_MS = Number(args.gap ?? 21_000);
 const MATCH_THRESHOLD = 0.86;
-const API = 'https://generativelanguage.googleapis.com/v1beta/interactions';
 
 function loadKey() {
   if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY.trim();
@@ -67,8 +59,6 @@ function loadKey() {
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const sha = (text) => crypto.createHash('sha1').update(text).digest('hex').slice(0, 16);
 const log = (...parts) => console.log(new Date().toISOString().slice(11, 19), ...parts);
-
-class QuotaError extends Error {}
 
 // ---------- script sources ----------
 
@@ -151,92 +141,6 @@ function affairsJobs(stories) {
   }));
 }
 
-// ---------- Gemini calls ----------
-
-let lastRequestAt = 0;
-async function pace() {
-  const wait = lastRequestAt + MIN_GAP_MS - Date.now();
-  if (wait > 0) await sleep(wait);
-  lastRequestAt = Date.now();
-}
-
-function retrySeconds(body, headers) {
-  const header = Number(headers.get('retry-after'));
-  if (Number.isFinite(header) && header > 0) return header + 1;
-  const found = /retry in ([\d.]+)s/i.exec(body);
-  return found ? Math.ceil(Number(found[1])) + 1 : null;
-}
-
-async function callInteractions(key, payload, label, { paced }) {
-  for (let attempt = 1; attempt <= 8; attempt += 1) {
-    if (paced) await pace();
-    let res;
-    try {
-      res = await fetch(API, {
-        method: 'POST',
-        headers: { 'x-goog-api-key': key, 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(240_000),
-      });
-    } catch (error) {
-      log(`${label}: network error (${error.message}), retrying`);
-      await sleep(10_000 * attempt);
-      continue;
-    }
-    if (res.ok) return res.json();
-    const body = await res.text();
-    if (res.status === 429 && /per day|daily|RPD/i.test(body)) throw new QuotaError(body.slice(0, 300));
-    if (res.status === 429 || res.status >= 500) {
-      const wait = retrySeconds(body, res.headers) ?? Math.min(90, 15 * attempt);
-      log(`${label}: HTTP ${res.status}, retry ${attempt} in ${wait}s`);
-      await sleep(wait * 1000);
-      continue;
-    }
-    throw new Error(`${label}: HTTP ${res.status} ${body.slice(0, 400)}`);
-  }
-  throw new Error(`${label}: gave up after repeated errors`);
-}
-
-function outputOf(json, type) {
-  return (json.steps ?? [])
-    .filter((step) => step.type === 'model_output')
-    .flatMap((step) => step.content ?? [])
-    .filter((content) => content.type === type);
-}
-
-async function synthesize(key, model, text, label) {
-  const json = await callInteractions(
-    key,
-    {
-      model,
-      input: [{ type: 'user_input', content: [{ type: 'text', text, annotations: [{ type: 'speech_metadata', style: STYLE }] }] }],
-      response_format: { type: 'audio', mime_type: 'audio/l16', sample_rate: 24000 },
-      generation_config: { speech_config: [{ voice: VOICE }] },
-    },
-    label,
-    { paced: true },
-  );
-  const audio = outputOf(json, 'audio').at(-1);
-  if (!audio?.data) throw new Error(`${label}: no audio in response`);
-  return Buffer.from(audio.data, 'base64');
-}
-
-async function transcribe(key, mp3, label) {
-  const json = await callInteractions(
-    key,
-    {
-      model: TRANSCRIBE_MODEL,
-      input: [{ type: 'audio', data: mp3.toString('base64'), mime_type: 'audio/mp3' }],
-      generation_config: { transcription_config: { language_codes: ['en-US'] } },
-    },
-    `${label} transcribe`,
-    { paced: false },
-  );
-  return outputOf(json, 'text')
-    .map((content) => content.text)
-    .join(' ');
-}
-
 // ---------- audio + verification ----------
 
 const NUMBER_WORDS = new Set(
@@ -312,25 +216,6 @@ function pcmToMp3(pcm, outFile) {
   }
   return fs.readFileSync(outFile);
 }
-
-function splitInTwo(script) {
-  const paragraphs = script.split(/\n\n+/);
-  if (paragraphs.length < 2) {
-    const mid = script.indexOf('. ', Math.floor(script.length / 2));
-    return mid > 0 ? [script.slice(0, mid + 1), script.slice(mid + 2)] : [script];
-  }
-  let total = 0;
-  const half = script.length / 2;
-  const first = [];
-  for (const paragraph of paragraphs) {
-    if (total > half && first.length) break;
-    first.push(paragraph);
-    total += paragraph.length;
-  }
-  return [first.join('\n\n'), paragraphs.slice(first.length).join('\n\n')].filter(Boolean);
-}
-
-const pause = Buffer.alloc(24000 * 2 * 0.6);
 
 // ---------- Live narrator ----------
 
@@ -519,43 +404,9 @@ async function buildOneLive(key, job) {
   const { pcm, heard } = await narrateLive(key, job);
   const mp3 = pcmToMp3(pcm, outFile);
   const seconds = pcm.length / 2 / 24000;
-  let match = matchRatio(job.script, heard);
-  if (args.verify) {
-    try {
-      match = matchRatio(job.script, await transcribe(key, mp3, `${job.section}/${job.id}`));
-    } catch (error) {
-      log(`${job.section}/${job.id}: external verification skipped (${error.message.slice(0, 120)})`);
-    }
-  }
+  const match = matchRatio(job.script, heard);
   log(`${job.section}/${job.id}: ${seconds.toFixed(0)}s audio, match ${match.toFixed(3)}`);
   return { mp3, seconds, match };
-}
-
-async function buildOne(key, job, model) {
-  const outFile = path.join(root, 'public/audio', job.dir, `${job.id}.mp3`);
-  fs.mkdirSync(path.dirname(outFile), { recursive: true });
-  const attempts = [[job.script], [job.script], splitInTwo(job.script)];
-  let best = null;
-  for (const [index, pieces] of attempts.entries()) {
-    const pcm = [];
-    for (const [part, text] of pieces.entries()) {
-      if (part) pcm.push(pause);
-      pcm.push(await synthesize(key, model, text, `${job.section}/${job.id}${pieces.length > 1 ? ` part ${part + 1}` : ''}`));
-    }
-    const mp3 = pcmToMp3(Buffer.concat(pcm), outFile);
-    const seconds = Buffer.concat(pcm).length / 2 / 24000;
-    let match = null;
-    try {
-      match = matchRatio(job.script, await transcribe(key, mp3, `${job.section}/${job.id}`));
-    } catch (error) {
-      log(`${job.section}/${job.id}: verification skipped (${error.message.slice(0, 120)})`);
-    }
-    log(`${job.section}/${job.id}: ${seconds.toFixed(0)}s audio, match ${match === null ? 'n/a' : match.toFixed(3)} (try ${index + 1})`);
-    if (!best || (match ?? 0) > (best.match ?? 0)) best = { mp3, seconds, match };
-    if (match === null || match >= MATCH_THRESHOLD) break;
-  }
-  fs.writeFileSync(outFile, best.mp3);
-  return best;
 }
 
 // ---------- catalog ----------
@@ -617,8 +468,8 @@ async function main() {
     const file = path.join(root, 'public', job.audio);
     const prev = prevById.get(`${job.section}/${job.id}`);
     const wanted = (!only || only.has(job.section)) && (!ids || ids.has(job.id));
-    const fresh =
-      prev && fs.existsSync(file) && (prev.sha === signature(job, prev.model) && (!args.upgrade || prev.model === PRIMARY_MODEL));
+    // Only a Live recording of the current script counts as up to date.
+    const fresh = prev && fs.existsSync(file) && prev.model === LIVE_MODEL && prev.sha === signature(job, prev.model);
     job.prev = prev;
     if (wanted && (args.force || !fresh)) {
       const twin = firstByScript.get(job.script);
@@ -635,51 +486,30 @@ async function main() {
   }
   if (args.dry) return;
 
-  let model = typeof args.model === 'string' ? args.model : PRIMARY_MODEL;
   const results = new Map();
   const failed = [];
-  if (ENGINE === 'live') {
-    const queue = todo.filter((job) => !job.copyOf);
-    const tries = new Map();
-    const worker = async () => {
-      for (let job = queue.shift(); job; job = queue.shift()) {
-        try {
-          results.set(job, { ...(await buildOneLive(key, job)), model: LIVE_MODEL });
-          saveState();
-        } catch (error) {
-          const attempt = (tries.get(job) ?? 0) + 1;
-          tries.set(job, attempt);
-          if (attempt < 3) {
-            log(`${job.section}/${job.id}: ${error.message.slice(0, 160)}; re-queued (attempt ${attempt})`);
-            queue.push(job);
-            await sleep(15_000);
-          } else {
-            failed.push(job.id);
-            log(`FAILED ${job.section}/${job.id}: ${error.message.slice(0, 300)}`);
-          }
-        }
-      }
-    };
-    await Promise.all(Array.from({ length: PARALLEL }, worker));
-  } else {
-    for (const job of todo) {
-      if (job.copyOf) continue;
+  const queue = todo.filter((job) => !job.copyOf);
+  const tries = new Map();
+  const worker = async () => {
+    for (let job = queue.shift(); job; job = queue.shift()) {
       try {
-        results.set(job, { ...(await buildOne(key, job, model)), model });
+        results.set(job, { ...(await buildOneLive(key, job)), model: LIVE_MODEL });
+        saveState();
       } catch (error) {
-        if (error instanceof QuotaError && model !== FALLBACK_MODEL) {
-          log(`Daily quota reached for ${model}. Switching to ${FALLBACK_MODEL}.`);
-          model = FALLBACK_MODEL;
-          results.set(job, { ...(await buildOne(key, job, model)), model });
+        const attempt = (tries.get(job) ?? 0) + 1;
+        tries.set(job, attempt);
+        if (attempt < 3) {
+          log(`${job.section}/${job.id}: ${error.message.slice(0, 160)}; re-queued (attempt ${attempt})`);
+          queue.push(job);
+          await sleep(15_000);
         } else {
           failed.push(job.id);
           log(`FAILED ${job.section}/${job.id}: ${error.message.slice(0, 300)}`);
-          break;
         }
       }
-      saveState();
     }
-  }
+  };
+  await Promise.all(Array.from({ length: PARALLEL }, worker));
   for (const job of todo) {
     if (!job.copyOf || !results.has(job.copyOf)) continue;
     fs.copyFileSync(path.join(root, 'public', job.copyOf.audio), path.join(root, 'public', job.audio));

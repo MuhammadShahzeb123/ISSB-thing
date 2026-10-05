@@ -1,8 +1,9 @@
-import { KICKOFF_PROMPT, timeCheck, type LiveInterviewSettings } from './dpInterview';
+import { DEBRIEF_PROMPT, KICKOFF_PROMPT, timeCheck, type LiveInterviewSettings } from './dpInterview';
 
 export type Speaker = 'dp' | 'candidate';
-export type TranscriptEntry = { id: number; role: Speaker; text: string; open: boolean };
-export type LivePhase = 'connecting' | 'live' | 'reconnecting' | 'ended' | 'error';
+/** `debrief` marks the interviewer's spoken feedback after the interview. */
+export type TranscriptEntry = { id: number; role: Speaker; text: string; open: boolean; debrief?: boolean };
+export type LivePhase = 'connecting' | 'live' | 'reconnecting' | 'debrief' | 'ended' | 'error';
 
 export type LiveCallbacks = {
   onPhase: (phase: LivePhase, detail?: string) => void;
@@ -111,6 +112,12 @@ export class LiveInterviewSession {
   private sentTimeUp = false;
   private speaker: Speaker | null = null;
 
+  private debriefing = false;
+  private debriefQueued = false;
+  private debriefAsked = false;
+  private debriefDone = false;
+  private debriefTimer = 0;
+
   interviewer = '';
 
   constructor(settings: LiveInterviewSettings, callbacks: LiveCallbacks, options: { headphones: boolean }) {
@@ -155,6 +162,43 @@ export class LiveInterviewSession {
     if (muted) this.send({ realtimeInput: { audioStreamEnd: true } });
   }
 
+  /**
+   * Stops the questions and asks the interviewer for his spoken feedback.
+   * The microphone stops sending, and the session ends by itself once he has finished speaking.
+   */
+  requestDebrief() {
+    if (this.ending || this.debriefing) return;
+    const answered = this.entries.some((entry) => entry.role === 'candidate' && entry.text.trim());
+    if (!this.ready || !this.kickedOff || !answered) {
+      this.end();
+      return;
+    }
+    this.debriefing = true;
+    this.callbacks.onPhase('debrief');
+    this.closeCandidate();
+    this.send({ realtimeInput: { audioStreamEnd: true } });
+    // If he is in the middle of a sentence, let him finish that turn and ask for the feedback straight after it.
+    if (this.openDp) this.debriefQueued = true;
+    else this.sendDebriefPrompt();
+    // Safety net in case the feedback never finishes.
+    this.debriefTimer = window.setTimeout(() => this.end(), 150_000);
+  }
+
+  private sendDebriefPrompt() {
+    this.debriefQueued = false;
+    this.debriefAsked = true;
+    this.send({ clientContent: { turns: [{ role: 'user', parts: [{ text: DEBRIEF_PROMPT }] }], turnComplete: true } });
+  }
+
+  /** The feedback counts as given once he signs off, or has clearly said enough. */
+  private debriefGiven(): boolean {
+    const text = this.entries
+      .filter((entry) => entry.debrief)
+      .map((entry) => entry.text)
+      .join(' ');
+    return /best of luck/i.test(text) || text.split(/\s+/).filter(Boolean).length >= 60;
+  }
+
   /** Ends the interview and releases the microphone. */
   end() {
     if (this.ending) return;
@@ -163,6 +207,7 @@ export class LiveInterviewSession {
     this.closeCandidate();
     window.clearInterval(this.clockTimer);
     window.clearTimeout(this.drainTimer);
+    window.clearTimeout(this.debriefTimer);
     const ws = this.ws;
     this.ws = null;
     if (ws) {
@@ -251,15 +296,19 @@ export class LiveInterviewSession {
     // A quota or capacity refusal is usually brief (another session is still closing), so it earns a few slower retries,
     // each with a fresh single-use token, even before the first resumption handle arrives.
     const busy = code === 1011 && /quota|exhausted|capacity|overloaded|unavailable/i.test(reason);
-    if (busy ? this.failures.length > 3 : !this.handle || this.failures.length > 5) {
+    // Server hiccups ("Internal error encountered") are worth the same retries.
+    const transient = busy || (code === 1011 && /internal|deadline|try again/i.test(reason));
+    if (transient ? this.failures.length > 3 : !this.handle || this.failures.length > 5) {
       const why = reason ? ` (${reason})` : '';
       this.fail(busy ? BUSY_MESSAGE : `The connection to the interviewer was lost${why}. Your transcript so far is saved below.`);
       return;
     }
     this.callbacks.onPhase('reconnecting');
     try {
-      if (busy || code === 1008 || Date.now() > this.tokenExpiresAt - 60_000) await this.fetchToken();
-      await new Promise((resolve) => window.setTimeout(resolve, (busy ? 5000 : 400) * this.failures.length));
+      if (transient || code === 1008 || Date.now() > this.tokenExpiresAt - 60_000) await this.fetchToken();
+      await new Promise((resolve) => window.setTimeout(resolve, (transient ? 4000 : 400) * this.failures.length));
+      // With nothing to resume, the new session starts empty, so the interviewer begins again.
+      if (!this.handle) this.kickedOff = false;
       if (!this.ending) this.connect();
     } catch (error) {
       this.fail(micError(error));
@@ -287,11 +336,17 @@ export class LiveInterviewSession {
     if (message.setupComplete) {
       this.ready = true;
       this.failures = [];
+      if (this.debriefing) {
+        // Reconnected during the feedback: keep what he already said, or ask for it again.
+        if (this.debriefGiven()) this.end();
+        else this.sendDebriefPrompt();
+        return;
+      }
       this.callbacks.onPhase('live');
       if (!this.kickedOff) {
         this.kickedOff = true;
         this.send({ clientContent: { turns: [{ role: 'user', parts: [{ text: KICKOFF_PROMPT }] }], turnComplete: true } });
-        this.startClock();
+        if (!this.startedAt) this.startClock();
       }
       return;
     }
@@ -320,10 +375,26 @@ export class LiveInterviewSession {
     if (content.interrupted) {
       this.player?.port.postMessage({ type: 'clear' });
       this.closeDp();
+      if (this.debriefQueued) this.sendDebriefPrompt();
     }
     if (content.turnComplete) {
+      const dpSpoke = Boolean(this.openDp?.text.trim());
       this.closeDp();
       this.closeCandidate();
+      if (this.debriefing) {
+        if (this.debriefQueued) this.sendDebriefPrompt();
+        else if (this.debriefAsked && this.debriefGiven()) {
+          this.debriefDone = true;
+          // Let the last words play out before closing.
+          if (!this.dpSpeaking) this.end();
+        }
+        return;
+      }
+      // After time is up, the first finished reply from the interviewer is his closing line.
+      if (this.sentTimeUp && dpSpoke) {
+        this.requestDebrief();
+        return;
+      }
       if (this.goAwayPending) this.reconnectNow();
     }
   }
@@ -350,7 +421,8 @@ export class LiveInterviewSession {
           this.dpSpeaking = false;
           this.gateUntil = Date.now() + 350;
           if (this.speaker === 'dp') this.setSpeaker(null);
-          if (this.goAwayPending) this.reconnectNow();
+          if (this.debriefDone) this.end();
+          else if (this.goAwayPending) this.reconnectNow();
         }, 300);
       }
     };
@@ -364,7 +436,7 @@ export class LiveInterviewSession {
     recorder.connect(sink);
     sink.connect(micCtx.destination);
     recorder.port.onmessage = (event: MessageEvent<{ pcm: ArrayBuffer; level: number }>) => {
-      const gated = !this.headphones && (this.dpSpeaking || Date.now() < this.gateUntil);
+      const gated = this.debriefing || (!this.headphones && (this.dpSpeaking || Date.now() < this.gateUntil));
       this.micLevel = this.muted || gated ? 0 : event.data.level;
       this.reportLevels();
       if (this.muted || gated) return;
@@ -398,7 +470,7 @@ export class LiveInterviewSession {
 
   private appendDp(text: string) {
     if (!this.openDp) {
-      this.openDp = { id: this.nextId++, role: 'dp', text: '', open: true };
+      this.openDp = { id: this.nextId++, role: 'dp', text: '', open: true, debrief: this.debriefAsked };
       this.entries.push(this.openDp);
     }
     this.openDp.text += text;
@@ -451,6 +523,8 @@ export class LiveInterviewSession {
         this.sentTimeUp = true;
         this.note(timeCheck(0));
       }
+      // If the closing never comes (a long answer, a quiet room), move to the feedback anyway.
+      if (seconds >= total + 90) this.requestDebrief();
     }, 1000);
   }
 
