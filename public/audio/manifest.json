@@ -614,119 +614,119 @@
     "id": "long-jump",
     "title": "Long jump, the ditch",
     "audio": "/audio/gto/long-jump.mp3",
-    "sha": "0826637e453a5831",
-    "model": "gemini-3.8-flash-tts",
+    "sha": "56c066263aba3b99",
+    "model": "gemini-3.8-live",
     "seconds": 78,
-    "match": 0.922
+    "match": 1
   },
   {
     "section": "gto",
     "id": "high-jump",
     "title": "High jump",
     "audio": "/audio/gto/high-jump.mp3",
-    "sha": "f83d4635c4a86186",
-    "model": "gemini-3.8-flash-tts",
-    "seconds": 68,
-    "match": 0.952
+    "sha": "34b8653ce63575aa",
+    "model": "gemini-3.8-live",
+    "seconds": 59,
+    "match": 1
   },
   {
     "section": "gto",
     "id": "rope-climb",
     "title": "Rope climb",
     "audio": "/audio/gto/rope-climb.mp3",
-    "sha": "ab19b3c39c857c18",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 94,
-    "match": 0.958
+    "sha": "3df714cc3d777361",
+    "model": "gemini-3.8-live",
+    "seconds": 86,
+    "match": 1
   },
   {
     "section": "gto",
     "id": "double-rope",
     "title": "Double rope",
     "audio": "/audio/gto/double-rope.mp3",
-    "sha": "d43d96921f488c4c",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 74,
-    "match": 0.963
+    "sha": "2587e118d51365ff",
+    "model": "gemini-3.8-live",
+    "seconds": 68,
+    "match": 1
   },
   {
     "section": "gto",
     "id": "plank",
     "title": "Plank walk",
     "audio": "/audio/gto/plank.mp3",
-    "sha": "3b18b295f946a717",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 74,
-    "match": 0.958
+    "sha": "ac052e1d6bdd0ac0",
+    "model": "gemini-3.8-live",
+    "seconds": 75,
+    "match": 1
   },
   {
     "section": "gto",
     "id": "tyre",
     "title": "Tyre",
     "audio": "/audio/gto/tyre.mp3",
-    "sha": "726087fc0ad671a9",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 73,
-    "match": 0.93
+    "sha": "8d79cb2b65d454de",
+    "model": "gemini-3.8-live",
+    "seconds": 67,
+    "match": 1
   },
   {
     "section": "gto",
     "id": "tarzan-swing",
     "title": "Tarzan swing",
     "audio": "/audio/gto/tarzan-swing.mp3",
-    "sha": "3b4f4fe34ef2be22",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 76,
-    "match": 0.958
+    "sha": "d7e8ec722391e82a",
+    "model": "gemini-3.8-live",
+    "seconds": 61,
+    "match": 1
   },
   {
     "section": "gto",
     "id": "zig-zag",
     "title": "Zig-zag",
     "audio": "/audio/gto/zig-zag.mp3",
-    "sha": "64c64b7237c2fdbe",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 70,
-    "match": 0.932
+    "sha": "67dc292ce1ff4c0c",
+    "model": "gemini-3.8-live",
+    "seconds": 57,
+    "match": 1
   },
   {
     "section": "gto",
     "id": "boxing-ring",
     "title": "Boxing ring",
     "audio": "/audio/gto/boxing-ring.mp3",
-    "sha": "79cfc5a7d9f7cd16",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 73,
-    "match": 0.957
+    "sha": "b507fc604610a22c",
+    "model": "gemini-3.8-live",
+    "seconds": 60,
+    "match": 1
   },
   {
     "section": "gto",
     "id": "indoor-overview",
     "title": "Indoor practice overview",
     "audio": "/audio/gto/indoor-overview.mp3",
-    "sha": "bea256b754e00898",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 31,
-    "match": 0.984
+    "sha": "1e99f7d4ecba408e",
+    "model": "gemini-3.8-live",
+    "seconds": 28,
+    "match": 1
   },
   {
     "section": "psych",
     "id": "story-picture-1",
     "title": "story-picture-1",
     "audio": "/audio/psychological/story-picture-1.mp3",
-    "sha": "bf92b1c7fd31e9a1",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 26,
-    "match": 0.982
+    "sha": "794083194815bb77",
+    "model": "gemini-3.8-live",
+    "seconds": 27,
+    "match": 1
   },
   {
     "section": "psych",
     "id": "overview",
     "title": "overview",
     "audio": "/audio/psychological/overview.mp3",
-    "sha": "e8fcc9da308d60dc",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 37,
+    "sha": "281f4be1f2dccb9b",
+    "model": "gemini-3.8-live",
+    "seconds": 30,
     "match": 1
   },
   {
@@ -764,10 +764,10 @@
     "id": "unified-observe-30-write-210",
     "title": "unified-observe-30-write-210",
     "audio": "/audio/psychological/unified-observe-30-write-210.mp3",
-    "sha": "bf92b1c7fd31e9a1",
-    "model": "gemini-3.8-flash-lite-tts",
-    "seconds": 26,
-    "match": 0.982
+    "sha": "794083194815bb77",
+    "model": "gemini-3.8-live",
+    "seconds": 27,
+    "match": 1
   },
   {
     "section": "psych",
