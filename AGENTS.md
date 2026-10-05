@@ -57,8 +57,9 @@ response modality is rejected), so written text comes from its own transcription
 ## WAT / Picture Story writing coach
 
 - `POST /api/writing-assessment` coaches completed WAT and Picture Story answers with
-  Google Gemma (`gemma-4-31b-it` by default). Env: `Gemma_API` (required), optional
-  `GEMMA_MODEL`. Interview / Gemini Live is separate (`GEMINI_API_KEY`, `gemini-3.8-live`).
+  Google Gemma (`gemma-4-31b-it` by default). Env: `GEMINI_API_KEY` (required — the same
+  key as the Live interview), optional `GEMMA_MODEL`. No separate Gemma key. The interview
+  itself still runs on Gemini Live (`gemini-3.8-live`); only the key is shared.
 - The review screens on `/psychological/wat` and `/psychological/story-writing` call
   `WritingAssessmentPanel`, which shows scores plus sentence rewrites (weak original →
   stronger practice wording). Do not wire this coach into the live interview.
