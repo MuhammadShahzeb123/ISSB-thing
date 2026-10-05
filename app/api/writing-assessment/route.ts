@@ -152,6 +152,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       summary: coaching.summary,
       strengths: coaching.strengths,
       improvements: coaching.improvements,
+      rewrites: coaching.rewrites,
       disclaimer: WRITING_COACH_DISCLAIMER,
     };
 

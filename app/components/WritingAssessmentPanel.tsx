@@ -97,9 +97,9 @@ export default function WritingAssessmentPanel({
           </p>
           <h2 className="mt-2 text-2xl font-black">{title}</h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-700">
-            Submit when you are ready. Your written responses are sent to
-            Google&apos;s Gemma service for coaching; biodata and photos are
-            never included.
+            Submit when you are ready. Gemma 4 31B reviews your answers, flags
+            weak sentences, and rewrites them into stronger ISSB-style practice
+            responses. Biodata and photos are never included.
           </p>
         </div>
         <button
@@ -214,6 +214,46 @@ export default function WritingAssessmentPanel({
               </ul>
             </div>
           </div>
+
+          {result.rewrites.length > 0 ? (
+            <div>
+              <h3 className="text-lg font-black">Fix these sentences</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-700">
+                Weak spots from your answers, with a clearer rewrite you can
+                practice.
+              </p>
+              <ul className="mt-4 space-y-4">
+                {result.rewrites.map((item) => (
+                  <li
+                    key={`${item.promptId}:${item.original}:${item.rewrite}`}
+                    className="border-2 border-slate-950 bg-slate-50 p-4"
+                  >
+                    <p className="text-xs font-black uppercase tracking-wide text-blue-800">
+                      Prompt {item.promptId}
+                    </p>
+                    <p className="mt-3 text-sm font-black text-slate-600">
+                      Your words
+                    </p>
+                    <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-slate-800">
+                      {item.original}
+                    </p>
+                    <p className="mt-3 text-sm font-black text-amber-900">
+                      Why it is weak
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-slate-700">
+                      {item.problem}
+                    </p>
+                    <p className="mt-3 text-sm font-black text-emerald-900">
+                      Stronger rewrite
+                    </p>
+                    <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-slate-900">
+                      {item.rewrite}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <p className="border-t-2 border-slate-950 pt-4 text-xs font-semibold leading-5 text-slate-600">
             {result.disclaimer}

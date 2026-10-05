@@ -4,9 +4,10 @@ import type {
   WritingCriterionScore,
   WritingImprovement,
   WritingMetrics,
+  WritingRewrite,
 } from "./types";
 
-export const DEFAULT_GEMMA_MODEL = "gemma-4-26b-a4b-it";
+export const DEFAULT_GEMMA_MODEL = "gemma-4-31b-it";
 export const PROVIDER_TIMEOUT_MS = 15_000;
 
 export const WRITING_CRITERIA = [
@@ -21,15 +22,17 @@ export const WRITING_CRITERIA = [
 ] as const satisfies readonly WritingCriterionId[];
 
 const MODEL_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
-const PROVIDER_KEYS = ["improvements", "scores", "strengths", "summary"] as const;
+const PROVIDER_KEYS = ["improvements", "rewrites", "scores", "strengths", "summary"] as const;
 const SCORE_KEYS = ["criterion", "evidence", "score"] as const;
 const IMPROVEMENT_KEYS = ["advice", "focus"] as const;
+const REWRITE_KEYS = ["original", "problem", "promptId", "rewrite"] as const;
 
 export type ProviderAssessment = {
   scores: WritingCriterionScore[];
   summary: string;
   strengths: string[];
   improvements: WritingImprovement[];
+  rewrites: WritingRewrite[];
 };
 
 export class ProviderError extends Error {
@@ -99,6 +102,17 @@ function parseImprovement(value: unknown): WritingImprovement | null {
   return focus && advice ? { focus, advice } : null;
 }
 
+function parseRewrite(value: unknown): WritingRewrite | null {
+  if (!isRecord(value) || !hasExactKeys(value, REWRITE_KEYS)) return null;
+  const promptId = boundedString(value.promptId, 1, 80);
+  const original = boundedString(value.original, 1, 400);
+  const problem = boundedString(value.problem, 1, 240);
+  const rewrite = boundedString(value.rewrite, 1, 500);
+  return promptId && original && problem && rewrite
+    ? { promptId, original, problem, rewrite }
+    : null;
+}
+
 function parseStringList(
   value: unknown,
   minimumItems: number,
@@ -149,11 +163,20 @@ export function parseProviderAssessment(text: string): ProviderAssessment {
     throw new ProviderError("invalid-response");
   }
   const improvements = value.improvements.map(parseImprovement);
+  if (
+    !Array.isArray(value.rewrites) ||
+    value.rewrites.length < 1 ||
+    value.rewrites.length > 8
+  ) {
+    throw new ProviderError("invalid-response");
+  }
+  const rewrites = value.rewrites.map(parseRewrite);
 
   if (
     !summary ||
     !strengths ||
-    improvements.some((improvement) => improvement === null)
+    improvements.some((improvement) => improvement === null) ||
+    rewrites.some((rewrite) => rewrite === null)
   ) {
     throw new ProviderError("invalid-response");
   }
@@ -163,6 +186,7 @@ export function parseProviderAssessment(text: string): ProviderAssessment {
     summary,
     strengths,
     improvements: improvements as WritingImprovement[],
+    rewrites: rewrites as WritingRewrite[],
   };
 }
 
@@ -195,8 +219,8 @@ Use this server-owned rubric. Score each criterion with an integer from 0 to 10:
 - teamwork: observable cooperation and support
 - leadershipBehaviors: observable planning, communication, judgment, and enabling others
 
-Give evidence grounded in the writing and 1-3 specific, actionable improvements. Keep feedback concise. Return only one JSON object with exactly this shape and no markdown:
-{"scores":[{"criterion":"effectiveWordUse","score":0,"evidence":"..."},{"criterion":"structureReadability","score":0,"evidence":"..."},{"criterion":"emotionalRange","score":0,"evidence":"..."},{"criterion":"constructiveHopefulOutcome","score":0,"evidence":"..."},{"criterion":"initiative","score":0,"evidence":"..."},{"criterion":"responsibility","score":0,"evidence":"..."},{"criterion":"teamwork","score":0,"evidence":"..."},{"criterion":"leadershipBehaviors","score":0,"evidence":"..."}],"summary":"...","strengths":["..."],"improvements":[{"focus":"...","advice":"..."}]}
+Give evidence grounded in the writing and 1-3 specific, actionable improvements. Also pick 1-8 weak answers or sentences and rewrite each into a stronger ISSB-style practice response: honest, specific, structured, natural English, and free of robotic fluff or empty bravado. Use the matching promptId from the responses. Keep feedback concise. Return only one JSON object with exactly this shape and no markdown:
+{"scores":[{"criterion":"effectiveWordUse","score":0,"evidence":"..."},{"criterion":"structureReadability","score":0,"evidence":"..."},{"criterion":"emotionalRange","score":0,"evidence":"..."},{"criterion":"constructiveHopefulOutcome","score":0,"evidence":"..."},{"criterion":"initiative","score":0,"evidence":"..."},{"criterion":"responsibility","score":0,"evidence":"..."},{"criterion":"teamwork","score":0,"evidence":"..."},{"criterion":"leadershipBehaviors","score":0,"evidence":"..."}],"summary":"...","strengths":["..."],"improvements":[{"focus":"...","advice":"..."}],"rewrites":[{"promptId":"...","original":"...","problem":"...","rewrite":"..."}]}
 
 Deterministic server metrics for context:
 ${JSON.stringify(metrics)}
