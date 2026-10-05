@@ -8,7 +8,8 @@ import type {
 } from "./types";
 
 export const DEFAULT_GEMMA_MODEL = "gemma-4-31b-it";
-export const PROVIDER_TIMEOUT_MS = 15_000;
+// Gemma 4 31B routinely needs more than 15s for a full coaching pass.
+export const PROVIDER_TIMEOUT_MS = 55_000;
 
 export const WRITING_CRITERIA = [
   "effectiveWordUse",

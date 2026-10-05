@@ -19,6 +19,8 @@ import {
 } from "@/app/lib/writing-assessment/types";
 
 export const dynamic = "force-dynamic";
+// Leave room for the 55s Gemma call (see PROVIDER_TIMEOUT_MS).
+export const maxDuration = 60;
 
 const NO_STORE_HEADERS = {
   "Cache-Control": "no-store, max-age=0",
