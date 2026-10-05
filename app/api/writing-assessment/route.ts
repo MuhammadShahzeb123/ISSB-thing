@@ -75,7 +75,8 @@ function providerErrorResponse(error: ProviderError): NextResponse {
       {
         error: {
           code: "coach_unavailable",
-          message: "Writing coaching is not configured.",
+          message:
+            "Writing coaching needs the server's GEMINI_API_KEY (the same key as the Live interview).",
         },
       },
       503,
@@ -132,8 +133,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
     const metrics = calculateWritingMetrics(assessmentRequest.responses);
     const coaching = await assessWritingWithGemma({
-      apiKey: process.env.Gemma_API,
-      model: process.env.GEMMA_MODEL,
+      // Same Google AI Studio key as the Live interview. `Gemma_API` is only a
+      // legacy fallback for older deployments; it is not required.
+      apiKey: process.env.GEMINI_API_KEY?.trim() || process.env.Gemma_API,
+      model: process.env.GEMMA_MODEL?.trim() || undefined,
       request: assessmentRequest,
       metrics,
     });
