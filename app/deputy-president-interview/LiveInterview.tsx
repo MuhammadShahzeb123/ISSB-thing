@@ -18,16 +18,6 @@ const SETTINGS_KEY = 'issb-live-dpi-settings-v1';
 
 type Stage = 'setup' | 'live' | 'review';
 
-type Report = {
-  summary: string;
-  verdict: 'strong' | 'promising' | 'needs-work';
-  qualities: { name: string; score: number; note: string }[];
-  strengths: string[];
-  improvements: { area: string; advice: string }[];
-  rework: { question: string; said: string; better: string }[];
-  nextStep: string;
-};
-
 const defaultSettings: LiveInterviewSettings = {
   mode: 'full',
   minutes: 15,
@@ -37,12 +27,6 @@ const defaultSettings: LiveInterviewSettings = {
   profile: emptyProfile,
 };
 
-const verdictLabel: Record<Report['verdict'], string> = {
-  strong: 'Strong practice interview',
-  promising: 'Promising, with clear fixes',
-  'needs-work': 'Needs more practice',
-};
-
 function clock(seconds: number) {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
@@ -50,9 +34,19 @@ function clock(seconds: number) {
 }
 
 function transcriptText(entries: TranscriptEntry[], interviewer: string, settings: LiveInterviewSettings) {
-  const who = (role: Speaker) => (role === 'dp' ? interviewer || 'Deputy President' : settings.profile.name || 'Candidate');
+  const dp = interviewer || 'Deputy President';
+  const who = (role: Speaker) => (role === 'dp' ? dp : settings.profile.name || 'Candidate');
   const header = `${modeTitle(settings.mode)} with ${interviewer || 'the Deputy President'}\n${new Date().toLocaleString('en-PK', { timeZone: 'Asia/Karachi' })} PKT\n\n`;
-  return header + entries.map((entry) => `${who(entry.role)}: ${entry.text}`).join('\n\n');
+  const interview = entries.filter((entry) => !entry.debrief).map((entry) => `${who(entry.role)}: ${entry.text}`);
+  const feedback = debriefText(entries);
+  return header + interview.join('\n\n') + (feedback ? `\n\n---\nFeedback from ${dp}:\n${feedback}` : '');
+}
+
+function debriefText(entries: TranscriptEntry[]) {
+  return entries
+    .filter((entry) => entry.debrief && entry.text.trim())
+    .map((entry) => entry.text.trim())
+    .join(' ');
 }
 
 const profileFields: { key: Exclude<keyof CandidateProfile, 'entry'>; label: string; placeholder: string; long?: boolean }[] = [
@@ -78,9 +72,6 @@ export default function LiveInterview() {
   const [showTranscript, setShowTranscript] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [interviewer, setInterviewer] = useState('');
-  const [report, setReport] = useState<Report | null>(null);
-  const [reportState, setReportState] = useState<'idle' | 'loading' | 'error'>('idle');
-  const [reportError, setReportError] = useState<string | null>(null);
   const sessionRef = useRef<LiveInterviewSession | null>(null);
   const micBarRef = useRef<HTMLSpanElement>(null);
   const dpBarRef = useRef<HTMLSpanElement>(null);
@@ -122,13 +113,9 @@ export default function LiveInterview() {
   const updateProfile = (key: keyof CandidateProfile, value: string) =>
     setSettings((current) => ({ ...current, profile: { ...current.profile, [key]: value } }));
 
-  const finish = useCallback(() => {
-    const session = sessionRef.current;
-    if (!session) return;
-    session.end();
-    setEntries(session.transcript);
-    setStage('review');
-  }, []);
+  /** Ends the questions; the interviewer then gives his spoken feedback and the session closes itself. */
+  const finish = useCallback(() => sessionRef.current?.requestDebrief(), []);
+  const skipFeedback = useCallback(() => sessionRef.current?.end(), []);
 
   const start = async (event: FormEvent) => {
     event.preventDefault();
@@ -137,8 +124,6 @@ export default function LiveInterview() {
     setEntries([]);
     setSeconds(0);
     setMuted(false);
-    setReport(null);
-    setReportState('idle');
     setSpeaker(null);
     setPhase('connecting');
     setStage('live');
@@ -148,6 +133,10 @@ export default function LiveInterview() {
         onPhase: (next, detail) => {
           setPhase(next);
           if (next === 'live') setInterviewer(session.interviewer);
+          if (next === 'ended') {
+            setEntries(session.transcript);
+            setStage('review');
+          }
           if (next === 'error') {
             setError(detail ?? 'The interview stopped.');
             setEntries(session.transcript);
@@ -174,25 +163,6 @@ export default function LiveInterview() {
     sessionRef.current?.setMuted(next);
   };
 
-  const requestReport = async () => {
-    setReportState('loading');
-    setReportError(null);
-    try {
-      const response = await fetch('/api/live-interview/report', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ settings, transcript: entries.map(({ role, text }) => ({ role, text })) }),
-      });
-      const data = (await response.json().catch(() => null)) as { report?: Report; error?: { message?: string } } | null;
-      if (!response.ok || !data?.report) throw new Error(data?.error?.message ?? 'Feedback could not be written right now.');
-      setReport(data.report);
-      setReportState('idle');
-    } catch (caught) {
-      setReportState('error');
-      setReportError(caught instanceof Error ? caught.message : 'Feedback could not be written right now.');
-    }
-  };
-
   const download = () => {
     const blob = new Blob([transcriptText(entries, interviewer, settings)], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -205,12 +175,16 @@ export default function LiveInterview() {
 
   const voice = voiceById(settings.voice);
   const candidateName = settings.profile.name || 'You';
+  const dpName = interviewer || `${voice.rank} ${voice.name}`;
+  const feedback = debriefText(entries);
   const status =
     phase === 'connecting'
       ? 'Connecting to the interviewer…'
       : phase === 'reconnecting'
         ? 'Reconnecting. Hold on, the interview will continue…'
-        : speaker === 'dp'
+        : phase === 'debrief'
+          ? `${dpName} is giving you his feedback. Listen carefully.`
+          : speaker === 'dp'
           ? `${interviewer || 'The Deputy President'} is speaking${headphones ? '' : ' (your mic waits until he finishes)'}`
           : speaker === 'candidate'
             ? 'Listening to you…'
@@ -227,8 +201,8 @@ export default function LiveInterview() {
             <h2 id={headingId}>Sit the Deputy President interview out loud</h2>
             <p>
               A live AI deputy president talks with you in real time. He asks about your life, digs into your answers, runs a
-              rapid-fire round and checks your current affairs. When you finish you get the full transcript and written
-              feedback.
+              rapid-fire round and checks your current affairs. When you finish, he gives you a minute of spoken feedback, and
+              you keep the full transcript.
             </p>
           </div>
 
@@ -377,8 +351,8 @@ export default function LiveInterview() {
       {stage === 'live' && (
         <div className="live-stage" aria-live="polite">
           <div className="live-topbar">
-            <span className={`live-badge${phase === 'live' ? ' is-on' : ''}`}>
-              {phase === 'live' ? 'Live' : phase === 'reconnecting' ? 'Reconnecting' : 'Connecting'}
+            <span className={`live-badge${phase === 'live' || phase === 'debrief' ? ' is-on' : ''}`}>
+              {phase === 'live' ? 'Live' : phase === 'debrief' ? 'Feedback' : phase === 'reconnecting' ? 'Reconnecting' : 'Connecting'}
             </span>
             <span className="live-topbar-title">
               {modeTitle(settings.mode)} · {interviewer || `${voice.rank} ${voice.name}`}
@@ -407,9 +381,11 @@ export default function LiveInterview() {
           </div>
 
           <div className="live-controls">
-            <button type="button" className="prep-button prep-button-secondary" aria-pressed={muted} onClick={toggleMute}>
-              {muted ? 'Unmute mic' : 'Mute mic'}
-            </button>
+            {phase !== 'debrief' && (
+              <button type="button" className="prep-button prep-button-secondary" aria-pressed={muted} onClick={toggleMute}>
+                {muted ? 'Unmute mic' : 'Mute mic'}
+              </button>
+            )}
             <button
               type="button"
               className="prep-button prep-button-secondary"
@@ -418,16 +394,30 @@ export default function LiveInterview() {
             >
               {showTranscript ? 'Hide transcript' : 'Show transcript'}
             </button>
-            <button type="button" className="prep-button live-end" onClick={finish}>
-              End interview
-            </button>
+            {phase === 'debrief' ? (
+              <button type="button" className="prep-button prep-button-secondary" onClick={skipFeedback}>
+                Skip feedback
+              </button>
+            ) : (
+              <button type="button" className="prep-button live-end" onClick={finish}>
+                End interview
+              </button>
+            )}
           </div>
+          {phase !== 'debrief' && (
+            <p className="dpi-note">When you end the interview, {dpName} gives you about a minute of spoken feedback.</p>
+          )}
 
           {showTranscript && (
             <ol className="live-transcript">
               {entries.map((entry) => (
-                <li key={entry.id} className={`live-line live-line--${entry.role}${entry.open ? ' is-open' : ''}`}>
-                  <span className="live-line-who">{entry.role === 'dp' ? interviewer || 'DP' : candidateName}</span>
+                <li
+                  key={entry.id}
+                  className={`live-line live-line--${entry.role}${entry.debrief ? ' live-line--feedback' : ''}${entry.open ? ' is-open' : ''}`}
+                >
+                  <span className="live-line-who">
+                    {entry.role === 'dp' ? `${interviewer || 'DP'}${entry.debrief ? ' · feedback' : ''}` : candidateName}
+                  </span>
                   <span className="live-line-text">{entry.text || '…'}</span>
                 </li>
               ))}
@@ -448,24 +438,12 @@ export default function LiveInterview() {
               </p>
             )}
             <p>
-              {entries.filter((entry) => entry.role === 'candidate').length} answers · {clock(seconds)} minutes with{' '}
-              {interviewer || `${voice.rank} ${voice.name}`}.
+              {entries.filter((entry) => entry.role === 'candidate').length} answers · {clock(seconds)} minutes with {dpName}.
             </p>
             <div className="prep-actions">
               <button
                 type="button"
                 className="prep-button"
-                disabled={reportState === 'loading' || !entries.some((entry) => entry.role === 'candidate')}
-                onClick={() => void requestReport()}
-              >
-                {reportState === 'loading' ? 'Writing feedback…' : report ? 'Write feedback again' : 'Get written feedback'}
-              </button>
-              <button type="button" className="prep-button prep-button-secondary" disabled={!entries.length} onClick={download}>
-                Download transcript
-              </button>
-              <button
-                type="button"
-                className="prep-button prep-button-secondary"
                 onClick={() => {
                   setStage('setup');
                   setError(null);
@@ -473,82 +451,39 @@ export default function LiveInterview() {
               >
                 New interview
               </button>
+              <button type="button" className="prep-button prep-button-secondary" disabled={!entries.length} onClick={download}>
+                Download transcript
+              </button>
             </div>
-            {reportError && (
-              <p className="dpi-error" role="alert">
-                {reportError}
-              </p>
-            )}
           </div>
 
-          {report && (
-            <article className="prep-panel live-report">
-              <p className={`live-verdict live-verdict--${report.verdict}`}>{verdictLabel[report.verdict] ?? report.verdict}</p>
-              <p className="gk-modal-summary">{report.summary}</p>
-              <h3>Officer-like qualities</h3>
-              <ul className="live-scores">
-                {report.qualities.map((quality) => (
-                  <li key={quality.name}>
-                    <span className="live-score-name">{quality.name}</span>
-                    <span className="live-score-bar" aria-label={`${quality.score} out of 5`}>
-                      {[1, 2, 3, 4, 5].map((step) => (
-                        <span key={step} className={step <= quality.score ? 'is-on' : ''} />
-                      ))}
-                    </span>
-                    <span className="live-score-note">{quality.note}</span>
-                  </li>
-                ))}
-              </ul>
-              <h3>What went well</h3>
-              <ul>
-                {report.strengths.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <h3>Fix these next</h3>
-              <ul>
-                {report.improvements.map((item) => (
-                  <li key={item.area}>
-                    <strong>{item.area}.</strong> {item.advice}
-                  </li>
-                ))}
-              </ul>
-              {report.rework.length > 0 && (
-                <>
-                  <h3>Answers to rework</h3>
-                  <ol className="live-rework">
-                    {report.rework.map((item) => (
-                      <li key={item.question}>
-                        <p className="dpi-review-q">{item.question}</p>
-                        <p>
-                          <strong>You said:</strong> {item.said}
-                        </p>
-                        <p>
-                          <strong>Better:</strong> {item.better}
-                        </p>
-                      </li>
-                    ))}
-                  </ol>
-                </>
-              )}
-              <p className="prep-note">
-                <strong>Practise tomorrow: </strong>
-                {report.nextStep}
+          <article className="prep-panel live-feedback">
+            <h3>Feedback from {dpName}</h3>
+            {feedback ? (
+              <>
+                <p className="live-feedback-text">{feedback}</p>
+                <p className="prep-muted">Spoken practice feedback from the AI interviewer. It is not an ISSB result.</p>
+              </>
+            ) : (
+              <p className="prep-muted">
+                No feedback this time. Next time, press End interview and stay for about a minute while he tells you what went
+                well and what to fix.
               </p>
-              <p className="prep-muted">Practice feedback written by AI. It is not an ISSB result.</p>
-            </article>
-          )}
+            )}
+          </article>
 
           <div className="prep-panel">
             <h3>Transcript</h3>
-            {entries.length ? (
+            {entries.some((entry) => !entry.debrief) ? (
               <ol className="live-transcript live-transcript--review">
-                {entries.map((entry) => (
-                  <li key={entry.id} className={`live-line live-line--${entry.role}`}>
-                    <span className="live-line-who">{entry.role === 'dp' ? interviewer || 'DP' : candidateName}</span>
-                    <span className="live-line-text">{entry.text}</span>
-                  </li>
-                ))}
+                {entries
+                  .filter((entry) => !entry.debrief)
+                  .map((entry) => (
+                    <li key={entry.id} className={`live-line live-line--${entry.role}`}>
+                      <span className="live-line-who">{entry.role === 'dp' ? interviewer || 'DP' : candidateName}</span>
+                      <span className="live-line-text">{entry.text}</span>
+                    </li>
+                  ))}
               </ol>
             ) : (
               <p className="prep-muted">Nothing was said yet.</p>

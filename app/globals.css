@@ -1955,29 +1955,10 @@ button.gk-tile { font: inherit; }
 .live-line-text { line-height: 1.6; font-weight: 600; overflow-wrap: anywhere; }
 .live-transcript-end { height: 1px; border: 0 !important; padding: 0 !important; background: none !important; }
 .live-review { display: grid; gap: 0; }
-.live-verdict {
-  display: inline-block;
-  margin: 0 0 0.8rem;
-  border: 2px solid var(--ink);
-  padding: 0.25rem 0.7rem;
-  font-weight: 900;
-  background: var(--yellow);
-}
-.live-verdict--strong { background: var(--lime); }
-.live-verdict--needs-work { background: #ffd0c8; }
-.live-report ul.live-scores { list-style: none !important; padding: 0 !important; display: grid; gap: 0.6rem; }
-.live-scores li { display: grid; grid-template-columns: minmax(9rem, 13rem) auto 1fr; gap: 0.35rem 0.8rem; align-items: center; margin: 0 !important; }
-.live-score-name { font-weight: 900; }
-.live-score-bar { display: inline-flex; gap: 3px; }
-.live-score-bar span { width: 1.05rem; height: 0.8rem; border: 2px solid var(--ink); background: var(--paper); }
-.live-score-bar span.is-on { background: #0057a8; }
-.live-score-note { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
-.live-rework { padding-inline-start: 1.2rem; }
-.live-rework li { margin-top: 0.8rem; }
-.live-rework p { margin: 0.2rem 0; }
+.live-line--feedback { background: #fff7d6; margin-right: 0 !important; }
+.live-feedback { background: #fff7d6; }
+.live-feedback-text { font-size: 1.05rem; line-height: 1.75; font-weight: 600; white-space: pre-line; }
 @media (max-width: 640px) {
-  .live-scores li { grid-template-columns: 1fr auto; }
-  .live-score-note { grid-column: 1 / -1; }
   .live-line--dp { margin-right: 0 !important; }
   .live-line--candidate { margin-left: 0 !important; }
   .live-meter-row { grid-template-columns: 4.5rem 1fr; }
