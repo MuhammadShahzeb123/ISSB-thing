@@ -19,6 +19,15 @@ function validProviderJson(): string {
         advice: "Name who acts, what they do, and the concrete result.",
       },
     ],
+    rewrites: [
+      {
+        promptId: "story-sentence-1",
+        original: "I helped and it was good.",
+        problem: "Vague action with no concrete detail.",
+        rewrite:
+          "I organised the rescue line, checked each person was clear, and reported when the path was safe.",
+      },
+    ],
   });
 }
 
@@ -29,6 +38,8 @@ test("parses and normalizes a complete provider assessment", () => {
     WRITING_CRITERIA,
   );
   assert.equal(parsed.improvements[0].focus, "Specificity");
+  assert.equal(parsed.rewrites[0].promptId, "story-sentence-1");
+  assert.match(parsed.rewrites[0].rewrite, /organised the rescue line/u);
 });
 
 test("fails closed on fenced, incomplete, or duplicated output", () => {
@@ -48,6 +59,13 @@ test("fails closed on fenced, incomplete, or duplicated output", () => {
   duplicated.scores[1].criterion = duplicated.scores[0].criterion;
   assert.throws(
     () => parseProviderAssessment(JSON.stringify(duplicated)),
+    ProviderError,
+  );
+
+  const missingRewrites = JSON.parse(validProviderJson());
+  delete missingRewrites.rewrites;
+  assert.throws(
+    () => parseProviderAssessment(JSON.stringify(missingRewrites)),
     ProviderError,
   );
 });
@@ -88,4 +106,6 @@ test("quotes writing as untrusted data and preserves injection text", () => {
   assert.match(prompt, /Server-owned canonical prompts/u);
   assert.match(prompt, /bridge to the village was gone/u);
   assert.match(prompt, /Do not diagnose personality or emotional stability/u);
+  assert.match(prompt, /rewrite each into a stronger ISSB-style practice response/u);
+  assert.match(prompt, /"rewrites":\[/u);
 });

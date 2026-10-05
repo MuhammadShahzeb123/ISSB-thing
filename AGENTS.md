@@ -53,3 +53,12 @@ response modality is rejected), so written text comes from its own transcription
   flagged `debrief` and shown above the transcript on the review screen.
 - Mic capture and playback are AudioWorklets in `public/worklets/` (16 kHz PCM16 up, 24 kHz PCM16 down).
 - Server env: `GEMINI_API_KEY` (never exposed to the client). The offline record-yourself practice stays below it.
+
+## WAT / Picture Story writing coach
+
+- `POST /api/writing-assessment` coaches completed WAT and Picture Story answers with
+  Google Gemma (`gemma-4-31b-it` by default). Env: `Gemma_API` (required), optional
+  `GEMMA_MODEL`. Interview / Gemini Live is separate (`GEMINI_API_KEY`, `gemini-3.8-live`).
+- The review screens on `/psychological/wat` and `/psychological/story-writing` call
+  `WritingAssessmentPanel`, which shows scores plus sentence rewrites (weak original →
+  stronger practice wording). Do not wire this coach into the live interview.

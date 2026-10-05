@@ -62,6 +62,13 @@ export type WritingImprovement = {
   advice: string;
 };
 
+export type WritingRewrite = {
+  promptId: string;
+  original: string;
+  problem: string;
+  rewrite: string;
+};
+
 export type WritingAssessmentResult = {
   version: typeof WRITING_ASSESSMENT_VERSION;
   assessmentType: WritingAssessmentType;
@@ -71,5 +78,6 @@ export type WritingAssessmentResult = {
   summary: string;
   strengths: string[];
   improvements: WritingImprovement[];
+  rewrites: WritingRewrite[];
   disclaimer: typeof WRITING_COACH_DISCLAIMER;
 };

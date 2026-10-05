@@ -43,14 +43,15 @@ project environment:
 
 ```text
 Gemma_API=your_google_ai_studio_api_key
-GEMMA_MODEL=gemma-4-26b-a4b-it
+GEMMA_MODEL=gemma-4-31b-it
 ```
 
 - `Gemma_API` is required and must be a Google AI Studio / Gemini API key. Never
   prefix it with `NEXT_PUBLIC_` or expose it to browser code.
-- `GEMMA_MODEL` is optional. The default is `gemma-4-26b-a4b-it`, a Gemma model
-  supported by the Gemini API `v1beta` `generateContent` endpoint. Override it
-  only with another model ID supported by that endpoint.
+- `GEMMA_MODEL` is optional. The default is `gemma-4-31b-it` (Gemma 4 31B), used
+  for WAT and Picture Story writing feedback via the Gemini API `v1beta`
+  `generateContent` endpoint. Override it only with another model ID supported
+  by that endpoint (for example `gemma-4-26b-a4b-it`).
 - Add the variables separately for each Vercel environment that needs coaching
   (Development, Preview, and Production), then redeploy.
 
