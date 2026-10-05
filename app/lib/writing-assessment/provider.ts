@@ -23,10 +23,6 @@ export const WRITING_CRITERIA = [
 ] as const satisfies readonly WritingCriterionId[];
 
 const MODEL_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
-const PROVIDER_KEYS = ["improvements", "rewrites", "scores", "strengths", "summary"] as const;
-const SCORE_KEYS = ["criterion", "evidence", "score"] as const;
-const IMPROVEMENT_KEYS = ["advice", "focus"] as const;
-const REWRITE_KEYS = ["original", "problem", "promptId", "rewrite"] as const;
 
 export type ProviderAssessment = {
   scores: WritingCriterionScore[];
@@ -38,11 +34,13 @@ export type ProviderAssessment = {
 
 export class ProviderError extends Error {
   readonly kind: "configuration" | "timeout" | "unavailable" | "invalid-response";
+  readonly detail?: string;
 
-  constructor(kind: ProviderError["kind"]) {
-    super(kind);
+  constructor(kind: ProviderError["kind"], detail?: string) {
+    super(detail ? `${kind}: ${detail}` : kind);
     this.name = "ProviderError";
     this.kind = kind;
+    this.detail = detail;
   }
 }
 
@@ -50,144 +48,132 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function hasExactKeys(
-  value: Record<string, unknown>,
-  expected: readonly string[],
-): boolean {
-  const keys = Object.keys(value).sort();
-  return (
-    keys.length === expected.length &&
-    keys.every((key, index) => key === expected[index])
-  );
+/**
+ * Trim a model string and clip it to `maximum` characters instead of failing
+ * the whole coaching run because Gemma was a little wordy.
+ */
+function boundedString(value: unknown, maximum: number): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim().replace(/\s+/gu, " ");
+  if (normalized.length === 0) return null;
+  if (normalized.length <= maximum) return normalized;
+  return `${normalized.slice(0, maximum - 1).trimEnd()}…`;
 }
 
-function boundedString(
-  value: unknown,
-  minimum: number,
-  maximum: number,
-): string | null {
-  if (typeof value !== "string") return null;
-  const normalized = value.trim();
-  return normalized.length >= minimum && normalized.length <= maximum
-    ? normalized
-    : null;
+function parseScoreValue(value: unknown): number | null {
+  const numeric =
+    typeof value === "number"
+      ? value
+      : typeof value === "string" && value.trim() !== ""
+        ? Number(value)
+        : Number.NaN;
+  if (!Number.isFinite(numeric)) return null;
+  return Math.min(10, Math.max(0, Math.round(numeric)));
 }
 
 function parseScore(value: unknown): WritingCriterionScore | null {
-  if (!isRecord(value) || !hasExactKeys(value, SCORE_KEYS)) return null;
+  if (!isRecord(value)) return null;
   if (
     typeof value.criterion !== "string" ||
-    !WRITING_CRITERIA.includes(value.criterion as WritingCriterionId) ||
-    typeof value.score !== "number" ||
-    !Number.isInteger(value.score) ||
-    value.score < 0 ||
-    value.score > 10
+    !WRITING_CRITERIA.includes(value.criterion as WritingCriterionId)
   ) {
     return null;
   }
-
-  const evidence = boundedString(value.evidence, 1, 240);
-  if (!evidence) return null;
+  const score = parseScoreValue(value.score);
+  const evidence = boundedString(value.evidence, 240);
+  if (score === null || !evidence) return null;
 
   return {
     criterion: value.criterion as WritingCriterionId,
-    score: value.score,
+    score,
     evidence,
   };
 }
 
 function parseImprovement(value: unknown): WritingImprovement | null {
-  if (!isRecord(value) || !hasExactKeys(value, IMPROVEMENT_KEYS)) return null;
-  const focus = boundedString(value.focus, 1, 100);
-  const advice = boundedString(value.advice, 1, 300);
+  if (!isRecord(value)) return null;
+  const focus = boundedString(value.focus, 100);
+  const advice = boundedString(value.advice, 300);
   return focus && advice ? { focus, advice } : null;
 }
 
 function parseRewrite(value: unknown): WritingRewrite | null {
-  if (!isRecord(value) || !hasExactKeys(value, REWRITE_KEYS)) return null;
-  const promptId = boundedString(value.promptId, 1, 80);
-  const original = boundedString(value.original, 1, 400);
-  const problem = boundedString(value.problem, 1, 240);
-  const rewrite = boundedString(value.rewrite, 1, 500);
+  if (!isRecord(value)) return null;
+  const promptId = boundedString(value.promptId, 80);
+  const original = boundedString(value.original, 400);
+  const problem = boundedString(value.problem, 240);
+  const rewrite = boundedString(value.rewrite, 500);
   return promptId && original && problem && rewrite
     ? { promptId, original, problem, rewrite }
     : null;
 }
 
-function parseStringList(
-  value: unknown,
-  minimumItems: number,
-  maximumItems: number,
-): string[] | null {
-  if (
-    !Array.isArray(value) ||
-    value.length < minimumItems ||
-    value.length > maximumItems
-  ) {
-    return null;
-  }
+function invalid(detail: string): never {
+  throw new ProviderError("invalid-response", detail);
+}
 
-  const items = value.map((item) => boundedString(item, 1, 220));
-  return items.every((item): item is string => item !== null) ? items : null;
+/** Pull the JSON object out of plain JSON, a ```json fence, or stray prose. */
+function extractJsonObject(text: string): unknown {
+  const trimmed = text.trim();
+  const candidates = [trimmed];
+  const fenced = /```(?:json)?\s*([\s\S]*?)```/iu.exec(trimmed);
+  if (fenced) candidates.push(fenced[1].trim());
+  const first = trimmed.indexOf("{");
+  const last = trimmed.lastIndexOf("}");
+  if (first !== -1 && last > first) candidates.push(trimmed.slice(first, last + 1));
+
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(candidate);
+    } catch {
+      // try the next shape
+    }
+  }
+  return invalid("not JSON");
 }
 
 export function parseProviderAssessment(text: string): ProviderAssessment {
-  let value: unknown;
-  try {
-    value = JSON.parse(text);
-  } catch {
-    throw new ProviderError("invalid-response");
-  }
+  const value = extractJsonObject(text);
+  if (!isRecord(value)) invalid("not an object");
 
-  if (!isRecord(value) || !hasExactKeys(value, PROVIDER_KEYS)) {
-    throw new ProviderError("invalid-response");
+  if (!Array.isArray(value.scores)) invalid("scores missing");
+  const scoreMap = new Map<WritingCriterionId, WritingCriterionScore>();
+  for (const raw of value.scores) {
+    const score = parseScore(raw);
+    if (!score) invalid("bad score entry");
+    if (scoreMap.has(score.criterion)) invalid("duplicate criterion");
+    scoreMap.set(score.criterion, score);
   }
+  if (scoreMap.size !== WRITING_CRITERIA.length) invalid("missing criterion");
 
-  if (!Array.isArray(value.scores) || value.scores.length !== WRITING_CRITERIA.length) {
-    throw new ProviderError("invalid-response");
-  }
+  const summary = boundedString(value.summary, 600);
+  if (!summary) invalid("summary missing");
 
-  const parsedScores = value.scores.map(parseScore);
-  if (parsedScores.some((score) => score === null)) {
-    throw new ProviderError("invalid-response");
-  }
+  if (!Array.isArray(value.strengths)) invalid("strengths missing");
+  const strengths = value.strengths
+    .map((item) => boundedString(item, 220))
+    .filter((item): item is string => item !== null)
+    .slice(0, 3);
 
-  const scores = parsedScores as WritingCriterionScore[];
-  const scoreMap = new Map(scores.map((score) => [score.criterion, score]));
-  if (scoreMap.size !== WRITING_CRITERIA.length) {
-    throw new ProviderError("invalid-response");
-  }
+  if (!Array.isArray(value.improvements)) invalid("improvements missing");
+  const improvements = value.improvements
+    .map(parseImprovement)
+    .filter((item): item is WritingImprovement => item !== null)
+    .slice(0, 3);
+  if (improvements.length === 0) invalid("no usable improvements");
 
-  const summary = boundedString(value.summary, 1, 600);
-  const strengths = parseStringList(value.strengths, 1, 3);
-  if (!Array.isArray(value.improvements) || value.improvements.length < 1 || value.improvements.length > 3) {
-    throw new ProviderError("invalid-response");
-  }
-  const improvements = value.improvements.map(parseImprovement);
-  if (
-    !Array.isArray(value.rewrites) ||
-    value.rewrites.length < 1 ||
-    value.rewrites.length > 8
-  ) {
-    throw new ProviderError("invalid-response");
-  }
-  const rewrites = value.rewrites.map(parseRewrite);
-
-  if (
-    !summary ||
-    !strengths ||
-    improvements.some((improvement) => improvement === null) ||
-    rewrites.some((rewrite) => rewrite === null)
-  ) {
-    throw new ProviderError("invalid-response");
-  }
+  if (!Array.isArray(value.rewrites)) invalid("rewrites missing");
+  const rewrites = value.rewrites
+    .map(parseRewrite)
+    .filter((item): item is WritingRewrite => item !== null)
+    .slice(0, 8);
 
   return {
     scores: WRITING_CRITERIA.map((criterion) => scoreMap.get(criterion)!),
     summary,
     strengths,
-    improvements: improvements as WritingImprovement[],
-    rewrites: rewrites as WritingRewrite[],
+    improvements,
+    rewrites,
   };
 }
 
@@ -237,18 +223,22 @@ END_UNTRUSTED_WRITING_JSON`;
 
 function extractProviderText(value: unknown): string {
   if (!isRecord(value) || !Array.isArray(value.candidates) || value.candidates.length === 0) {
-    throw new ProviderError("invalid-response");
+    throw new ProviderError("invalid-response", "no candidates");
   }
   const candidate = value.candidates[0];
   if (!isRecord(candidate) || !isRecord(candidate.content) || !Array.isArray(candidate.content.parts)) {
-    throw new ProviderError("invalid-response");
+    const reason = isRecord(candidate) && typeof candidate.finishReason === "string" ? candidate.finishReason : "no content";
+    throw new ProviderError("invalid-response", reason);
   }
 
-  const parts = candidate.content.parts;
-  if (parts.length !== 1 || !isRecord(parts[0]) || typeof parts[0].text !== "string") {
-    throw new ProviderError("invalid-response");
-  }
-  return parts[0].text;
+  // Gemma 4 can return thought parts alongside the answer; keep only the answer text.
+  const text = candidate.content.parts
+    .filter((part): part is Record<string, unknown> => isRecord(part) && part.thought !== true)
+    .map((part) => (typeof part.text === "string" ? part.text : ""))
+    .join("")
+    .trim();
+  if (!text) throw new ProviderError("invalid-response", "empty text");
+  return text;
 }
 
 export async function assessWritingWithGemma(input: {
@@ -300,14 +290,20 @@ export async function assessWritingWithGemma(input: {
     );
 
     if (!response.ok) {
-      throw new ProviderError("unavailable");
+      let upstream = "";
+      try {
+        upstream = (await response.text()).slice(0, 300);
+      } catch {
+        // ignore
+      }
+      throw new ProviderError("unavailable", `HTTP ${response.status} ${upstream}`);
     }
 
     let payload: unknown;
     try {
       payload = await response.json();
     } catch {
-      throw new ProviderError("invalid-response");
+      throw new ProviderError("invalid-response", "body not JSON");
     }
     return parseProviderAssessment(extractProviderText(payload));
   } catch (error) {

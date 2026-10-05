@@ -72,6 +72,9 @@ async function readBoundedBody(request: Request): Promise<string> {
 }
 
 function providerErrorResponse(error: ProviderError): NextResponse {
+  // Server-side only (Vercel function logs); never sent to the browser.
+  console.error("[writing-assessment] provider error", error.kind, error.detail ?? "");
+
   if (error.kind === "configuration") {
     return jsonResponse(
       {
@@ -100,7 +103,10 @@ function providerErrorResponse(error: ProviderError): NextResponse {
   return jsonResponse(
     {
       error: {
-        code: "coach_unavailable",
+        code:
+          error.kind === "invalid-response"
+            ? "coach_invalid_response"
+            : "coach_unavailable",
         message: "Writing coaching is temporarily unavailable. Please retry.",
       },
     },

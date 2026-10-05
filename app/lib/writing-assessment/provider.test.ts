@@ -42,11 +42,22 @@ test("parses and normalizes a complete provider assessment", () => {
   assert.match(parsed.rewrites[0].rewrite, /organised the rescue line/u);
 });
 
-test("fails closed on fenced, incomplete, or duplicated output", () => {
-  assert.throws(
-    () => parseProviderAssessment(`\`\`\`json\n${validProviderJson()}\n\`\`\``),
-    ProviderError,
-  );
+test("accepts fenced output and clips over-long model strings", () => {
+  const fenced = parseProviderAssessment(`\`\`\`json\n${validProviderJson()}\n\`\`\``);
+  assert.equal(fenced.scores.length, WRITING_CRITERIA.length);
+
+  const wordy = JSON.parse(validProviderJson());
+  wordy.scores[0].evidence = "x".repeat(500);
+  wordy.scores[1].score = 7.6;
+  wordy.strengths = ["a", "b", "c", "d"];
+  wordy.extra = "ignored";
+  const parsed = parseProviderAssessment(JSON.stringify(wordy));
+  assert.equal(parsed.scores[0].evidence.length, 240);
+  assert.equal(parsed.scores[1].score, 8);
+  assert.equal(parsed.strengths.length, 3);
+});
+
+test("fails closed on incomplete or duplicated output", () => {
 
   const incomplete = JSON.parse(validProviderJson());
   incomplete.scores.pop();
