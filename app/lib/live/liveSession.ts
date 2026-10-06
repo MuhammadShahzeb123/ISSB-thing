@@ -61,13 +61,17 @@ function pcmFromBase64(data: string): Float32Array {
   return out;
 }
 
+/**
+ * Playback runs at the device's own rate; the pcm-player worklet resamples the 24 kHz stream.
+ * Forcing 24 kHz can leave Safari/iOS contexts silent or stalled once the microphone is open,
+ * which also kept the microphone gated because the player never reported it had finished.
+ */
 function playbackContext(): AudioContext {
-  try {
-    return new AudioContext({ sampleRate: 24000, latencyHint: 'interactive' });
-  } catch {
-    return new AudioContext({ latencyHint: 'interactive' });
-  }
+  return new AudioContext({ latencyHint: 'interactive' });
 }
+
+/** The longest the mic may stay gated after the interviewer's audio should have finished playing. */
+const GATE_GRACE_MS = 1500;
 
 /**
  * One live Deputy President interview over the Gemini Live API.
@@ -97,6 +101,9 @@ export class LiveInterviewSession {
   private dpSpeaking = false;
   private drainTimer = 0;
   private gateUntil = 0;
+  /** Wall-clock estimate of when the queued interviewer audio finishes playing. */
+  private playEndsAt = 0;
+  private unlock: (() => void) | null = null;
   private micLevel = 0;
   private dpLevel = 0;
   private lastLevelAt = 0;
@@ -150,6 +157,7 @@ export class LiveInterviewSession {
         return;
       }
       this.stream = stream;
+      this.keepAudioRunning();
       this.wireAudio(stream);
       this.connect();
     } catch (error) {
@@ -218,6 +226,11 @@ export class LiveInterviewSession {
       } catch {
         // already closed
       }
+    }
+    if (this.unlock) {
+      document.removeEventListener('pointerdown', this.unlock, true);
+      document.removeEventListener('visibilitychange', this.unlock);
+      this.unlock = null;
     }
     this.stream?.getTracks().forEach((track) => track.stop());
     void this.micCtx?.close().catch(() => undefined);
@@ -359,7 +372,7 @@ export class LiveInterviewSession {
       window.setTimeout(() => {
         if (this.goAwayPending && !this.ending) this.reconnectNow();
       }, Math.max(0, seconds * 1000 - 1500));
-      if (!this.dpSpeaking) this.reconnectNow();
+      if (!this.dpAudible()) this.reconnectNow();
     }
     if (message.voiceActivity?.type === 'ACTIVITY_START') {
       this.startCandidate();
@@ -374,6 +387,7 @@ export class LiveInterviewSession {
     if (content.outputTranscription?.text) this.appendDp(content.outputTranscription.text);
     if (content.interrupted) {
       this.player?.port.postMessage({ type: 'clear' });
+      this.playEndsAt = Date.now();
       this.closeDp();
       if (this.debriefQueued) this.sendDebriefPrompt();
     }
@@ -386,7 +400,7 @@ export class LiveInterviewSession {
         else if (this.debriefAsked && this.debriefGiven()) {
           this.debriefDone = true;
           // Let the last words play out before closing.
-          if (!this.dpSpeaking) this.end();
+          if (!this.dpAudible()) this.end();
         }
         return;
       }
@@ -400,6 +414,30 @@ export class LiveInterviewSession {
   }
 
   // ---------- audio ----------
+
+  /**
+   * Some browsers (notably Safari/iOS) suspend or interrupt audio contexts when the microphone opens
+   * or the tab is backgrounded; a suspended mic context sends nothing, so the interviewer never hears the candidate.
+   */
+  private keepAudioRunning() {
+    const resume = () => {
+      for (const ctx of [this.micCtx, this.playCtx]) {
+        if (ctx && ctx.state !== 'running' && ctx.state !== 'closed') void ctx.resume().catch(() => undefined);
+      }
+    };
+    resume();
+    this.unlock = resume;
+    document.addEventListener('pointerdown', resume, true);
+    document.addEventListener('visibilitychange', resume);
+    if (this.micCtx) this.micCtx.onstatechange = resume;
+    if (this.playCtx) this.playCtx.onstatechange = resume;
+  }
+
+  /** True while the interviewer's voice is (or should still be) playing through the speakers. */
+  private dpAudible(): boolean {
+    // Never trust the player alone: if its context stalls it never reports "drained" and the mic would stay shut.
+    return this.dpSpeaking && Date.now() < this.playEndsAt + GATE_GRACE_MS;
+  }
 
   private wireAudio(stream: MediaStream) {
     const playCtx = this.playCtx!;
@@ -436,7 +474,7 @@ export class LiveInterviewSession {
     recorder.connect(sink);
     sink.connect(micCtx.destination);
     recorder.port.onmessage = (event: MessageEvent<{ pcm: ArrayBuffer; level: number }>) => {
-      const gated = this.debriefing || (!this.headphones && (this.dpSpeaking || Date.now() < this.gateUntil));
+      const gated = this.debriefing || (!this.headphones && (this.dpAudible() || Date.now() < this.gateUntil));
       this.micLevel = this.muted || gated ? 0 : event.data.level;
       this.reportLevels();
       if (this.muted || gated) return;
@@ -446,6 +484,8 @@ export class LiveInterviewSession {
 
   private play(data: string) {
     const samples = pcmFromBase64(data);
+    const now = Date.now();
+    this.playEndsAt = Math.max(this.playEndsAt, now) + (samples.length / 24000) * 1000;
     this.player?.port.postMessage({ type: 'push', samples: samples.buffer }, [samples.buffer]);
   }
 
