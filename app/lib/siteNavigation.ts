@@ -175,6 +175,11 @@ export const siteNavigation = [
         href: "/ranks/navy",
         description: "Same unified officer table, opened from the Navy path.",
       },
+      {
+        label: "Prime gaps graph",
+        href: "/prime-gaps",
+        description: "Zoomable scatter of the first 100,000 primes: Y = prime, X = gap to the next (Caldwell PrimePages list).",
+      },
     ],
   },
 ] as const satisfies readonly PreparationArea[];

@@ -1966,3 +1966,61 @@ button.gk-tile { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .live-meter-fill, .live-status { transition: none; }
 }
+
+/* Prime gaps interactive scatter */
+.prime-gaps-shell {
+  border: 3px solid var(--ink);
+  background: var(--paper-bright);
+  box-shadow: var(--hard-shadow);
+  overflow: hidden;
+}
+.prime-gaps-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-bottom: 3px solid var(--ink);
+  background: var(--yellow);
+}
+.prime-gaps-meta {
+  margin: 0;
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--muted);
+  max-width: 100%;
+}
+.prime-gaps-plot {
+  width: 100%;
+  height: min(72vh, 640px);
+  min-height: 360px;
+  background: var(--paper);
+}
+.prime-gaps-status {
+  padding: 1.25rem 1rem;
+  text-align: center;
+  font-weight: 800;
+  color: var(--muted);
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper-deep);
+}
+.prime-gaps-hint {
+  margin: 0;
+  padding: 0.65rem 1rem;
+  border-top: 2px solid var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--paper-deep);
+}
+@media (max-width: 640px) {
+  .prime-gaps-meta {
+    margin-left: 0;
+    width: 100%;
+  }
+  .prime-gaps-plot {
+    height: min(65vh, 520px);
+    min-height: 300px;
+  }
+}

@@ -1,0 +1,8 @@
+Primary source: Chris K. Caldwell, The PrimePages (t5k.org) — The First 100,008 Primes
+URL: https://primes.utm.edu/lists/small/100000.txt
+Also mirrored at https://t5k.org/lists/small/100000.txt
+Local copy: caldwell-100008.txt
+Cross-checked against:
+  - https://naturalnumbers.org/P-100000.txt (Michael M. Ross)
+  - https://github.com/stdlib-js/datasets-primes-100k (data/data.json)
+Primes were NOT generated locally.
