@@ -197,7 +197,7 @@ export const mechanicalQuestions: readonly MechanicalQuestion[] = [
   },
   {
     id: "MA-002",
-    prompt: "The diagram shows a spanner. Where should you push to get the greatest turning effect with the same force?",
+    prompt: "Look at the spanner on the hex nut. Where should you push to get the greatest turning effect with the same force?",
     choices: ["Near the nut", "At the far end of the handle", "Straight down on the nut", "On the hinge pin"],
     answerIndex: 1,
     explanation: "Torque equals force times perpendicular distance from the pivot, so pushing at the far end of the handle gives more turn.",
@@ -505,7 +505,7 @@ export const mechanicalQuestions: readonly MechanicalQuestion[] = [
   },
   {
     id: "MA-030",
-    prompt: "Equal pulleys joined by an open (uncrossed) belt. How do they rotate?",
+    prompt: "Look at the open (uncrossed) belt joining equal pulleys A and B. How do they rotate?",
     choices: ["Same direction, same speed", "Opposite, same speed", "Same direction, different speed", "Opposite, different speed"],
     answerIndex: 0,
     explanation: "An open belt keeps the same direction; equal diameters give equal speed.",
@@ -516,7 +516,7 @@ export const mechanicalQuestions: readonly MechanicalQuestion[] = [
   },
   {
     id: "MA-031",
-    prompt: "Equal pulleys joined by a crossed belt. Driver clockwise → driven turns:",
+    prompt: "Look at the crossed belt joining equal pulleys. Driver A turns clockwise → driven B turns:",
     choices: ["Clockwise", "Anticlockwise", "Twice as fast CW", "Does not turn"],
     answerIndex: 1,
     explanation: "Crossing the belt reverses the driven pulley's direction.",
@@ -593,7 +593,7 @@ export const mechanicalQuestions: readonly MechanicalQuestion[] = [
   },
   {
     id: "MA-038",
-    prompt: "Open belt from small yellow pulley to larger blue pulley. Direction of the large pulley vs small?",
+    prompt: "Open (uncrossed) belt from small pulley A to larger pulley B. Direction of B compared with A?",
     choices: ["Same direction", "Opposite direction", "No motion", "Random"],
     answerIndex: 0,
     explanation: "An open belt preserves rotation direction between the two pulleys.",
