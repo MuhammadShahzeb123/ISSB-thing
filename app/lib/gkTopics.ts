@@ -2,7 +2,7 @@ import type { GkCategory } from './generalKnowledge';
 
 // General Knowledge topics for the study tab.
 // Each summary is a spoken-style story in simple English, written to be read aloud.
-// Facts re-checked against sources on 4 October 2026.
+// Facts re-checked against sources on 4 October 2026. Office holders and the slide batch checked on 6 October 2026.
 
 export type GkAircraft = {
   id: string;
@@ -207,10 +207,177 @@ This map is not just a list of names. A province runs schools, hospitals and pol
     ],
   },
   {
+    id: 'province-leaders-2026',
+    category: 'pakistan',
+    title: `Who runs Pakistan's provinces (October 2026)`,
+    teaser: `4 governors, 4 chief ministers, and one province where the 2 offices are openly at odds.`,
+    summary: `Every province has 2 top offices, and they are easy to mix up. The governor is appointed by the President on the advice of the Prime Minister. The chief minister is elected by the provincial assembly.
+
+Think of it this way. The governor is the federation's face in the province. The chief minister holds the real executive power and runs the government day to day, much as the Prime Minister does in Islamabad.
+
+In Punjab, the chief minister is Maryam Nawaz of the PML N. When the assembly elected her on 26 February 2024, she became the first woman to lead any province of Pakistan. The governor is Sardar Saleem Haider Khan of the PPP.
+
+In Sindh, the chief minister is Syed Murad Ali Shah of the PPP. The governor is Syed Muhammad Nehal Hashmi of the PML N, sworn in on 13 March 2026. He replaced Kamran Tessori of the MQM P, and the MQM P, an ally of the government, protested that it was not consulted.
+
+In Khyber Pakhtunkhwa, the chief minister is Sohail Afridi of the PTI. He was elected in October 2025 after Imran Khan asked Ali Amin Gandapur to step aside. At 37, he is the party's top elected leader. The governor is Faisal Karim Kundi of the PPP.
+
+Khyber Pakhtunkhwa is where the 2 offices clash. On 4 October 2026, Afridi led a PTI long march from Lakki Marwat toward Islamabad to demand Imran Khan's release. The federal government accuses his government of weak action against terrorism and has openly discussed governor's rule or an emergency.
+
+Governor's rule means the President takes over a province's government for a time, usually acting through the governor. Parliament must approve it within 2 months, and it cannot last more than 6 months in all. On 6 October 2026, Kundi called it a last resort, and nothing had been imposed.
+
+In Balochistan, the chief minister is Mir Sarfraz Bugti of the PPP, elected unopposed on 2 March 2024. The governor is Sheikh Jaffar Khan Mandokhail of the PML N.
+
+The 2 northern territories are set up differently. Gilgit Baltistan has a governor, Syed Mehdi Shah, and a new chief minister, Amjad Hussain of the PPP. He was elected unopposed on 22 June 2026, after the June election, and sworn in on 6 July.
+
+Azad Jammu and Kashmir has a president and a prime minister instead. Iftikhar Gilani of the PML N became prime minister on 28 August 2026. Dr Najeeb Naqi, also of the PML N, became president on 24 September 2026.
+
+Names change, so check the news before you quote them. What lasts is the system. The assembly chooses the chief minister, the federation names the governor, and the Constitution sets the limits of both.`,
+    keyPoints: [
+      `Punjab: Chief Minister Maryam Nawaz (PML-N, since 26 February 2024, the first woman to lead a province). Governor Sardar Saleem Haider Khan (PPP).`,
+      `Sindh: Chief Minister Syed Murad Ali Shah (PPP). Governor Syed Muhammad Nehal Hashmi (PML-N, sworn in 13 March 2026).`,
+      `Khyber Pakhtunkhwa: Chief Minister Sohail Afridi (PTI, since October 2025). Governor Faisal Karim Kundi (PPP).`,
+      `Balochistan: Chief Minister Mir Sarfraz Bugti (PPP, since 2 March 2024). Governor Sheikh Jaffar Khan Mandokhail (PML-N).`,
+      `Gilgit-Baltistan: Governor Syed Mehdi Shah. Chief Minister Amjad Hussain (PPP, sworn in 6 July 2026).`,
+      `AJK: Prime Minister Iftikhar Gilani (PML-N, from 28 August 2026). President Dr Najeeb Naqi (PML-N, from 24 September 2026).`,
+      `A governor is appointed by the President on the Prime Minister's advice (Article 101). A chief minister is elected by the provincial assembly.`,
+      `Governor's rule (Article 234) must be approved by Parliament within 2 months and can last at most 6 months. As of 6 October 2026 it had been discussed for KP but not imposed.`,
+    ],
+    remember: `Punjab, Maryam Nawaz and Saleem Haider. Sindh, Murad Ali Shah and Nehal Hashmi. Khyber Pakhtunkhwa, Sohail Afridi and Faisal Karim Kundi. Balochistan, Sarfraz Bugti and Jaffar Mandokhail.`,
+    whyIssb: `Provinces run schools, hospitals and the police, so the people who lead them shape daily life. Knowing how power is split between the governor and the chief minister makes news like the 2026 crisis in Khyber Pakhtunkhwa much easier to follow.`,
+    watch: [
+      `Whether the federal government imposes governor's rule or an emergency in Khyber Pakhtunkhwa.`,
+      `The PTI march, which aimed to reach Khairabad on the Punjab border by 8 October 2026.`,
+    ],
+    sources: [
+      { title: `Dawn: Maryam becomes Pakistan's first female CM (26 February 2024)`, url: `https://www.dawn.com/news/1817279` },
+      { title: `Radio Pakistan: CM Maryam pays tribute to teachers, launches road projects (4 October 2026)`, url: `https://www.radio.gov.pk/04-10-2026/punjab-cm-launches-five-road-projects` },
+      { title: `The Nation: Political stability essential, says Punjab governor (26 September 2026)`, url: `https://www.nation.com.pk/26-Sep-2026/political-stability-essential-address-current-challenges-punjab-governor` },
+      { title: `Radio Pakistan: CM Murad, Bilawal inaugurate Thar coal expansion (5 October 2026)`, url: `https://www.radio.gov.pk/05-10-2026/cm-murad-bilawal-inaugurate-phase-iii-expansion-of-thar-coal-mine` },
+      { title: `Dawn: PML-N stalwart Nehal Hashmi sworn in as Sindh governor (13 March 2026)`, url: `https://www.dawn.com/news/1981671` },
+      { title: `Dawn: KP CM Afridi open to dialogue but warns against misadventure (26 September 2026)`, url: `https://www.dawn.com/news/2032845/kp-cm-afridi-open-to-dialogue-with-govt-but-warns-against-misadventure` },
+      { title: `Al Jazeera: Can Sohail Afridi win freedom for Imran Khan? (29 September 2026)`, url: `https://www.aljazeera.com/features/2026/9/29/can-pakistans-sohail-afridi-win-freedom-for-ex-pm-imran-khan` },
+      { title: `Dawn: PTI's rally will not be allowed past Attock, warns Kundi (6 October 2026)`, url: `https://www.dawn.com/news/2035130/ptis-rally-will-not-be-allowed-to-march-past-attock-warns-kundi` },
+      { title: `Geo News: Emergency or governor's rule in KP, what legal options does the Centre have?`, url: `https://www.geo.tv/latest/684616-kp-emergency-governors-rule-when-can-the-federal-govt-intervene` },
+      { title: `Dawn: Sarfraz Bugti becomes Balochistan CM unopposed (2 March 2024)`, url: `https://www.dawn.com/news/1818510` },
+      { title: `Radio Pakistan: CM Bugti on AI-based recruitment (5 October 2026)`, url: `https://radio.gov.pk/05-10-2026/govt-to-ensure-ai-based-recruitment-in-future-cm-balochistan` },
+      { title: `Dawn: Democracy requires giving others space, says Balochistan Governor Mandokhail (3 October 2026)`, url: `https://www.dawn.com/news/2034352/democracy-requires-giving-others-space` },
+      { title: `Dawn: KP, Punjab, Balochistan governors' appointment approved by President Zardari (May 2024)`, url: `https://www.dawn.com/news/1831434` },
+      { title: `Geo News: Amjad Hussain takes oath as Gilgit-Baltistan CM (6 July 2026)`, url: `https://www.geo.tv/latest/671731-amjad-hussain-takes-oath-as-gilgit-baltistan-cm` },
+      { title: `Dawn: PPP's Amjad Hussain elected GB chief minister (22 June 2026)`, url: `https://www.dawn.com/news/2009973` },
+      { title: `Geo News: Iftikhar Gilani sworn in as 17th AJK prime minister (28 August 2026)`, url: `https://www.geo.tv/latest/679543-pml-ns-iftikhar-gilani-elected-17th-ajk-prime-minister` },
+      { title: `Radio Pakistan: Dr Najeeb Naqi sworn in as AJK President (24 September 2026)`, url: `https://www.radio.gov.pk/24-09-2026/dr-najeeb-naqi-sworn-in-as-ajk-president` },
+    ],
+  },
+  {
+    id: 'federal-government-2026',
+    category: 'pakistan',
+    title: `Who runs Pakistan, from the President to the service chiefs (October 2026)`,
+    teaser: `One president, one prime minister, 31 federal ministers, and a top military post created in 2025.`,
+    summary: `Pakistan is a parliamentary democracy. The President is the head of state. The Prime Minister leads the government, together with a cabinet of federal ministers who answer to Parliament.
+
+President Asif Ali Zardari of the PPP took the oath on 10 March 2024. It is his second time in the office. He first served as president from 2008 to 2013.
+
+Prime Minister Shehbaz Sharif of the PML N was elected by the National Assembly on 3 March 2024 with 201 votes. This is also his second term as Prime Minister.
+
+Ishaq Dar holds 2 jobs. He is Deputy Prime Minister and also Foreign Minister, so he leads Pakistan's diplomacy around the world.
+
+Four more ministers come up again and again. Khawaja Muhammad Asif is Defence Minister. Muhammad Aurangzeb is Finance Minister. Mohsin Naqvi is Interior Minister, in charge of internal security, and Attaullah Tarar is Information Minister.
+
+Other names are worth knowing too. Ahsan Iqbal handles Planning, Azam Nazeer Tarar handles Law, Awais Leghari handles Power, and Musadik Malik handles Climate Change. Mustafa Kamal is Health Minister and Shaza Fatima Khawaja runs Information Technology. The National Assembly lists 31 federal ministers in all.
+
+Parliament has 2 houses. Sardar Ayaz Sadiq is Speaker of the National Assembly, and Syed Yousaf Raza Gilani is Chairman of the Senate.
+
+The armed forces changed shape in late 2025. The 27th Amendment ended the post of Chairman Joint Chiefs of Staff Committee and created a new one, Chief of Defence Forces.
+
+On 5 December 2025, Field Marshal Asim Munir was notified as the first Chief of Defence Forces, for 5 years. He also remains Chief of Army Staff.
+
+The Navy is led by Admiral Naveed Ashraf, and the Air Force by Air Chief Marshal Zaheer Ahmed Babar Sidhu.
+
+On 5 October 2026, Dar, Field Marshal Munir and Khawaja Asif flew to Riyadh together for the emergency meeting of the Makkah defence alliance. That one trip shows how foreign policy and defence work side by side.
+
+Portfolios change with every reshuffle. These names were checked against news from the first week of October 2026.`,
+    keyPoints: [
+      `President Asif Ali Zardari (PPP), sworn in 10 March 2024 for a second term. His first term was 2008 to 2013.`,
+      `Prime Minister Shehbaz Sharif (PML-N), elected 3 March 2024 with 201 votes, his second term.`,
+      `Ishaq Dar is Deputy Prime Minister and Foreign Minister.`,
+      `Defence Khawaja Muhammad Asif, Finance Muhammad Aurangzeb, Interior Mohsin Naqvi, Information Attaullah Tarar.`,
+      `Also Planning Ahsan Iqbal, Law Azam Nazeer Tarar, Power Awais Leghari, Climate Change Musadik Malik, Health Mustafa Kamal, IT Shaza Fatima Khawaja. The National Assembly lists 31 federal ministers.`,
+      `Speaker of the National Assembly Sardar Ayaz Sadiq. Chairman of the Senate Syed Yousaf Raza Gilani.`,
+      `The 27th Amendment abolished the CJCSC post. Field Marshal Asim Munir became the first Chief of Defence Forces on 5 December 2025 and remains Chief of Army Staff.`,
+      `Chief of the Naval Staff Admiral Naveed Ashraf. Chief of the Air Staff Air Chief Marshal Zaheer Ahmed Babar Sidhu.`,
+    ],
+    remember: `President Zardari, Prime Minister Shehbaz Sharif, Deputy Prime Minister and Foreign Minister Ishaq Dar. Defence Khawaja Asif, Finance Aurangzeb, Interior Naqvi, Information Tarar. Field Marshal Asim Munir is Chief of Defence Forces and army chief.`,
+    whyIssb: `These are the people who make and carry out national policy, from the budget to war and peace. Knowing who holds each office, and how the new Chief of Defence Forces post fits in, helps you read the news correctly.`,
+    sources: [
+      { title: `Dawn: Zardari sworn in for second stint as president (10 March 2024)`, url: `https://www.dawn.com/news/1820647` },
+      { title: `Reuters: Shehbaz Sharif elected prime minister for second term (3 March 2024)`, url: `https://www.reuters.com/world/asia-pacific/pakistans-shehbaz-sharif-set-take-oath-prime-minister-second-term-2024-03-03/` },
+      { title: `Radio Pakistan: President, PM discuss political and security situation (1 October 2026)`, url: `https://www.radio.gov.pk/01-10-2026/president-pm-discuss-countrys-political-security-situation` },
+      { title: `Dawn: PM Shehbaz urges PTI to call off long march (6 October 2026)`, url: `https://www.dawn.com/news/2035154/pm-shehbaz-urges-pti-to-call-off-long-march-resolve-issues-through-dialogue` },
+      { title: `National Assembly of Pakistan: Federal Ministers list`, url: `https://na.gov.pk/en/fmins_list.php` },
+      { title: `Cabinet Division: Federal ministers under PM Shehbaz Sharif from 4 March 2024`, url: `https://cabinet.gov.pk/SiteImage/Misc/files/Federal%20Cabinet%201947/FC13625.pdf` },
+      { title: `Neo News: Dar, CDF Asim Munir and Defence Minister Khawaja Asif to attend Makkah pact meeting (5 October 2026)`, url: `https://en.neonews.pk/05-Oct-2026/dpm-dar-cdf-asim-munir-defence-minister-khawaja-asif-riyadh-attend-makkah-pact-meeting` },
+      { title: `Radio Pakistan: Pakistan's economy projected to grow 4 percent, says Aurangzeb (6 October 2026)`, url: `https://www.radio.gov.pk/06-10-2026/pakistan-has-basic-fundamentals-for-investment-aurangzeb` },
+      { title: `Radio Pakistan: PTI talks of consultations only under pressure, says Tarar (4 October 2026)`, url: `https://www.radio.gov.pk/04-10-2026/pti-talks-of-consultations-only-when-under-pressure-tarar` },
+      { title: `Dawn: Naqvi, Kundi mull governor's rule (5 October 2026)`, url: `https://www.dawn.com/news/2034861` },
+      { title: `APP: Gilani meets Speaker National Assembly (1 October 2026)`, url: `https://www.app.com.pk/national/gilani-meets-speaker-national-assembly/` },
+      { title: `Dawn: Field Marshal Asim Munir notified as country's first chief of defence forces (5 December 2025)`, url: `https://www.dawn.com/news/1959310` },
+      { title: `Pakistan Today: Navy chief Admiral Naveed Ashraf reviews SEASPARK 2026 (21 September 2026)`, url: `https://www.pakistantoday.com.pk/2026/09/21/naval-chief-reviews-seaspark-2026-amid-pakistan-india-naval-tensions` },
+      { title: `The Nation: Air Chief Marshal Zaheer Ahmed Babar visits Türkiye (23 May 2026)`, url: `https://www.nation.com.pk/23-May-2026/air-chief-marshal-zaheer-ahmed-babar-visits-turkiye-meets-top-defence-leadership` },
+    ],
+  },
+  {
+    id: 'pakistan-flag',
+    category: 'pakistan',
+    title: `The Pakistani flag`,
+    teaser: `Green for the majority, white for the minorities, and a design fixed 3 days before independence.`,
+    summary: `On 11 August 1947, 3 days before independence, Liaquat Ali Khan presented a flag to the Constituent Assembly. He said it belonged to no party or community. It stood, he said, for freedom, liberty and equality.
+
+The design grew out of the flag of the All India Muslim League, a green field with a white crescent and star. The League had approved that flag at its very first meeting, in Dhaka on 30 December 1906.
+
+The new national flag added one thing, a white vertical bar at the mast. That bar stands for Pakistan's religious minorities. Dawn credits the design to Syed Amiruddin Kidwai.
+
+Each part has a meaning. The green has Islamic meaning and stands for the Muslim majority, and green and white together stand for peace and prosperity. The crescent stands for progress, and the 5 pointed star stands for light and knowledge.
+
+The Constituent Assembly's resolution fixed the shape exactly. The flag is dark green, in the proportion of 3 to 2, length to width. The white bar takes one fourth of the flag, nearest the mast, and the green takes the other 3 fourths. So green and white are in the ratio 3 to 1.
+
+The resolution even explains how to draw the crescent and star, using a diagonal across the green part. The star fits inside a circle one tenth the width of the flag.
+
+The flag did not change when Pakistan became a republic in 1956, or when East Pakistan became Bangladesh.
+
+The flag also lives in the national anthem, which praises the flag of the crescent and star. The anthem was approved in August 1954. Hafeez Jalandhari wrote the words and Ahmed Ghulam Ali Chagla composed the music, and it lasts about 80 seconds.
+
+The flag has company among the national symbols. The national animal is the markhor, the national bird is the chukar, the national flower is jasmine and the national tree is the deodar. The state emblem carries the Quaid's motto, Unity, Faith, Discipline.
+
+11 August is also National Minorities Day, first marked in 2009. It recalls the Quaid's speech of 11 August 1947, which promised every citizen freedom of faith, the same promise the white bar makes.
+
+Pakistanis like their flags big. In 2004 a Pakistani flag of 173,400 square feet was unrolled at the National Stadium in Karachi, Dawn reported.
+
+Next time you see the flag, read it like a sentence. Most of it is green, but it is not complete without the white.`,
+    keyPoints: [
+      `Presented to the Constituent Assembly by Liaquat Ali Khan and adopted on 11 August 1947, 3 days before independence.`,
+      `Designed by Syed Amir-uddin Kedwaii (also spelled Amiruddin Kidwai), based on the All India Muslim League flag of 1906.`,
+      `Dark green field with a white vertical bar at the mast, a white crescent and a 5-pointed white star.`,
+      `Proportion 3:2 length to width (2:3 width to length). The white bar is 1/4 of the flag, the green 3/4, so green to white is 3:1.`,
+      `Green for the Muslim majority, white for religious minorities, crescent for progress, star for light and knowledge.`,
+      `National anthem approved August 1954, words by Hafeez Jalandhari, music by Ahmed G. Chagla, about 80 seconds.`,
+      `National animal markhor, bird chukar, flower jasmine, tree deodar. Emblem motto Unity, Faith, Discipline.`,
+      `11 August has been National Minorities Day since 2009.`,
+    ],
+    remember: `11 August 1947, Liaquat Ali Khan, designed by Amiruddin Kidwai. 3 to 2 in shape, white is one fourth. Green for the majority, white for the minorities, crescent for progress, star for light and knowledge.`,
+    whyIssb: `The flag is Pakistan's promise in one picture. The white bar says that minorities belong as fully as the majority, which is why 11 August is also National Minorities Day. Respecting the flag means respecting that promise.`,
+    sources: [
+      { title: `Dawn: Printing the green (and white), designer, meaning and the 11 August 1947 presentation (12 August 2018)`, url: `https://www.dawn.com/news/1426402` },
+      { title: `Britannica: Flag of Pakistan, by Whitney Smith`, url: `https://www.britannica.com/topic/flag-of-Pakistan` },
+      { title: `Constituent Assembly resolution on the national flag (text)`, url: `https://pakistani.org/pakistan/flagspec.html` },
+      { title: `High Commission of Pakistan, New Delhi: Basic facts (flag, anthem, emblem, national symbols)`, url: `https://pakhcnewdelhi.org.pk/basic-facts/` },
+      { title: `US State Department via Refworld: 2009 Report on International Religious Freedom, Pakistan (National Minorities Day)`, url: `https://www.refworld.org/reference/annualreport/usdos/2009/en/70603` },
+    ],
+  },
+  {
     id: 'rivers-dams',
     category: 'geography',
     title: `Rivers, dams & hydropower`,
-    teaser: `Tarbela is the giant, Mangla now holds the most water, and 3 new dams are rising.`,
+    teaser: `Tarbela is Pakistan's giant, Mangla holds the most water, 3 new dams are rising, and China holds the world records.`,
     summary: `In winter the Indus runs low. In the monsoon it can flood whole districts. Dams catch the summer water and give it back when farms need it.
 
 The Indus is the main river, about 3,200 kilometres long. It rises in Tibet and flows through Gilgit Baltistan and Khyber Pakhtunkhwa into Punjab and Sindh. The Kabul River from Afghanistan joins it near Attock.
@@ -237,6 +404,12 @@ Mohmand Dam, on the Swat River in Mohmand district, should start making 800 mega
 
 Dasu, on the Indus in Upper Kohistan, is building its first 2,160 megawatts with World Bank support. Its first power is expected around 2028.
 
+How big is big? It depends on what you measure. Tarbela wins on the amount of earth and rock in its wall. Mangla, after its raising, holds the most usable water in Pakistan.
+
+The world records belong to China. The Three Gorges Dam on the Yangtze has 22,500 megawatts, the biggest power station on Earth and more than 4 times Tarbela's present capacity. The world's highest arch dam is Jinping I on the Yalong River, 305 metres tall.
+
+In July 2025 China began an even bigger project on the Yarlung Tsangpo river in Tibet. Reuters reports it could make about 3 times as much electricity each year as Three Gorges.
+
 These projects are slow and costly, and auditors have warned about delays at Diamer Bhasha. But every new reservoir gives Pakistan more control over its own water.
 
 A river we cannot store is a river we cannot fully use. For a country at the lower end of its rivers, dams are part of national security.`,
@@ -247,8 +420,9 @@ A river we cannot store is a river we cannot fully use. For a country at the low
       `Warsak is on the Kabul near Peshawar. Khanpur is on the Haro and serves Islamabad and Rawalpindi. Hub Dam serves Karachi.`,
       `Ghazi Barotha is a 1,450 MW run of river plant below Tarbela.`,
       `Being built now are Diamer Bhasha (4,500 MW, target 2030), Mohmand (800 MW, early 2028), Dasu stage 1 (2,160 MW, about 2028) and Tarbela's 5th extension (1,530 MW, 2027).`,
+      `World records: Three Gorges in China is the biggest power station (22,500 MW). Jinping I in China is the highest arch dam (305 m). China began an even larger Yarlung Tsangpo project in Tibet in July 2025.`,
     ],
-    remember: `Tarbela is the biggest dam. Mangla holds the most water. Warsak on the Kabul, Khanpur on the Haro, Hub for Karachi.`,
+    remember: `Tarbela is the biggest dam. Mangla holds the most water. Warsak on the Kabul, Khanpur on the Haro, Hub for Karachi. Three Gorges in China is the world's biggest power station.`,
     whyIssb: `Pakistan gets most of its river water in a few summer months but needs it all year. Dams store that water for winter crops and make cheap, clean electricity. As a downstream country, Pakistan is safer when it has more storage of its own.`,
     watch: [
       `First power from Tarbela's 5th extension, planned for 2027.`,
@@ -262,16 +436,23 @@ A river we cannot store is a river we cannot fully use. For a country at the low
       { title: `WAPDA: Diamer Basha Dam Project`, url: `https://wapda.gov.pk/diamer-basha-dam-project/` },
       { title: `WAPDA: Mohmand Dam to start generation by early 2028 (19 January 2026)`, url: `https://wapda.gov.pk/construction-continues-on-10-key-sites-mohmand-dam-to-start-generation-by-early-2028/` },
       { title: `The Nation: AGP highlights Diamer Bhasha planning gaps and delays (30 June 2026)`, url: `https://www.nation.com.pk/30-Jun-2026/diamer-bhasha-dam-agp-highlights-planning-gaps-irregularities-award-contracts-recommends-probe` },
+      { title: `Guinness World Records: Highest capacity hydroelectric power station (Three Gorges, 22,500 MW)`, url: `https://www.guinnessworldrecords.com/world-records/81347-largest-hydroelectric-power-station-output` },
+      { title: `Ministry of Water Resources of China: Jinping hydropower station (305 m arch dam)`, url: `http://www.mwr.gov.cn/english/Projects/MagnificentProjects/202510/t20251001_2073645.html` },
+      { title: `Reuters: China starts construction on world's largest hydropower dam in Tibet (21 July 2025)`, url: `https://www.reuters.com/sustainability/climate-energy/china-starts-construction-worlds-largest-hydropower-dam-tibet-2025-07-21/` },
     ],
   },
   {
     id: 'borders-neighbours',
     category: 'geography',
     title: `Borders & neighbours`,
-    teaser: `4 land neighbours, a long coast, and in 2026 several crossings tense or shut.`,
+    teaser: `4 land neighbours, over 7,000 km of land border, a long coast, and in 2026 several crossings tense or shut.`,
     summary: `Stand in Islamabad and turn slowly. Every direction points to a different neighbour. Each border has its own history and its own trouble.
 
-To the east is India. In the south the border reaches Sir Creek on the coast, where the sea line is still disputed.
+How long are these borders? The CIA World Factbook gives 7,257 kilometres of land border in all. India has the longest share at 3,190 kilometres, then Afghanistan at 2,670, Iran at 959 and China, the shortest, at 438. The coast adds 1,046 kilometres. Other references give different numbers, partly because they treat the disputed line in Kashmir in different ways.
+
+Pakistan does not touch Tajikistan. The thin Wakhan Corridor of Afghanistan lies in between. Across the Arabian Sea, Oman is the nearest neighbour by sea, and Gwadar itself belonged to Oman until 1958.
+
+To the east is India. The line through Punjab and Sindh comes from the Radcliffe Award, published on 17 August 1947, just after independence. In the south the border reaches Sir Creek on the coast, where the sea line is still disputed.
 
 Near Sialkot runs the Working Boundary. Pakistan uses that name because Jammu, across it, is part of the Kashmir dispute.
 
@@ -285,7 +466,7 @@ India has kept the Kartarpur Corridor for Sikh pilgrims suspended since 7 May 20
 
 Pakistan says Indian border guards killed 2 unarmed Pakistani civilians near Kasur on 2 October 2026. It protested and asked for a fair investigation.
 
-To the west and north west is Afghanistan. The Durand Line, drawn in 1893, runs about 2,600 kilometres. Pakistan treats it as the international border, but Afghan governments have never formally accepted it.
+To the west and north west is Afghanistan. The Durand Line, drawn in 1893, runs for roughly 2,600 to 2,700 kilometres. Pakistan treats it as the international border, but Afghan governments have never formally accepted it.
 
 Pakistan says the banned Tehreek-e-Taliban Pakistan, or TTP, attacks Pakistan from Afghan soil. Deadly clashes broke out in October 2025 and again in February and March 2026.
 
@@ -303,14 +484,16 @@ To the south is the Arabian Sea, with Karachi, Port Qasim and Gwadar on the coas
 
 Each border asks something different of Pakistan. It needs patience on the Line of Control and firmness against the TTP. A strong country guards its borders and still keeps its gates ready to open.`,
     keyPoints: [
-      `India lies east. The Line of Control in Kashmir began as the 1949 ceasefire line and was named in the 1972 Simla Agreement. It is not a settled border.`,
+      `Land borders per the CIA World Factbook are India 3,190 km, Afghanistan 2,670 km, Iran 959 km and China 438 km, a total of 7,257 km. The coastline is 1,046 km.`,
+      `The Afghan Wakhan Corridor separates Pakistan from Tajikistan. Oman is the nearest neighbour across the sea.`,
+      `India lies east. The India border in Punjab and Sindh follows the Radcliffe Award of 17 August 1947. The Line of Control in Kashmir began as the 1949 ceasefire line and was named in the 1972 Simla Agreement. It is not a settled border.`,
       `Wagah has been shut since April 2025, but the May 2025 ceasefire has held.`,
-      `Afghanistan lies west and north west along the Durand Line of 1893, about 2,600 km long.`,
+      `Afghanistan lies west and north west along the Durand Line of 1893, roughly 2,600 to 2,700 km long.`,
       `All 5 main Afghan crossings, including Torkham and Chaman, have been shut to trade since October 2025.`,
       `Iran lies south west. Taftan is the main crossing and Gabd is near Gwadar.`,
       `China lies north east across the Khunjerab Pass, 4,693 m, which has been open all year since December 2024.`,
     ],
-    remember: `India east, Afghanistan west, Iran south west, China north east, sea south. The LoC is a ceasefire line, not a border.`,
+    remember: `India east, Afghanistan west, Iran south west, China north east, sea south. Longest border India, shortest China. The LoC is a ceasefire line, not a border.`,
     whyIssb: `Borders decide where trade, fuel, families and threats cross. In 2026 the Afghan crossings are shut and the Iran border is busy because of the war next door. Knowing each border's status helps Pakistan protect its people and keep trade moving.`,
     watch: [
       `Whether Torkham and Chaman reopen for trade.`,
@@ -318,12 +501,66 @@ Each border asks something different of Pakistan. It needs patience on the Line 
       `Movement at Taftan while the war around Iran continues.`,
     ],
     sources: [
+      { title: `CIA World Factbook: Pakistan, land boundaries and coastline (archived)`, url: `https://web.archive.org/web/20210110014011/https://www.cia.gov/the-world-factbook/countries/pakistan` },
+      { title: `Radcliffe Award text (published 17 August 1947)`, url: `https://en.wikisource.org/wiki/Radcliffe_Award` },
       { title: `UN Peacemaker: Karachi Agreement establishing the ceasefire line (27 July 1949)`, url: `https://peacemaker.un.org/en/node/9225` },
       { title: `Simla Agreement text (2 July 1972)`, url: `https://www.commonlii.org/in/other/treaties/INTSer/1972/16.html` },
       { title: `BBC: One year after India-Pakistan conflict, ceasefire holds but little else does (7 May 2026)`, url: `https://www.bbc.com/news/articles/c4g4093dy39o` },
       { title: `Dawn: Pakistan summons Indian envoy over killing of 2 civilians (3 October 2026)`, url: `https://www.dawn.com/news/2034466` },
       { title: `RFE/RL: One year of the Afghan-Pakistan border closure (4 October 2026)`, url: `https://www.rferl.org/a/afghanistan-pakistan-border-closure-year-taliban/33868985.html` },
       { title: `Pakistan Today: Year-round opening of Khunjerab Pass (27 March 2025)`, url: `https://www.pakistantoday.com.pk/2025/03/27/year-round-opening-of-khunjerab-pass-fuels-record-pak-china-trade` },
+    ],
+  },
+  {
+    id: 'world-capitals',
+    category: 'geography',
+    title: `Capitals of the world, and the ones that moved`,
+    teaser: `Neighbours, big powers and the Muslim world. Then the trick questions, the split capitals and the capitals on the move.`,
+    summary: `Pakistan itself has had more than one capital. Karachi came first in 1947. In 1959 the government chose a site near Rawalpindi for a brand new city, and Rawalpindi served as the stopgap capital while it was built. The new city was named Islamabad in February 1960.
+
+Start with the neighbours. India's capital is New Delhi, China's is Beijing, Afghanistan's is Kabul and Iran's is Tehran.
+
+Across South Asia, Bangladesh has Dhaka, Nepal has Kathmandu, Bhutan has Thimphu and the Maldives has Malé. SAARC's secretariat sits in Kathmandu too.
+
+Sri Lanka is a special case. Its official capital is Sri Jayewardenepura Kotte, while Colombo is the main city and port.
+
+The 5 permanent members of the UN Security Council give 5 easy answers. They are Washington for the United States, Moscow for Russia, Beijing for China, London for Britain and Paris for France.
+
+In the Muslim world, Saudi Arabia's capital is Riyadh, Türkiye's is Ankara, not Istanbul, and the UAE's is Abu Dhabi, not Dubai. Qatar has Doha, Oman has Muscat, Egypt has Cairo, Indonesia has Jakarta and Malaysia has Kuala Lumpur. Central Asia gives Tashkent for Uzbekistan, Dushanbe for Tajikistan and Astana for Kazakhstan.
+
+Some capitals are classic trick questions. Australia's is Canberra, not Sydney. Canada's is Ottawa, Brazil's is Brasília, Nigeria's is Abuja, not Lagos, and Myanmar's is Naypyidaw, not Yangon.
+
+Some countries split the job. The Netherlands names Amsterdam as its capital, but the government sits in The Hague. South Africa has 3 capitals, Pretoria for the government, Cape Town for Parliament and Bloemfontein for the courts. Bolivia has Sucre and La Paz.
+
+Capitals also move and change names. Kazakhstan renamed its capital Nur Sultan in 2019, then changed it back to Astana in September 2022.
+
+Egypt has moved ministries, parliament and embassies to a new city east of Cairo, officially called The New Capital since November 2025. Most quizzes still list Cairo, so watch for changes.
+
+Indonesia is building Nusantara on the island of Borneo. A government plan signed in 2025 aims to make it the political capital by 2028. But in May 2026, Indonesia's Constitutional Court confirmed that Jakarta stays the capital until the president signs a decree moving it.
+
+A capital is more than a quiz answer. It tells you where decisions are made, where embassies sit, and sometimes what a government wants the world to see.`,
+    keyPoints: [
+      `Pakistan: Karachi first (1947), Rawalpindi as the interim capital while Islamabad was built, Islamabad named in February 1960.`,
+      `Neighbours: New Delhi, Beijing, Kabul, Tehran.`,
+      `SAARC: Dhaka, Kathmandu (also the SAARC secretariat), Thimphu, Malé, Sri Jayewardenepura Kotte (Colombo is the main city).`,
+      `P5: Washington, Moscow, Beijing, London, Paris.`,
+      `Muslim world: Riyadh, Ankara, Abu Dhabi, Doha, Muscat, Cairo, Jakarta, Kuala Lumpur, Tashkent, Dushanbe, Astana.`,
+      `Trick questions: Canberra, Ottawa, Brasília, Abuja, Naypyidaw. Split capitals: Amsterdam and The Hague; Pretoria, Cape Town and Bloemfontein; Sucre and La Paz.`,
+      `Astana was called Nur-Sultan from 2019 to September 2022.`,
+      `Indonesia: Jakarta is still the legal capital (Constitutional Court, May 2026). Nusantara is planned as the political capital by 2028.`,
+      `Egypt: the government has moved to The New Capital east of Cairo (renamed November 2025), but Cairo is still the usual answer.`,
+    ],
+    remember: `New Delhi, Beijing, Kabul, Tehran for the neighbours. Ankara not Istanbul, Abu Dhabi not Dubai, Canberra not Sydney. Jakarta is still Indonesia's capital until Nusantara is made official.`,
+    whyIssb: `Capitals show where power sits and where a country's embassies and decisions are. Moves like Nusantara and Egypt's New Capital also show how governments use cities to send a message about the future.`,
+    sources: [
+      { title: `Doxiadis Associates: Islamabad project history (site chosen 1959, named February 1960)`, url: `https://www.doxiadis.org/Downloads/Islamabad_project_publ.pdf` },
+      { title: `South African Government: South Africa's provinces and its 3 capitals`, url: `https://www.gov.za/about-sa/south-africas-provinces` },
+      { title: `Reuters: Kazakh capital renamed again as ex-leader's legacy fades (16 September 2022)`, url: `https://www.reuters.com/world/asia-pacific/kazakh-capital-renamed-again-ex-leaders-legacy-fades-2022-09-16/` },
+      { title: `Egyptian Streets: Egypt's New Administrative Capital officially renamed The New Capital (9 November 2025)`, url: `https://egyptianstreets.com/2025/11/09/egypts-new-administrative-capital-officially-renamed-the-new-capital/` },
+      { title: `Tempo: Nusantara set as Indonesia's political capital in 2028 (19 September 2025)`, url: `https://en.tempo.co/read/2050375/nusantara-set-as-indonesias-political-capital-in-2028-under-prabowos-regulation` },
+      { title: `Jakarta Globe: Constitutional Court confirms Jakarta still Indonesia's capital (13 May 2026)`, url: `https://jakartaglobe.id/news/constitutional-court-confirms-jakarta-still-indonesias-capital-not-nusantara` },
+      { title: `Britannica: Sri Jayewardenepura Kotte`, url: `https://www.britannica.com/place/Sri-Jayewardenepura-Kotte` },
+      { title: `Britannica: Bolivia (Sucre and La Paz)`, url: `https://www.britannica.com/place/Bolivia` },
     ],
   },
   {
@@ -699,6 +936,72 @@ K2 is Karakoram, Nanga Parbat is Himalaya, and Tirich Mir is Hindu Kush. Learn t
       { title: `Guinness World Records: First ascent of K2`, url: `https://www.guinnessworldrecords.com/world-records/first-ascent-of-k2` },
       { title: `The News: Sirbaz Khan summits all 14 eight-thousanders (4 October 2024)`, url: `https://www.thenews.com.pk/latest/1236723-sirbaz-khan-makes-history-by-summiting-all-14-eight-thousanders` },
       { title: `UN: International Year of Glaciers' Preservation`, url: `https://www.un-glaciers.org/en/background` },
+    ],
+  },
+  {
+    id: 'records-highest-longest',
+    category: 'geography',
+    title: `Highest, longest and largest, in Pakistan and the world`,
+    teaser: `K2, the Indus, the Thar and Tarbela at home. Everest, the Nile, the Sahara and Three Gorges abroad.`,
+    summary: `Quiz masters love the highest, the longest and the largest. Here are the records that come up again and again, first for Pakistan and then for the world.
+
+The highest point in Pakistan is K2, 8,611 metres, the 2nd highest mountain on Earth. Nanga Parbat, 8,126 metres, is the next famous giant, and Tirich Mir, about 7,700 metres, is the top of the Hindu Kush.
+
+The longest river is the Indus, about 3,200 kilometres from Tibet to the Arabian Sea.
+
+The largest desert is the Thar, which Pakistan shares with India. Britannica puts its total size at about 200,000 square kilometres. Cholistan, Thal and Kharan are the other deserts to know.
+
+The largest province by area is Balochistan, at 347,190 square kilometres. The smallest is Khyber Pakhtunkhwa, at 101,741 square kilometres, even after the old tribal areas joined it.
+
+The largest natural freshwater lake is Manchar in Sindh, west of the Indus near Sehwan. High in the Kaghan Valley lies Saif ul Malook, famous for its beauty and its old legend.
+
+Huge glaciers fill the Karakoram. Siachen, about 75 kilometres long, lies in the disputed Kashmir region and has long been a battlefield. Pakistan's High Commission in New Delhi lists Baltoro at 65 kilometres and Batura at 55.
+
+The longest road tunnel is Lowari, with a main tunnel of 8.5 kilometres. It opened in July 2017 and keeps Chitral connected to the rest of the country through the winter snow.
+
+The Karakoram Highway runs about 1,300 kilometres from Hasan Abdal to Kashgar, 887 of them in Pakistan. It opened in 1978 and crosses into China at the Khunjerab Pass, 4,693 metres high.
+
+The biggest dam is Tarbela, the largest earth and rock fill dam in the world by volume.
+
+Pakistan's longest land border is with India, at 3,190 kilometres, and its shortest is with China, at 438, according to the CIA World Factbook.
+
+Now the world. Mount Everest is the highest mountain, 8,848.86 metres. China and Nepal announced that height together in December 2020.
+
+The Nile is usually called the longest river, about 6,650 kilometres, though some experts argue for the Amazon.
+
+The Sahara is the largest hot desert, about 9 million square kilometres. Count cold deserts too, and Antarctica is bigger still.
+
+The biggest power station on Earth is the Three Gorges Dam in China, with 22,500 megawatts.
+
+Learn them as pairs. K2 and Everest, the Indus and the Nile, the Thar and the Sahara, Tarbela and Three Gorges.`,
+    keyPoints: [
+      `Highest peak: K2, 8,611 m (2nd in the world). Nanga Parbat 8,126 m. Tirich Mir about 7,700 m, highest in the Hindu Kush.`,
+      `Longest river: Indus, about 3,200 km. Largest desert: Thar (about 200,000 km² in all, shared with India). Others: Cholistan, Thal, Kharan.`,
+      `Largest province by area: Balochistan, 347,190 km². Smallest: Khyber Pakhtunkhwa, 101,741 km².`,
+      `Largest natural freshwater lake: Manchar, Sindh. Saif-ul-Malook is in the Kaghan Valley.`,
+      `Glaciers: Siachen about 75 km. Baltoro 65 km and Batura 55 km (Pakistan High Commission figures).`,
+      `Longest road tunnel: Lowari, main tunnel 8.5 km, opened July 2017.`,
+      `Karakoram Highway: about 1,300 km (887 km in Pakistan), opened 1978, crosses the Khunjerab Pass at 4,693 m.`,
+      `Longest land border India (3,190 km), shortest China (438 km), per the CIA World Factbook.`,
+      `World: Everest 8,848.86 m (2020). Nile about 6,650 km. Sahara largest hot desert, about 8.6 to 9.1 million km² depending on the source. Antarctica is the largest desert of all. Three Gorges is the biggest power station, 22,500 MW.`,
+    ],
+    remember: `K2 and Everest, the Indus and the Nile, the Thar and the Sahara, Tarbela and Three Gorges. Balochistan is the largest province, Manchar the largest freshwater lake, Lowari the longest tunnel.`,
+    whyIssb: `These records are more than trivia. The highest peaks hold the ice that feeds the Indus, the longest river feeds most Pakistanis, and roads like the Karakoram Highway and the Lowari Tunnel decide whether whole valleys stay connected.`,
+    sources: [
+      { title: `Britannica: K2`, url: `https://www.britannica.com/place/K2` },
+      { title: `Britannica: Indus River`, url: `https://www.britannica.com/place/Indus-River` },
+      { title: `Britannica: Thar Desert`, url: `https://www.britannica.com/place/Thar-Desert` },
+      { title: `High Commission of Pakistan, New Delhi: Basic facts (areas, peaks, glaciers, deserts, lakes)`, url: `https://pakhcnewdelhi.org.pk/basic-facts/` },
+      { title: `Sindh Irrigation Department: Manchar Lake, largest natural freshwater lake in Pakistan`, url: `https://irrigation.sindh.gov.pk/MIS/lakes` },
+      { title: `Britannica: Siachen Glacier`, url: `https://www.britannica.com/place/Siachen-Glacier` },
+      { title: `Dawn: PM inaugurates Lowari Tunnel, main tunnel 8.5 km (July 2017)`, url: `https://www.dawn.com/news/1346504` },
+      { title: `China Daily: Karakoram Highway, 1,300 km with 887 km in Pakistan (6 April 2021)`, url: `https://global.chinadaily.com.cn/a/202104/06/WS606d4961a31024ad0bab3fe9.html` },
+      { title: `CIA World Factbook: Pakistan, land boundaries (archived)`, url: `https://web.archive.org/web/20210110014011/https://www.cia.gov/the-world-factbook/countries/pakistan` },
+      { title: `Reuters: Mount Everest is higher than we thought, say Nepal and China (8 December 2020)`, url: `https://www.reuters.com/world/china/mount-everest-is-higher-than-we-thought-say-nepal-china-2020-12-08/` },
+      { title: `Britannica: How long is the Nile River?`, url: `https://www.britannica.com/question/How-long-is-the-Nile-River` },
+      { title: `Britannica: Sahara`, url: `https://www.britannica.com/place/Sahara-desert-Africa` },
+      { title: `Guinness World Records: Largest desert (Antarctica)`, url: `https://www.guinnessworldrecords.com/world-records/largest-desert-cold` },
+      { title: `Guinness World Records: Highest capacity hydroelectric power station (Three Gorges)`, url: `https://www.guinnessworldrecords.com/world-records/81347-largest-hydroelectric-power-station-output` },
     ],
   },
   {
