@@ -25,7 +25,7 @@ export interface AffairsStory {
   sources: readonly AffairsStorySource[];
 }
 
-export const affairsAsOf = '2026-10-04';
+export const affairsAsOf = '2026-10-06';
 
 export const affairsSections: Record<AffairsSection, { label: string; description: string }> = {
   pakistan: { label: 'Inside Pakistan', description: 'Politics, economy, security, climate and people at home.' },

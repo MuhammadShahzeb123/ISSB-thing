@@ -1296,4 +1296,117 @@ The PAF showed skill in the air. Pakistan showed restraint and dignity on the gr
       { title: `ICRC: Prisoners of war, what you need to know`, url: `https://www.icrc.org/en/document/prisoners-war-what-you-need-know` },
     ],
   },
+  {
+    id: 'operation-gibraltar-1965',
+    category: 'military',
+    title: `Operation Gibraltar, 1965`,
+    teaser: `August 1965. Armed groups crossed into Kashmir to spark an uprising. It never came, and a war did.`,
+    summary: `In the first week of August 1965, small groups of armed men crossed the ceasefire line into Indian held Kashmir. They walked for days through the mountains, carrying dry rations, weapons and ammunition on their backs. They were meant to look like a local Kashmiri uprising, not an army.
+
+The plan was called Operation Gibraltar. Its fighting groups were named after Muslim heroes such as Tariq, Salahuddin and Ghaznavi. The name itself recalled Tariq bin Ziyad, whose army landed at Gibraltar in 711.
+
+The plan was drawn up by Major General Akhtar Hussain Malik, who commanded the army's 12th Division in Kashmir. President Ayub Khan approved it.
+
+On paper the idea was simple. Guerrilla bands, fighters who strike and then vanish, would blow up bridges, attack supply posts and cut roads. Pakistan hoped the Muslim people of the valley would then rise up against Indian rule. A radio station claiming to be the voice of the uprising praised their raids. The BBC later reported that it was really broadcasting from Rawalpindi.
+
+How many men crossed? Nobody agrees. In August 1965, India's government first said about 1,000, then 1,200 to 2,000. A Pakistani account in Criterion Quarterly puts the whole Gibraltar Force at 5,000 to 7,000 men. India's defence research body IDSA says about 1,500 crossed first and about 6,000 more in late August. The BBC says estimates run from 7,000 to well over 20,000. Some Indian accounts claim 30,000 or more.
+
+So the figure of 30,000 commandos that is often heard is a claim from one side, not an agreed fact.
+
+Most of the men were not elite commandos either. The BBC found a mix of soldiers from the Azad Kashmir Regiment and fresh civilian recruits, trained in a hurry. Qurban Ali, then about 20, said 6 of every 10 men in his group of 180 were civilians. Mohammad Nazeer was a schoolboy of about 14.
+
+They fought bravely in very hard country. Qurban Ali's group blew up a bridge near Chowkibal in Kupwara and hit Indian supply points. Others raided posts around Poonch.
+
+But the uprising never came. Local people were not ready to rebel. Many turned the fighters in to the Indian army, and some suffered at their hands, military historians say. On 9 August 1965, India announced that infiltrators had crossed the line.
+
+India hit back hard. It sealed the crossing points and captured heights such as the Haji Pir Pass, which threatened Muzaffarabad. By the end of August, most of the infiltrators had been found, captured or killed.
+
+To ease the pressure, Pakistan launched Operation Grand Slam on 1 September 1965. Its tanks pushed through Chhamb toward Akhnur, to cut India's road into Kashmir. A change of commander in the middle of the battle cost precious time, and Akhnur was never taken.
+
+On 6 September 1965, India crossed the international border toward Lahore, and later toward Sialkot. Pakistan remembers that day as Defence Day, when its soldiers, airmen and people held off a much larger enemy. Major Raja Aziz Bhatti, who fell defending the BRB Canal near Lahore, was the only Nishan e Haider of that war.
+
+On 20 September 1965, the UN Security Council demanded a ceasefire, and the guns fell silent within days. In January 1966, Ayub Khan and India's Prime Minister Lal Bahadur Shastri signed the Tashkent Declaration. Both armies went back to the positions they held before 5 August 1965.
+
+Some Pakistani leaders later looked back critically. Air Marshal Nur Khan, who led the PAF in 1965, told Dawn that the nation had been misled about how the war began. Ayub Khan was forced from power in 1969.
+
+The lesson of Gibraltar is about planning, not courage. The men who crossed were brave, but a plan built on the hope of an uprising, without the people's support, could not succeed. The defence of 6 September shows what Pakistan can do when it stands united. Gibraltar shows why a sound plan and honest facts matter just as much.`,
+    keyPoints: [
+      `Operation Gibraltar began in early August 1965. Armed groups crossed the ceasefire line into Indian-held Kashmir to start an uprising.`,
+      `It was planned by Maj Gen Akhtar Hussain Malik, GOC 12 Division, and approved by President Ayub Khan.`,
+      `The number is disputed. India said 1,200 to 2,000 in August 1965, a Pakistani account says 5,000 to 7,000, and the BBC says 7,000 to over 20,000. Claims of 30,000 come from some Indian accounts and are not agreed fact.`,
+      `The hoped-for uprising did not happen. Most infiltrators were found, captured or killed by the end of August 1965.`,
+      `Operation Grand Slam toward Akhnur began on 1 September. India attacked toward Lahore on 6 September, now Defence Day in Pakistan.`,
+      `The UN Security Council demanded a ceasefire on 20 September 1965. The Tashkent Declaration followed in January 1966.`,
+    ],
+    remember: `August 1965, Gibraltar Force, no uprising. Grand Slam on 1 September, Lahore front on 6 September, Tashkent in January 1966. The number who crossed is disputed.`,
+    whyIssb: `Gibraltar is one of the clearest lessons in South Asian history on how a hopeful plan can start a much bigger war. It also shows why a number heard online, such as 30,000 commandos, must be checked against several sources before it is repeated.`,
+    sources: [
+      { title: `BBC: Operation Gibraltar, the Pakistani troops who infiltrated Kashmir to start a rebellion (5 September 2015)`, url: `https://www.bbc.com/news/world-asia-34136689` },
+      { title: `New York Times: India accuses Pakistani army of role in Kashmir (13 August 1965)`, url: `https://www.nytimes.com/1965/08/13/archives/india-accuses-pakistani-army-of-role-in-kashmir.html` },
+      { title: `Criterion Quarterly: Operation Gibraltar, an unmitigated disaster?`, url: `https://criterion-quarterly.com/operation-gibraltar-an-unmitigated-disaster/` },
+      { title: `IDSA Journal of Defence Studies: Operation Gibraltar (2015)`, url: `https://idsa.in/system/files/jds/jds_9_3_2015_OperationGibraltar_0.pdf` },
+      { title: `Rediff: Brig Shaukat Qadir (retd), why Pakistan lost Akhnur (9 September 2005)`, url: `https://www.rediff.com/news/special/war1/20050909.htm` },
+      { title: `UN Security Council Resolution 211 (20 September 1965)`, url: `https://undocs.org/S/RES/211(1965)` },
+      { title: `Times of India: 61 years since Operation Gibraltar sparked the 1965 war`, url: `https://timesofindia.indiatimes.com/defence/news/when-thousands-crossed-ceasefire-line-61-years-since-operation-gibraltar-sparked-1965-indo-pak-war/articleshow/132912876.cms` },
+    ],
+  },
+  {
+    id: 'kashmir-insurgency-1989-2001',
+    category: 'pakistan',
+    title: `Kashmir's armed uprising, 1987 to 2001`,
+    teaser: `A rigged election, a valley in revolt, foreign fighters, harsh crackdowns and 2 near wars. What happened in Kashmir?`,
+    summary: `In March 1987, young Kashmiris worked hard as polling agents for a new party, the Muslim United Front. Many people expected it to do well in the state election. Instead, Human Rights Watch says, blatant rigging gave victory to the National Conference and its partner, India's Congress party. Hundreds of the Front's leaders and supporters were arrested.
+
+Journalists and rights groups later called that election the turning point. Many of those young polling agents decided that the ballot had failed them. Some crossed into Azad Kashmir and Pakistan for weapons and training.
+
+By 1989 the valley was in revolt. The Jammu and Kashmir Liberation Front, or JKLF, set off bombs at government buildings and enforced a boycott of India's November 1989 election. In December, it kidnapped the daughter of India's Home Minister and freed her only after 5 jailed militants were released.
+
+Then tens of thousands of Kashmiris poured into the streets calling for azadi, freedom. New Delhi answered with a massive crackdown. Nervous troops fired on crowds and killed many unarmed protesters, Human Rights Watch reported.
+
+The first fighters were mostly local. The JKLF wanted an independent Kashmir, free of both India and Pakistan. Over the 1990s, Hizbul Mujahideen, which favoured joining Pakistan, pushed the JKLF aside. Rights groups say militants also killed political workers and targeted Hindu families, and a large exodus of Kashmiri Pandits from the valley followed.
+
+Later in the decade, groups based in Pakistan grew stronger. They included Lashkar e Taiba, Harkat ul Mujahideen and, from 2000, Jaish e Mohammad. Many fighters came from outside Kashmir, and the struggle took on the language of jihad. The US named Harkat ul Mujahideen a terrorist group in 1997. Its leader, the US says, had close ties to Al Qaeda and Osama bin Laden.
+
+India said Pakistan's spy agency, the ISI, armed and trained these groups and was fighting a proxy war. Pakistan's official position was that it gave the Kashmiri people only moral, political and diplomatic support for their right to self determination under UN resolutions. Western diplomats and Human Rights Watch reports of the time said Pakistan's support went further.
+
+Ordinary Kashmiris were caught in the middle. Human Rights Watch documented killings in custody, torture, rape and enforced disappearances by Indian forces. On the night of 23 February 1991, soldiers were accused of mass rape in the villages of Kunan and Poshpora. Rights groups say the investigation was badly flawed, and no one has been punished.
+
+The Association of Parents of Disappeared Persons says 8,000 to 10,000 people vanished after 1989. The Indian government gave a figure of nearly 4,000. Amnesty International found that a special law, the Armed Forces Special Powers Act, made it almost impossible to try soldiers in civilian courts.
+
+India said it was fighting terrorism and that its forces faced brutal attacks. Its firm line was that there could be no real talks until Pakistan ended support for cross border terrorism.
+
+In 1999 the conflict nearly became a full war. Weeks after the Lahore Declaration of February, armed men who had crossed the LoC were found on the heights of Kargil. India said they included Pakistani soldiers, while Pakistan at first called them Kashmiri freedom fighters. Fierce fighting followed. On 4 July 1999, Prime Minister Nawaz Sharif agreed with President Bill Clinton in Washington to restore the Line of Control, and the fighting ended later that month.
+
+The era ended with 2 shocks. After 11 September 2001, the world turned against armed groups everywhere. On 13 December 2001, gunmen attacked India's Parliament. India blamed Lashkar e Taiba and Jaish e Mohammad and massed troops on the border.
+
+On 12 January 2002, President Pervez Musharraf banned both groups. He said no organisation would be allowed to carry out terrorism in the name of Kashmir. He also said Pakistan would continue its moral, political and diplomatic support to the Kashmiris.
+
+For Kashmiris, those years left graves, missing sons and deep anger. For Pakistan, they brought heavy pressure and the terrorist label on groups based on its soil. For India, they brought a long and costly counter insurgency.
+
+The honest lesson is that Kashmir's grievance was real, but the gun did not solve it. Rigged votes and harsh force fed the fire, and armed groups made the cause easier to dismiss. A fair settlement must rest on the will of the Kashmiri people, reached through dialogue.`,
+    keyPoints: [
+      `The 1987 Jammu and Kashmir election was widely seen as rigged against the Muslim United Front. HRW calls it the turning point.`,
+      `The armed uprising began in 1989, led at first by the pro-independence JKLF, later overtaken by the pro-Pakistan Hizbul Mujahideen.`,
+      `Pakistan-based groups such as Lashkar-e-Taiba, Harkat-ul-Mujahideen and Jaish-e-Mohammad grew in the 1990s. The US designated HuM a terrorist group in 1997.`,
+      `India accused the ISI of a proxy war. Pakistan said it gave only moral, political and diplomatic support.`,
+      `HRW and Amnesty documented torture, custodial killings, rape and enforced disappearances by Indian forces, with near total impunity under AFSPA.`,
+      `Kargil 1999, the 13 December 2001 Parliament attack and Musharraf's ban on LeT and JeM on 12 January 2002 closed this era.`,
+    ],
+    remember: `1987 rigged election, 1989 uprising, JKLF then Hizbul Mujahideen, then Pakistan based groups. Kargil 1999. Parliament attack December 2001. LeT and JeM banned January 2002.`,
+    whyIssb: `Today's tension over the LoC, terrorism charges and human rights in Kashmir all grow out of these years. Knowing what each side says, and what rights groups recorded, lets you discuss Kashmir firmly and fairly instead of with slogans.`,
+    sources: [
+      { title: `Human Rights Watch: Behind the Kashmir conflict, background (July 1999)`, url: `https://www.hrw.org/reports/1999/kashmir/back.htm` },
+      { title: `Human Rights Watch: Everyone lives in fear, patterns of impunity in Jammu and Kashmir (September 2006)`, url: `https://www.hrw.org/report/2006/09/11/everyone-lives-fear/patterns-impunity-jammu-and-kashmir` },
+      { title: `Human Rights Watch / Asia Watch and PHR: Rape in Kashmir (1993)`, url: `https://www.hrw.org/sites/default/files/reports/INDIA935.PDF` },
+      { title: `Human Rights Watch: Behind the Kashmir conflict, disappearances (July 1999)`, url: `https://www.hrw.org/legacy/reports/1999/kashmir/abus-dis.htm` },
+      { title: `Amnesty International: Denied, failures in accountability in Jammu and Kashmir (2015)`, url: `https://www.amnesty.org/en/wp-content/uploads/2021/05/ASA2018742015ENGLISH.pdf` },
+      { title: `Amnesty International: Impunity for enforced disappearances in Asia Pacific must end (2007)`, url: `https://www.amnesty.org/en/wp-content/uploads/2021/07/asa010072007en.pdf` },
+      { title: `Congressional Research Service: Kashmiri separatists, origins and competing ideologies (2002)`, url: `https://www.everycrsreport.com/files/20020930_RL31587_8dff0ac97fbc7e3e304d1f0c42dcd894c1579025.pdf` },
+      { title: `BBC: Analysis, shift in US Kashmir stance? (1999)`, url: `http://news.bbc.co.uk/2/hi/south_asia/371945.stm` },
+      { title: `US Treasury: designation of HuM leader Fazl-ur Rehman Khalil (2014)`, url: `https://home.treasury.gov/news/press-releases/jl2653` },
+      { title: `US Public Papers: Joint statement with PM Nawaz Sharif on Kashmir (4 July 1999)`, url: `https://www.govinfo.gov/content/pkg/PPP-1999-book2/pdf/PPP-1999-book2-doc-pg1131-2.pdf` },
+      { title: `BBC: Musharraf declares war on extremism (12 January 2002)`, url: `http://news.bbc.co.uk/2/hi/south_asia/1756965.stm` },
+      { title: `Frontline: Deadlock at Agra (2001)`, url: `https://frontline.thehindu.com/cover-story/article30251264.ece` },
+    ],
+  },
 ];
