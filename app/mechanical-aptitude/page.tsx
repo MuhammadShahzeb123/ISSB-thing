@@ -242,10 +242,10 @@ export default function MechanicalAptitudePage() {
           <header className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.24em] text-blue-800">Original practice module</p>
-              <h1 className="mt-4 max-w-4xl text-4xl font-black leading-none [overflow-wrap:anywhere] sm:text-6xl lg:text-7xl">Mechanical aptitude, built from principles.</h1>
+              <h1 className="mt-4 max-w-4xl text-4xl font-black leading-none [overflow-wrap:anywhere] sm:text-6xl lg:text-7xl">Mechanical aptitude, with pictures.</h1>
               <p className="mt-6 max-w-3xl text-lg font-semibold leading-8 text-slate-700">
-                Train with 100 original questions across torque, pulleys, gears, machines, motion, friction,
-                fluids, tools, and mechanisms. Questions and category coverage are unofficial practice
+                Train with 100 original picture questions: aircraft yaw, pulleys, levers, gears, Doppler, boats,
+                buoyancy, shadows, cams, and more. Every item has an SVG diagram. Unofficial practice
                 content—not an official syllabus, recalled test, or official question bank.
               </p>
             </div>
