@@ -42,19 +42,41 @@ function validateDiagram(diagram, id) {
     lever: ["leftLabel", "rightLabel"],
     pulley: ["loadLabel", "effortLabel"],
     gears: ["labelA", "labelB"],
+    gears3: ["labelA", "labelB", "labelC"],
     incline: ["loadLabel"],
     spring: ["forceLabel"],
     hydraulic: [],
     balance: ["leftLabel", "rightLabel"],
+    aircraft: ["caption"],
+    doppler: ["sourceLabel", "listenerLabel"],
+    boat: [],
+    buoyancy: ["objectLabel"],
+    shadow: [],
+    spanner: [],
+    wheel: ["labelA", "labelB"],
+    door: [],
+    cam: [],
+    beam: [],
   };
   const numberFields = {
     lever: ["fulcrum", "leftArm", "rightArm"],
     pulley: ["supportingStrands"],
     gears: ["teethA", "teethB"],
+    gears3: [],
     incline: ["rise", "run"],
     spring: ["extension"],
     hydraulic: ["areaA", "areaB", "forceA"],
     balance: [],
+    aircraft: [],
+    doppler: [],
+    boat: [],
+    buoyancy: [],
+    shadow: [],
+    spanner: [],
+    wheel: ["diameterA", "diameterB"],
+    door: [],
+    cam: [],
+    beam: [],
   };
 
   if (!Object.hasOwn(labelFields, diagram.type)) {
@@ -85,6 +107,32 @@ function validateDiagram(diagram, id) {
   }
   if (diagram.type === "balance" && !["level", "left-down", "right-down"].includes(diagram.state)) {
     fail(`${id}: invalid balance state`);
+  }
+
+  if (diagram.type === "aircraft" && !["left", "right", "none"].includes(diagram.failedEngine)) {
+    fail(`${id}: invalid aircraft failedEngine`);
+  }
+  if (diagram.type === "doppler" && !["toward", "away", "pass"].includes(diagram.motion)) {
+    fail(`${id}: invalid doppler motion`);
+  }
+  if (diagram.type === "boat" && !["left", "right", "straight"].includes(diagram.rudder)) {
+    fail(`${id}: invalid boat rudder`);
+  }
+  if (diagram.type === "buoyancy" && !["float", "suspend", "sink"].includes(diagram.state)) {
+    fail(`${id}: invalid buoyancy state`);
+  }
+  if (diagram.type === "shadow") {
+    if (!["left", "right"].includes(diagram.lightSide)) fail(`${id}: invalid shadow lightSide`);
+    if (!["tall", "short"].includes(diagram.objectHeight)) fail(`${id}: invalid shadow objectHeight`);
+  }
+  if (diagram.type === "spanner" && !["near", "far"].includes(diagram.forceAt)) {
+    fail(`${id}: invalid spanner forceAt`);
+  }
+  if (diagram.type === "door" && typeof diagram.handleFar !== "boolean") {
+    fail(`${id}: door handleFar must be boolean`);
+  }
+  if (diagram.type === "beam" && !["left", "centre", "right"].includes(diagram.loadAt)) {
+    fail(`${id}: invalid beam loadAt`);
   }
 }
 
@@ -143,6 +191,7 @@ if (!Array.isArray(mechanicalQuestions)) {
         }
       }
     }
+    if (!question?.diagram) fail(`${id}: every question must include a diagram`);
     validateDiagram(question?.diagram, id);
   }
 
