@@ -1,7 +1,54 @@
 import type { AffairsStory } from '../affairsStories';
 
-// Pakistan and the world. Researched 4 October 2026.
+// Pakistan and the world. Researched 4 October 2026, updated 6 October 2026.
 export const neighbourStories: AffairsStory[] = [
+  {
+    id: 'pakistan-place-in-world-2026',
+    section: 'neighbours',
+    title: `Pakistan's place in the world in October 2026`,
+    hook: `A mediator for America and Iran, a defender of Saudi Arabia, a partner of China. Can Pakistan hold every thread?`,
+    date: '2026-10-05',
+    story: `On 5 October 2026, Pakistan's diplomats were busy in 2 capitals at once. In Riyadh, Foreign Minister Ishaq Dar sat with Saudi and Turkish ministers and agreed to send forces to defend Saudi Arabia. In Moscow, Pakistan's special envoy Mohammad Sadiq told a regional meeting that terrorism from Afghan soil had killed more than 4,700 Pakistanis in 3 years.
+
+That one day shows how much has changed. Before May 2025, many outsiders saw Pakistan mainly as a country of crises. A year later, an American expert told the BBC that Pakistan had "rebuilt relevance".
+
+The turning point was the short war with India in May 2025. Pakistan held its ground. Analysts told the BBC that this changed how the world saw the balance in South Asia.
+
+Then came the Iran war of 2026. Pakistan helped arrange the ceasefire of April 2026 and hosted American and Iranian leaders for face to face talks in Islamabad, the first in decades.
+
+With America, ties are warmer than they have been for years. President Donald Trump has praised the prime minister and the Field Marshal, and mineral deals and lower tariffs followed. But in August 2026, a US ambassador's remark on Kashmir showed how quickly warm words can cool.
+
+With China, the friendship turned 75 in 2026. Jets, submarines and CPEC tie the 2 countries together. On 30 September 2026, the prime minister again called China an all weather strategic partner and spoke of the second phase of CPEC.
+
+With Saudi Arabia, Pakistan made its biggest promise. The defence pact of September 2025 grew into the Makkah alliance with Türkiye in August 2026. On 5 October 2026 it was put into action for the first time, against Houthi attacks on the kingdom.
+
+With Iran, Pakistan keeps border trade moving and the door to talks open, even while it stands with the Gulf.
+
+The hardest edges are closest to home. Ties with India are frozen. The border with Afghanistan has been shut to trade for a year, and Pakistani jets have struck militant hideouts there. At the Moscow meeting, Pakistan and the Taliban could not even agree on a joint statement.
+
+At the UN, Pakistan sits on the Security Council until the end of 2026. It also chairs the SCO and will host the group's summit in 2027.
+
+Analysts also warn that some of this rests on Trump's personal style and on the Iran crisis. Daniel Markey of the Stimson Center called it "a gamble" for Field Marshal Asim Munir.
+
+Money is still the weak spot. Pakistan depends on the IMF, on Saudi deposits and on remittances from workers abroad.
+
+A middle power wins respect by being useful to many and owned by none. Pakistan's task now is to turn its new standing into trade, investment and peace on its own borders. Influence abroad lasts longest when the house at home is strong.`,
+    keyFacts: [
+      `Pakistan helped broker the US and Iran ceasefire of April 2026 and hosted their talks in Islamabad.`,
+      `The Makkah Defence Alliance with Saudi Arabia and Türkiye was put into action for the first time on 5 October 2026.`,
+      `Pakistan and China marked 75 years of diplomatic ties in 2026.`,
+      `Pakistan sits on the UN Security Council for 2025 and 2026 and chairs the SCO.`,
+      `Ties with India stay frozen, and the Afghan border has been closed to trade since October 2025.`,
+    ],
+    question: `Pakistan is now close to the US, China, Saudi Arabia and Iran at the same time. How can it keep that balance?`,
+    sources: [
+      { title: `BBC: One year after India-Pakistan conflict, ceasefire holds but little else does`, url: `https://www.bbc.com/news/articles/c4g4093dy39o`, publishedAt: '2026-05-07' },
+      { title: `Al Jazeera: Turkiye, Pakistan agree Saudi Arabia military deployment under Mecca pact`, url: `https://www.aljazeera.com/news/2026/10/5/mecca-alliance-agrees-to-activate-collective-deterrence-measures`, publishedAt: '2026-10-05' },
+      { title: `Dawn: At Moscow moot, Pakistan says terrorism remains core of Afghanistan's problems`, url: `https://www.dawn.com/news/2034953`, publishedAt: '2026-10-05' },
+      { title: `Radio Pakistan: PM reaffirms commitment to strengthening Pak-China friendship`, url: `https://www.radio.gov.pk/30-09-2026/pm-reaffirms-commitment-to-strengthening-pak-china-friendship`, publishedAt: '2026-09-30' },
+      { title: `Middle East Monitor: Pakistan's bet, power without becoming a pawn`, url: `https://www.middleeastmonitor.com/20260916-pakistans-bet-power-without-becoming-a-pawn/`, publishedAt: '2026-09-16' },
+    ],
+  },
   {
     id: 'pahalgam-to-ceasefire-may-2025',
     section: 'neighbours',
@@ -165,11 +212,58 @@ Pakistan does not have to choose between dignity and dialogue. A strong and conf
     ],
   },
   {
+    id: 'loc-still-stands-2026',
+    section: 'neighbours',
+    title: `Has the LoC been dissolved? Here is the truth`,
+    hook: `Messages online say the Line of Control is gone. It is not. Here is what the line is and where things stand.`,
+    date: '2026-10-05',
+    story: `On the morning of 5 October 2026, Indian soldiers on patrol near Basooni Top, in the Mendhar sector of Poonch, found 2 landmines by the border fence. They blew them up safely. It was a small news item, but it showed something simple. The Line of Control is still there, still fenced, still guarded and still dangerous.
+
+Some messages online claim the LoC has been dissolved. No credible report up to 6 October 2026 supports that. Neither government has announced it. No new agreement has been signed. No court or UN body has ruled on it.
+
+The LoC is the line that divides Kashmir between the parts held by Pakistan and by India. The BBC says it is about 740 km long.
+
+It began as a ceasefire line in 1949, after the first war over Kashmir. After the 1971 war, the Simla Agreement of 1972 renamed it the Line of Control. Zulfikar Ali Bhutto and Indira Gandhi signed it. Both sides promised not to change the line by force, whatever their differences.
+
+So where did the talk of dissolving come from? In June 2025, weeks after the May fighting, Defence Minister Khawaja Asif said on television that India's actions had ended the sanctity of the Simla Agreement. In his view, the LoC would go back to being a ceasefire line, its original status under the UN resolutions.
+
+The Foreign Office quickly said that "no formal decision" had been made to end any agreement with India. Khawaja Asif later called it his personal analysis.
+
+That is still the real position. The Simla Agreement has not been formally ended, and the LoC has not been dissolved. Pakistan still calls Kashmir a disputed territory that must be settled under UN Security Council resolutions, through a free vote of the Kashmiri people.
+
+What about the ceasefire? The guns along the line went quiet on 10 May 2025. A year later, the BBC wrote that the ceasefire holds, but little else does. The border is shut, trade is suspended and cricket ties are cut.
+
+The line is calm, but it is not peaceful. On 2 October 2026, Indian border guards shot dead 2 Pakistani villagers near Kasur, on the Punjab border, and both countries summoned each other's diplomats. Indian officials say they have doubled patrols in sensitive parts of the LoC after killing a militant commander in Budgam on 29 September 2026.
+
+Some experts abroad want the LoC turned into a permanent border. Pakistani leaders have rejected that for 7 decades, because it would settle Kashmir without the Kashmiris' own say. On 6 October 2026, the Kashmiri campaigner Dr Ghulam Nabi Fai again warned against treating a temporary ceasefire line as a final border.
+
+Why does this matter? A line that both armies respect stops a small incident from turning into a war between 2 nuclear powers. Families on both sides live within sight of it. A false rumour that it has gone can cause panic, or worse.
+
+Pakistan's case on Kashmir is strong because it rests on law and UN resolutions. The best way to defend that case is with facts. Check the date, check the source, and remember that the LoC still stands.`,
+    keyFacts: [
+      `The LoC divides Kashmir and is about 740 km long. It began as the 1949 ceasefire line and was renamed by the Simla Agreement in 1972.`,
+      `In June 2025 Khawaja Asif said the LoC would revert to a ceasefire line. The Foreign Office said no formal decision had been made.`,
+      `Up to 6 October 2026, no government, treaty or UN body has dissolved the LoC.`,
+      `The ceasefire of 10 May 2025 still holds along the line, though incidents continue.`,
+      `Pakistan seeks a Kashmir settlement under UN Security Council resolutions through a free vote of the Kashmiri people.`,
+    ],
+    question: `Why do Pakistan and India both still respect the LoC, even though neither accepts it as a final border?`,
+    sources: [
+      { title: `Kashmir Life: Two landmines detected, destroyed along LoC`, url: `https://kashmirlife.net/two-landmines-detected-destroyed-along-loc-in-jammu-kashmir-455154/`, publishedAt: '2026-10-05' },
+      { title: `Dawn: Simla accord intact for now after minister implies all bets are off`, url: `https://www.dawn.com/news/1915715`, publishedAt: '2025-06-06' },
+      { title: `BBC: Line of Control, how India and Pakistan share one of the world's most dangerous borders`, url: `https://www.bbc.com/news/articles/cgmj7l0lne3o`, publishedAt: '2025-05-15' },
+      { title: `BBC: One year after India-Pakistan conflict, ceasefire holds but little else does`, url: `https://www.bbc.com/news/articles/c4g4093dy39o`, publishedAt: '2026-05-07' },
+      { title: `Radio Pakistan: Two Pakistani civilians martyred, one injured in BSF firing in Kasur`, url: `https://www.radio.gov.pk/02-10-2026/two-pakistani-civilians-martyred-one-injured-in-bsf-firing-in-kasur`, publishedAt: '2026-10-02' },
+      { title: `Zee News: J&K on high alert after Hashim Musa's killing`, url: `https://zeenews.india.com/india/jk-on-high-alert-after-hashim-musa-s-killing-as-intelligence-inputs-warn-of-possible-terror-strikes-3074763.html`, publishedAt: '2026-10-05' },
+      { title: `Kashmir Media Service: Dr Fai calls for peaceful, tripartite settlement`, url: `https://kmsnews.org/kms/2026/10/06/dr-fai-calls-for-peaceful-tripartite-settlement-based-on-kashmiris-aspirations.html`, publishedAt: '2026-10-06' },
+    ],
+  },
+  {
     id: 'pakistan-afghanistan-conflict-2026',
     section: 'neighbours',
     title: `Pakistan and Afghanistan after a year of fighting`,
-    hook: `Talks in Doha, Istanbul and Urumqi brought no lasting peace. Border trade has stopped for a year.`,
-    date: '2026-10-02',
+    hook: `Doha, Istanbul and Urumqi brought no lasting peace. In Moscow, the 2 sides could not even agree a statement.`,
+    date: '2026-10-05',
     story: `On 18 September 2026, a suicide bomber struck a mosque inside the police headquarters in Kohat. Other attackers then fought the police for about 21 hours. At least 23 people were killed, most of them police officers, and all 8 attackers died.
 
 A militant group whose leader is believed to be hiding in Afghanistan claimed the attack. Over the next 2 weeks, Pakistani jets struck Afghanistan 3 times. Kabul then accused Pakistan of backing armed men who crossed into Nuristan, a charge Pakistan called baseless.
@@ -202,6 +296,10 @@ Traders say Pakistani businesses lost over 278 billion rupees in 9 months. In La
 
 In July 2025, Pakistan, Afghanistan and Uzbekistan signed a deal to study a railway linking Central Asia to Pakistani ports. Such plans need calm borders.
 
+On 5 October 2026, both sides sat in the same room at the Moscow Format, a regional meeting on Afghanistan led by Russia. Pakistan's special envoy, Mohammad Sadiq, said more than 4,700 Pakistanis had been killed in 3 years by terrorism coming from Afghanistan. He called Pakistan's strikes precise and defensive.
+
+The Taliban foreign minister, Amir Khan Muttaqi, accused Pakistan's military of trying to unsettle Afghanistan and said problems should be solved through dialogue. The meeting ended without a joint statement because the 2 delegations disagreed over the wording. Russia said it was ready to help mediate if both sides asked.
+
 Pakistan has every right to defend its people and its soldiers. On 2 October 2026, Foreign Minister Ishaq Dar said Pakistan wishes Afghans well, but the Taliban must act against the TTP. Pakistan wants written promises that can be checked.
 
 Still, strikes alone have not stopped the attacks. Lasting peace needs a joint system to check promises, care for civilians on both sides, and roads that carry trade again.
@@ -213,6 +311,7 @@ A safe border and an open border are not opposites. Pakistan needs both, and so 
       `Pakistan launched Operation Ghazab lil Haq after the Taliban attacks of 26 February 2026.`,
       `The border crossings have been shut since 12 October 2025. Traders estimate losses of over 278 billion rupees in 9 months.`,
       `Pakistan wants written, verifiable promises that the Taliban will act against the TTP.`,
+      `At the Moscow Format on 5 October 2026, Pakistan said terrorism from Afghanistan had killed over 4,700 Pakistanis in 3 years. The meeting ended without a joint statement.`,
     ],
     question: `How can Pakistan act against terrorists based in Afghanistan while protecting civilians and keeping talks alive?`,
     sources: [
@@ -220,6 +319,8 @@ A safe border and an open border are not opposites. Pakistan needs both, and so 
       { title: `AP: Afghanistan claims overnight border operations against Pakistan`, url: `https://apnews.com/article/pakistan-afghanistan-border-6089d7b9cf33d2dcac365808ad3dad53`, publishedAt: '2025-10-12' },
       { title: `BBC: Families of those killed at the Omid centre want to know why`, url: `https://www.bbc.com/news/articles/c202xrd9gn7o`, publishedAt: '2026-05-12' },
       { title: `RFE/RL: One year of the Afghan-Pakistan border closure`, url: `https://www.rferl.org/a/afghanistan-pakistan-border-closure-year-taliban/33868985.html`, publishedAt: '2026-10-04' },
+      { title: `Dawn: At Moscow moot, Pakistan says terrorism remains core of Afghanistan's problems`, url: `https://www.dawn.com/news/2034953`, publishedAt: '2026-10-05' },
+      { title: `KabulNow: Moscow Format talks end without joint statement amid Taliban-Pakistan dispute`, url: `https://kabulnow.com/2026/10/moscow-format-talks-end-without-joint-statement-amid-taliban-pakistan-dispute/`, publishedAt: '2026-10-05' },
     ],
   },
   {
@@ -333,13 +434,15 @@ Pakistan needs a calm Iran, a safe Gulf and an open sea. That is why it keeps ta
     id: 'saudi-turkiye-makkah-defence-pact',
     section: 'neighbours',
     title: `From Riyadh to Makkah, a defence promise grows`,
-    hook: `Pakistan promised to defend Saudi Arabia. Then Türkiye joined, and the Houthis tested that promise.`,
-    date: '2026-10-04',
+    hook: `Pakistan promised to defend Saudi Arabia. On 5 October 2026, that promise became a decision to send forces.`,
+    date: '2026-10-05',
     story: `On 7 August 2026, 3 leaders met at Al-Safa Palace in Makkah. Saudi Crown Prince Mohammed bin Salman, Turkish President Recep Tayyip Erdoğan and Prime Minister Shehbaz Sharif signed a new pact.
 
 It is called the Makkah Joint Defence Agreement. Its main promise is short. An armed attack on any of the 3 countries will count as an attack on all of them.
 
-The promise began less than a year earlier. On 17 September 2025, Shehbaz Sharif and the Crown Prince signed the Strategic Mutual Defence Agreement in Riyadh. It says aggression, meaning an attack, against either country is aggression against both.
+The friendship is much older than any pact. The Faisal Mosque in Islamabad, named after King Faisal, was built largely with Saudi money and opened for prayers in 1988. Saudi Arabia is also the biggest workplace for Pakistanis abroad. In 2025 alone, 530,256 Pakistani workers registered for jobs there, about 70 percent of all who went abroad.
+
+The defence promise began less than a year before the Makkah summit. On 17 September 2025, Shehbaz Sharif and the Crown Prince signed the Strategic Mutual Defence Agreement in Riyadh. It says aggression, meaning an attack, against either country is aggression against both.
 
 It came 8 days after Israel struck Doha, the capital of Qatar. The full text has never been made public.
 
@@ -355,9 +458,15 @@ Then the Houthis tested the promise. This Iran-backed armed group controls much 
 
 Pakistan condemned the attacks but did not rush into war. On 10 September 2026, the Foreign Office said no military response was being discussed. It said Pakistan would act under the agreement "when time comes".
 
-On 25 September 2026, the military chiefs met in Riyadh and agreed to share intelligence. On 2 October 2026, Dar said Iran had suggested talking to the Houthis instead of fighting them. The pact's committee is due to meet in Riyadh on 5 October 2026 to discuss this.
+On 25 September 2026, the military chiefs met in Riyadh and agreed to share intelligence. On 2 October 2026, Dar said Iran had suggested talking to the Houthis instead of fighting them.
 
-The work is not finished. Türkiye's parliament must still ratify, or formally approve, the pact. Dar says more than 6 countries want to join, but no new members will come until the alliance is fully working.
+Then the attacks went on, and the alliance acted. On 5 October 2026, the foreign ministers, defence ministers and army chiefs held an emergency meeting in Riyadh. They condemned the attempted targeting of Makkah and Madinah.
+
+They decided to move at once to put the defence promise into practice. The 3 countries will provide the agreed forces and capabilities and deploy them quickly in Saudi Arabia, under each country's own laws. It was the first time the alliance had been used.
+
+The same meeting named a retired Pakistani general, Lieutenant General Nauman Mahmood, as the alliance's first Secretary General for 3 years.
+
+The work is not finished. The parliaments of Pakistan and Türkiye must still approve the pact before it is ratified, The National reported. Dar says more than 6 countries want to join, but no new members will come until the alliance is fully working.
 
 For ordinary Pakistanis, Saudi Arabia is close to home. It has the largest community of Pakistanis abroad. They sent home 9.78 billion dollars in the year to June 2026. In April 2026, Riyadh also put 3 billion dollars of new deposits in our central bank.
 
@@ -369,7 +478,8 @@ The best defence pact is one that makes war less likely. Pakistan's task is to k
       `The Makkah Joint Defence Agreement was signed at Al-Safa Palace, Makkah, on 7 August 2026 by Mohammed bin Salman, Recep Tayyip Erdoğan and Shehbaz Sharif.`,
       `Both pacts say an attack on one is an attack on all. Neither full text has been published.`,
       `On 31 August 2026 the group was named the Makkah Defence Alliance, with a secretariat in Saudi Arabia led first by a Pakistani.`,
-      `Türkiye's parliament had not yet ratified the pact by late September 2026.`,
+      `On 5 October 2026 the alliance was used for the first time. Its members agreed to deploy forces in Saudi Arabia, and retired Lieutenant General Nauman Mahmood became its first Secretary General.`,
+      `Saudi Arabia took 530,256 Pakistani workers in 2025, about 70 percent of all registered workers who went abroad.`,
     ],
     question: `How should Pakistan keep its defence promise to Saudi Arabia without being pulled into the war in Yemen?`,
     sources: [
@@ -377,6 +487,11 @@ The best defence pact is one that makes war less likely. Pakistan's task is to k
       { title: `PID: Makkah Al-Mukarramah Summit for Joint Defence`, url: `https://pid.gov.pk/site/press_detail/33499`, publishedAt: '2026-08-07' },
       { title: `Reuters: Pakistan says no military response discussed under Mecca pact over Houthi attacks`, url: `https://www.reuters.com/world/middle-east/pakistan-says-no-military-response-discussed-under-mecca-pact-over-houthi-2026-09-10/`, publishedAt: '2026-09-10' },
       { title: `Arab News: Makkah pact committee to meet in Riyadh on Monday`, url: `https://www.arabnews.pk/pakistan/türkiye-says-makkah-pact-committee-to-meet-in-riyadh-on-monday-3003187`, publishedAt: '2026-10-04' },
+      { title: `Türkiye MFA: Joint statement on the emergency meeting of the Makkah Alliance for Defense committee`, url: `https://www.mfa.gov.tr/joint-statement-on-the-emergency-meeting-of-the-strategic-political-and-defense-committee-of-the-makkah-alliance-for-defense-5-october-2026.en.mfa`, publishedAt: '2026-10-05' },
+      { title: `Al Jazeera: Turkiye, Pakistan agree Saudi Arabia military deployment under Mecca pact`, url: `https://www.aljazeera.com/news/2026/10/5/mecca-alliance-agrees-to-activate-collective-deterrence-measures`, publishedAt: '2026-10-05' },
+      { title: `The National: Makkah pact countries plan rapid deployment of capabilities in Saudi Arabia`, url: `https://www.thenationalnews.com/news/mena/2026/10/05/makkah-pact-countries-to-meet-in-riyadh-with-houthi-attacks-on-agenda/`, publishedAt: '2026-10-05' },
+      { title: `The National: Faisal Mosque in Islamabad, the Saudi legacy`, url: `https://www.thenationalnews.com/news/asia/2024/05/10/faisal-mosque-in-islamabad-the-saudi-legacy-of-pakistans-largest-place-of-worship/`, publishedAt: '2024-05-10' },
+      { title: `Arab News: Pakistan targets 1 million workers in Saudi Arabia by 2030`, url: `https://www.arabnews.pk/pakistan/pakistan-aligns-labor-strategy-with-saudi-vision-2030-targets-1-million-workers-by-2030-2649081`, publishedAt: '2026-06-30' },
     ],
   },
   {

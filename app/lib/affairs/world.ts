@@ -1,13 +1,13 @@
 import type { AffairsStory } from '../affairsStories';
 
-// World affairs. Researched 4 October 2026.
+// World affairs. Researched 4 October 2026, updated 6 October 2026.
 export const worldStories: AffairsStory[] = [
   {
     id: 'iran-war-islamabad-mediation',
     section: 'world',
     title: `The US-Iran war and Islamabad's bid for peace`,
     hook: `Pakistan brought old enemies to the same table. The deal broke, but the talks are still alive.`,
-    date: '2026-10-04',
+    date: '2026-10-05',
     story: `On 7 April 2026, the world was waiting for a deadline. President Donald Trump had threatened to destroy Iran's power plants and bridges. The deadline was hours away.
 
 Less than 2 hours before it, he stepped back. He agreed to a 2-week ceasefire, a pause in fighting. He said he did so after talks with Prime Minister Shehbaz Sharif and Field Marshal Asim Munir of Pakistan.
@@ -36,6 +36,8 @@ Pakistan has kept trying. Field Marshal Munir and Interior Minister Mohsin Naqvi
 
 On 4 October 2026, Iran said Hormuz will stay shut until its 7 conditions are met. It says they are based on the Islamabad deal. Iran's foreign minister, Abbas Araghchi, said there is no military solution. The US is also sending a third aircraft carrier to the region.
 
+On 5 October 2026, Iran said it was studying America's reply to its 7 day plan, passed through mediators. Iran says the US reply still focuses on nuclear issues, while Iran wants Hormuz, sanctions and its frozen money settled first.
+
 Why does this matter to Pakistan? Iran is our neighbour, and America and the Gulf states are our partners. A wider war would hurt our fuel, our trade and our workers abroad.
 
 The UN chief has thanked Pakistan for its mediation. But a trusted go-between needs patience, quiet work and fairness to both sides.
@@ -46,7 +48,7 @@ Bombs have not given either side what it wants. Talks still can. Pakistan's best
       `Pakistan helped broker a 2-week US-Iran ceasefire on 7 April 2026.`,
       `The Islamabad Talks on 11 and 12 April 2026 lasted 21 hours, led by JD Vance and Mohammad Bagher Ghalibaf.`,
       `The 14-point Islamabad Memorandum of Understanding was signed on 17 June 2026 and collapsed in July 2026.`,
-      `On 4 October 2026 Iran said Hormuz stays shut until its 7 conditions are met.`,
+      `On 4 October 2026 Iran said Hormuz stays shut until its 7 conditions are met. It was studying a US reply sent through mediators.`,
     ],
     question: `What did Pakistan achieve as a mediator between the US and Iran, and what are the limits of that role?`,
     sources: [
@@ -55,6 +57,57 @@ Bombs have not given either side what it wants. Talks still can. Pakistan's best
       { title: `CNBC: Trump and Iran's president sign memorandum of understanding`, url: `https://www.cnbc.com/2026/06/17/trump-vance-iran-deal-nuclear-g7.html`, publishedAt: '2026-06-17' },
       { title: `Al Jazeera: US-Israel war on Iran, six months down the line, in numbers`, url: `https://www.aljazeera.com/news/2026/8/28/us-israel-war-on-iran-six-months-down-the-line-in-numbers`, publishedAt: '2026-08-28' },
       { title: `The National: Iran says Hormuz will not reopen until seven conditions are met`, url: `https://www.thenationalnews.com/news/gulf/2026/10/04/iran-says-strait-of-hormuz-will-not-reopen-until-its-conditions-are-met/`, publishedAt: '2026-10-04' },
+      { title: `China Daily HK (Xinhua): Iran says reviewing US views on 7-day plan to cease hostilities`, url: `https://www.chinadailyhk.com/hk/article/640550`, publishedAt: '2026-10-05' },
+      { title: `Iran International: Iran reviewing US response to seven-day proposal`, url: `https://www.iranintl.com/en/202610040767`, publishedAt: '2026-10-04' },
+    ],
+  },
+  {
+    id: 'iran-israel-friends-to-enemies',
+    section: 'world',
+    title: `Iran and Israel, from secret friends to open war`,
+    hook: `They share no border and were once partners. How did they become the Middle East's fiercest enemies?`,
+    date: '2026-10-05',
+    story: `In 1978, an Israeli diplomat in Tehran gave his successor a warning. "I'm worried that this friend of ours will soon be an enemy," Reuven Merhav said, according to the Israeli writer Ronen Bergman. Within a year he was proved right.
+
+It is hard to believe today, but Iran and Israel were once close partners. Under the Shah, Mohammad Reza Pahlavi, Iran treated Israel as a strategic ally. Both feared the Arab nationalism of Egypt's Gamal Abdel Nasser. About 150,000 Jews lived in Iran at the time.
+
+Everything changed in 1979. The Shah fled in January, and Ayatollah Ruhollah Khomeini came to power. He cut all ties with Israel at once. Revolutionaries stormed the Israeli embassy, and its diplomats fled.
+
+For the next 4 decades, the 2 countries fought what Reuters called a shadow war. Iran backed armed groups such as Hezbollah in Lebanon and Hamas in Gaza. Each side struck the other through proxies and secret operations, but neither attacked the other openly.
+
+The nuclear question made it worse. Israel feared Iran was moving toward a bomb. Iran said its programme was peaceful.
+
+The shadow war came into the open in 2024. In April, after an Israeli strike on Iran's consulate building in Damascus killed 7 Revolutionary Guards officers, Iran fired about 300 drones and missiles at Israel. On 1 October 2024, it fired more than 180 ballistic missiles. Israel struck back both times.
+
+Then came full war. On 13 June 2025, Israel attacked Iran's nuclear and military sites. On 22 June, the United States bombed Fordow, Natanz and Isfahan. A ceasefire took effect on 24 June 2025. By then, Iran's health ministry counted 610 dead, and Israel counted 28.
+
+The truce did not last. On 28 February 2026, the US and Israel launched a new war on Iran. Supreme Leader Ali Khamenei was killed, and his son Mojtaba took his place. Iran fired missiles at Israel and at US bases in the Gulf. By 28 August 2026, Al Jazeera counted at least 3,527 people killed in Iran, and 60 Israelis killed by Iranian attacks.
+
+Today there is no daily battle between them, but no peace either. On 5 October 2026, the Israeli newspaper Israel Hayom reported that Israel's army is preparing options to strike Iran again, with or without America. Israeli troops also hold a strip of southern Lebanon to fight Hezbollah, Iran's closest ally.
+
+Iran, for its part, is studying an American reply to its 7 day peace plan, passed through mediators. On 4 October 2026, Foreign Minister Abbas Araghchi said there is "no military solution".
+
+Why does this matter beyond the region? This rivalry helped close the Strait of Hormuz, pushed up fuel prices from Karachi to Cairo and pulled the Houthis into war with Saudi Arabia.
+
+Pakistan's position is clear. It does not recognise Israel. It condemned the attacks on Iran and also Iran's attacks on Gulf states, and it has worked hard as a mediator.
+
+2 nations with no shared border and no land dispute have turned an ideological quarrel into a regional fire. History shows that friends can become enemies. The harder lesson is that enemies stop only through talks, guarantees and patience, not through one more strike.`,
+    keyFacts: [
+      `Under the Shah, Iran and Israel were close partners. Khomeini cut ties after the 1979 revolution.`,
+      `Iran made its first direct attacks on Israel in April and October 2024.`,
+      `Israel attacked Iran on 13 June 2025. The US bombed 3 nuclear sites on 22 June, and a ceasefire began on 24 June 2025.`,
+      `The US and Israel attacked Iran again on 28 February 2026, and Ali Khamenei was killed.`,
+      `On 5 October 2026 Israel was reported to be preparing new strike options, while Iran studied a US reply sent through mediators.`,
+    ],
+    question: `Iran and Israel share no border. Why has their rivalry become so dangerous for the whole region, including Pakistan?`,
+    sources: [
+      { title: `The Guardian: This friend of ours will soon be an enemy, how Iran became Israel's foe`, url: `https://www.theguardian.com/world/2025/jun/22/iran-israel-us-alliance-and-enemies`, publishedAt: '2025-06-22' },
+      { title: `Reuters: Iran and Israel, open warfare after decades of shadow war`, url: `https://www.reuters.com/world/middle-east/iran-israels-open-warfare-after-decades-shadow-war-2024-04-14/`, publishedAt: '2024-04-14' },
+      { title: `BBC: Iran launches more than 180 ballistic missiles at Israel`, url: `https://www.bbc.com/news/articles/c9dyxxgxv1jo`, publishedAt: '2024-10-01' },
+      { title: `BBC: What we know about the Iran-Israel ceasefire`, url: `https://www.bbc.com/news/articles/czjk3kxr3zno`, publishedAt: '2025-06-24' },
+      { title: `Al Jazeera: US-Israel war on Iran, six months down the line, in numbers`, url: `https://www.aljazeera.com/news/2026/8/28/us-israel-war-on-iran-six-months-down-the-line-in-numbers`, publishedAt: '2026-08-28' },
+      { title: `Israel Hayom: With or without the US, the potential timeline for a strike in Iran`, url: `https://www.israelhayom.com/2026/10/05/israel-iran-strike-timeline-us-midterms-idf-strategy/`, publishedAt: '2026-10-05' },
+      { title: `China Daily HK (Xinhua): Iran says reviewing US views on 7-day plan`, url: `https://www.chinadailyhk.com/hk/article/640550`, publishedAt: '2026-10-05' },
     ],
   },
   {
@@ -118,8 +171,8 @@ Aid must flow freely, the roadmap must move, and the law must apply to all. Less
     id: 'houthis-saudi-war-yemen-2026',
     section: 'world',
     title: `Houthi attacks on Saudi Arabia and the holy cities`,
-    hook: `A drone near Makkah, a seized strait, and a defence pact that binds Pakistan.`,
-    date: '2026-10-04',
+    hook: `A drone near Makkah, a seized strait, a counter offensive, and a defence pact Pakistan has now put into action.`,
+    date: '2026-10-05',
     story: `On the evening of 15 September 2026, Saudi air defences shot down a drone south of Makkah. It had not yet entered the holy city's protected airspace.
 
 Saudi Arabia blamed Yemen's Houthis. The Houthis denied it. It was Makkah's first security alert in nearly a decade, Al Jazeera reported.
@@ -142,13 +195,15 @@ On 29 September 2026, a drone hit a power station serving the Prophet's Mosque i
 
 On 4 October 2026, Yemen's President Rashad al-Alimi announced a major offensive, a big military push, to retake all Houthi areas. The UN food agency says 3 in 4 families in parts of Yemen are going hungry.
 
+On 5 October 2026, forces loyal to Yemen's government said they had retaken Mokha and now controlled the Bab el Mandeb. The Saudi led coalition said 100 of its fighter jets were giving air support. The Houthis claimed attacks on Riyadh's King Khalid airport and an Aramco refinery at Rabigh, which Riyadh did not confirm.
+
 This touches Pakistan directly. On 17 September 2025, Pakistan and Saudi Arabia signed a defence pact. It says aggression against either country is aggression against both.
 
 On 7 August 2026, Pakistan, Saudi Arabia and Türkiye signed the Makkah Joint Defence Agreement. An attack on any of them counts as an attack on all.
 
 At the UN on 25 September 2026, Prime Minister Shehbaz Sharif spoke about the Haramain Sharifain, the 2 holy mosques. He said their safety and sanctity is "a red line that must never be crossed".
 
-Pakistan is also leaving room for talks. Ishaq Dar said Iran's foreign minister denied any link to the attacks and advised talking to the Houthis politically. The pact's committee will discuss this in Riyadh on 5 October 2026.
+Pakistan also left room for talks. Ishaq Dar said Iran's foreign minister denied any link to the attacks and advised talking to the Houthis politically. But on 5 October 2026, at an emergency meeting in Riyadh, Pakistan, Saudi Arabia and Türkiye agreed to activate collective deterrence and deploy agreed forces in the kingdom.
 
 A mature view holds 2 duties together. Pakistan must keep its word and help protect the holy places. But Yemen's hungry families need peace, not a longer war.
 
@@ -158,7 +213,8 @@ The best defence is strong and calm. Guard the Haramain, stop the missiles, and 
       `The Houthis took Mokha on 10 September 2026 and Mayun island in the Bab el-Mandeb the next day.`,
       `A drone was shot down south of Makkah on 15 September 2026. The Houthis denied sending it.`,
       `Pakistan's defence pacts with Saudi Arabia were signed on 17 September 2025 and, with Türkiye, on 7 August 2026.`,
-      `Yemen's government announced a major offensive against the Houthis on 4 October 2026.`,
+      `Yemen's government announced a major offensive against the Houthis on 4 October 2026 and said it retook Mokha the next day.`,
+      `On 5 October 2026 Pakistan, Saudi Arabia and Türkiye agreed to deploy forces to defend the kingdom.`,
     ],
     question: `How should Pakistan balance its defence promises to Saudi Arabia with its role as a peacemaker with Iran?`,
     sources: [
@@ -166,14 +222,15 @@ The best defence is strong and calm. Guard the Haramain, stop the missiles, and 
       { title: `Al-Monitor (Reuters): Yemeni government launches offensive against the Houthis`, url: `https://www.al-monitor.com/originals/2026/10/yemen-leader-announces-major-military-operations-against-iran-backed-houthis`, publishedAt: '2026-10-04' },
       { title: `Euronews: Houthis capture more Red Sea islands`, url: `https://www.euronews.com/2026/09/14/houthis-capture-more-yemeni-red-sea-islands-tightening-grip-on-bab-el-mandeb`, publishedAt: '2026-09-14' },
       { title: `Arab News: Pakistan says defence pact with Saudi Arabia operational`, url: `https://www.arabnews.pk/pakistan/pakistan-says-defense-pact-with-saudi-arabia-operational-amid-houthi-attacks-against-kingdom-3001521`, publishedAt: '2026-09-17' },
+      { title: `Al Jazeera: Turkiye, Pakistan agree Saudi Arabia military deployment under Mecca pact`, url: `https://www.aljazeera.com/news/2026/10/5/mecca-alliance-agrees-to-activate-collective-deterrence-measures`, publishedAt: '2026-10-05' },
     ],
   },
   {
     id: 'russia-ukraine-talks-sanctions-2026',
     section: 'world',
     title: `Ukraine war talks return as US sanctions tighten`,
-    hook: `Russia hits Kyiv's bridges while Washington pushes new talks and signs a tough sanctions law.`,
-    date: '2026-10-04',
+    hook: `Russia bombs Kyiv and Kharkiv, Ukraine hits Russian refineries, and a grain ship sinks as talks stall.`,
+    date: '2026-10-05',
     story: `On 4 October 2026, German Chancellor Friedrich Merz stood beside President Volodymyr Zelenskyy in Kyiv. Zelenskyy said Ukraine was ready for new talks with Russia and the United States before the end of October.
 
 The meeting would be at the technical level, which means officials and experts, not presidents. It could take place in the United Arab Emirates. Kyiv was still waiting for Moscow's answer.
@@ -196,6 +253,10 @@ On the ground, Russian gains have been very small since March, according to the 
 
 The war in the air is getting worse. UN monitors counted 2,222 civilians killed and 13,058 injured from January to August 2026. That is already more casualties than in all of 2025.
 
+On 5 October 2026, Russian glide bombs hit Kharkiv and killed at least 5 people, the Kyiv Independent reported. Russia launched 205 drones that night, Ukraine's air force said. Ukraine says its own long range strikes have knocked out 51 percent of Russia's oil refining, a claim that could not be checked independently. President Vladimir Putin admitted on 1 October 2026 that the refinery strikes had cost Russia about 1 percent of its economy.
+
+The war is also spilling over. On 5 October 2026, a Turkish owned ship carrying corn caught fire and sank in Romania's part of the Black Sea, and 2 people died. Zelenskyy blamed 2 Russian drones. Romania is a NATO member.
+
 Why should Pakistan care? Ukrainian drones have hit Russian refineries and grain ports, and Russia keeps striking Ukraine's port of Odesa. The 2 countries ship more than 25 percent of the world's wheat. Wheat prices hit a 3-year high in August.
 
 Pakistan has approved imports of up to 1 million tonnes of wheat this year. Diesel is short worldwide, and Pakistanis paid about 399 rupees a litre for diesel in early October.
@@ -210,6 +271,7 @@ For a country that buys its wheat and fuel abroad, a quiet Black Sea is not a di
       `On 18 September 2026 Trump signed a sanctions law allowing tariffs of up to 500 percent on Russian goods.`,
       `The US plan has 3 steps, an energy truce, safe Black Sea shipping and a 3-way meeting.`,
       `UN monitors counted 2,222 civilians killed in Ukraine from January to August 2026.`,
+      `On 5 October 2026 a grain ship sank off Romania after what Ukraine called a Russian drone strike.`,
       `Russia and Ukraine ship over 25 percent of the world's wheat. Pakistan approved up to 1 million tonnes of wheat imports in 2026.`,
     ],
     question: `Should Pakistan support limited deals like an energy truce or safe Black Sea shipping before there is a full peace in Ukraine?`,
@@ -218,6 +280,58 @@ For a country that buys its wheat and fuel abroad, a quiet Black Sea is not a di
       { title: `Baker McKenzie: US President signs Russia and Iran sanctions bill`, url: `https://sanctionsnews.bakermckenzie.com/us-president-signs-russia-and-iran-sanctions-bill-with-new-tariff-powers/`, publishedAt: '2026-09-21' },
       { title: `gCaptain (Bloomberg): Turkey and UN broker new talks on a Black Sea truce`, url: `https://gcaptain.com/turkey-and-un-broker-new-talks-on-russia-ukraine-black-sea-truce/`, publishedAt: '2026-10-01' },
       { title: `UN Human Rights Monitoring Mission: Protection of civilians, August 2026`, url: `https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-August-2026`, publishedAt: '2026-09-16' },
+      { title: `PBS (AP): Ukraine claims its strikes have taken out more than half of Russia's oil refining capacity`, url: `https://www.pbs.org/newshour/world/ukraine-claims-its-strikes-have-taken-out-more-than-half-of-russias-oil-refining-capacity`, publishedAt: '2026-10-05' },
+      { title: `Al Jazeera: Ukraine says Russian drone attack sinks ship in Romanian waters`, url: `https://www.aljazeera.com/news/2026/10/5/ukraine-says-russian-drone-attack-sinks-ship-in-romanian-waters`, publishedAt: '2026-10-05' },
+      { title: `Kyiv Independent: Kharkiv devastated by Russian glide bombs`, url: `https://kyivindependent.com/ukraine-war-latest-kharkiv-devastated-by-russian-glide-bombs-children-among-victims-2/`, publishedAt: '2026-10-05' },
+    ],
+  },
+  {
+    id: 'world-wars-october-2026',
+    section: 'world',
+    title: `The world's major wars in October 2026`,
+    hook: `From Kyiv to Khartoum, wars are burning on 3 continents. Here is a simple map of who is fighting whom.`,
+    date: '2026-10-05',
+    story: `On 5 October 2026, 3 things happened within hours. Russian glide bombs hit Kharkiv in Ukraine and killed at least 5 people. Forces loyal to Yemen's government said they had retaken the port of Mokha from the Houthis. And Sudan's army was still celebrating the capture of al Mazroub, a key town in North Kordofan.
+
+It was an ordinary day in a very violent year. These are the wars every informed citizen should know.
+
+Ukraine comes first. Russia's full invasion is in its 5th year. The front line, about 1,200 km long, has barely moved, so both sides now fight mostly from the air. Ukraine says its drones have knocked out 51 percent of Russia's oil refining. On 5 October 2026, a Turkish owned grain ship sank in Romania's part of the Black Sea, and Ukraine blamed Russian drones. Talks backed by America have made little progress.
+
+Next is Iran. The war that the US and Israel began on 28 February 2026 is paused but not over. Iran keeps the Strait of Hormuz shut, America blockades Iran's ports, and messages pass through Qatar.
+
+Then Lebanon and Gaza. Israeli troops hold a zone in southern Lebanon to fight Hezbollah. In Gaza, a ceasefire has lasted almost a year, but people are still being killed and rebuilding has not begun.
+
+In Yemen, the Houthis, backed by Iran, seized Yemen's Red Sea coast in September and attacked Saudi cities. On 4 October 2026, Yemen's government began a counter offensive with Saudi air support. On 5 October, Pakistan, Saudi Arabia and Türkiye agreed to deploy forces to defend the kingdom.
+
+In Sudan, the army and the RSF militia have fought for control since April 2023. Al Jazeera says 14 million people have been displaced. The UN food agency calls it the world's largest hunger and displacement crisis. The RSF holds almost all of Darfur, while the army is pushing it back in Kordofan.
+
+In Myanmar, the army has fought many armed groups since it took power in a coup in 2021. On 28 September 2026, a military air strike on a market in Kyauktaw, in Rakhine state, killed at least 50 people, the Arakan Army said. The UN called it one of the deadliest air strikes in Rakhine since the coup.
+
+In eastern Congo, the government and the M23 rebels are in a slow and fragile peace process. On 5 October 2026, African Union mediators met M23 leaders in Goma.
+
+Closer to home, Pakistan faces attacks from militants it says are based in Afghanistan, and it has struck their hideouts across the border.
+
+What links these wars? Many are fought with cheap drones. Many hit food and fuel supplies far away. And in almost all of them, ordinary civilians pay the highest price.
+
+For Pakistan, these are not distant headlines. Hormuz decides our fuel bill. The Black Sea affects the price of wheat. Saudi Arabia's safety touches millions of Pakistani workers and their families.
+
+Wars are easy to start and very hard to end. A country that wants peace must be strong enough to deter attack and wise enough to keep talking. The world needs more peacemakers, and Pakistan has shown it can be one.`,
+    keyFacts: [
+      `Russia's full invasion of Ukraine began in February 2022 and is in its 5th year.`,
+      `The US and Israel attacked Iran on 28 February 2026. Hormuz was still shut in early October.`,
+      `Sudan's war began in April 2023 and has displaced about 14 million people.`,
+      `Yemen's government began an offensive against the Houthis on 4 October 2026 with Saudi air support.`,
+      `A military air strike in Kyauktaw, Myanmar, on 28 September 2026 killed at least 50 people.`,
+    ],
+    question: `Many of today's wars are fought with drones and hit food and fuel far away. How do distant wars affect daily life in Pakistan?`,
+    sources: [
+      { title: `PBS (AP): Ukraine claims its strikes have taken out more than half of Russia's oil refining capacity`, url: `https://www.pbs.org/newshour/world/ukraine-claims-its-strikes-have-taken-out-more-than-half-of-russias-oil-refining-capacity`, publishedAt: '2026-10-05' },
+      { title: `Kyiv Independent: Kharkiv devastated by Russian glide bombs`, url: `https://kyivindependent.com/ukraine-war-latest-kharkiv-devastated-by-russian-glide-bombs-children-among-victims-2/`, publishedAt: '2026-10-05' },
+      { title: `Al Jazeera: Turkiye, Pakistan agree Saudi Arabia military deployment under Mecca pact`, url: `https://www.aljazeera.com/news/2026/10/5/mecca-alliance-agrees-to-activate-collective-deterrence-measures`, publishedAt: '2026-10-05' },
+      { title: `Al Jazeera: Is the Sudanese army gaining momentum against the RSF?`, url: `https://www.aljazeera.com/news/2026/10/4/is-the-sudanese-army-gaining-momentum-against-the-rsf`, publishedAt: '2026-10-04' },
+      { title: `Security Council Report: Sudan, October 2026 monthly forecast`, url: `https://www.securitycouncilreport.org/monthly-forecast/2026-10/sudan-42.php`, publishedAt: '2026-10-01' },
+      { title: `RFA: Myanmar junta airstrikes target civilians to coerce Arakan Army into peace talks`, url: `https://www.rfa.org/english/myanmar/2026/10/02/myanmar-rakhine-air-strike-civilians/`, publishedAt: '2026-10-02' },
+      { title: `The New Times: AU facilitators meet AFC/M23 leaders in Goma`, url: `https://www.newtimes.co.rw/article/39468/news/africa/au-facilitators-meet-afcm23-leaders-in-goma`, publishedAt: '2026-10-05' },
     ],
   },
   {
