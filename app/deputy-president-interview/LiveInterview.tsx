@@ -201,7 +201,7 @@ export default function LiveInterview() {
             <h2 id={headingId}>Sit the Deputy President interview out loud</h2>
             <p>
               A live AI deputy president talks with you in real time. He asks about your life, digs into your answers, runs a
-              rapid-fire round and checks your current affairs. When you finish, he gives you a minute of spoken feedback, and
+              rapid-fire round and checks your current affairs. When you finish, he gives you honest spoken feedback on what to fix, and
               you keep the full transcript.
             </p>
           </div>
@@ -405,7 +405,7 @@ export default function LiveInterview() {
             )}
           </div>
           {phase !== 'debrief' && (
-            <p className="dpi-note">When you end the interview, {dpName} gives you about a minute of spoken feedback.</p>
+            <p className="dpi-note">When you end the interview, {dpName} gives you about 90 seconds of honest spoken feedback.</p>
           )}
 
           {showTranscript && (
@@ -466,7 +466,7 @@ export default function LiveInterview() {
               </>
             ) : (
               <p className="prep-muted">
-                No feedback this time. Next time, press End interview and stay for about a minute while he tells you what went
+                No feedback this time. Next time, press End interview and stay for about 90 seconds while he tells you what went
                 well and what to fix.
               </p>
             )}
