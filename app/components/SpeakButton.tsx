@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { PLAYBACK_SPEEDS, applyPlaybackSpeed, speedLabel, usePlaybackSpeed } from '../lib/playbackSpeed';
 
 type SpeakButtonProps = {
   /** Flowing spoken paragraph (no dashes/colons). Used for Web Speech fallback and aria. */
@@ -37,6 +38,9 @@ export default function SpeakButton({
   const activeSrcRef = useRef<string | null>(null);
   const audioSrcRef = useRef(audioSrc);
   const scriptRef = useRef(script);
+  const [speed, setSpeed] = usePlaybackSpeed();
+  const speedRef = useRef(speed);
+  speedRef.current = speed;
 
   onEndedRef.current = onEnded;
   audioSrcRef.current = audioSrc;
@@ -71,6 +75,7 @@ export default function SpeakButton({
     audio.onerror = handleFileError;
     activeSrcRef.current = nextSrc;
     audio.src = nextSrc;
+    applyPlaybackSpeed(audio, speedRef.current);
     ignoreEndRef.current = false;
     setPlaying(true);
     void audio.play().catch(() => setPlaying(false));
@@ -112,7 +117,7 @@ export default function SpeakButton({
     ignoreEndRef.current = false;
     activeSrcRef.current = audioSrcRef.current ? `speech:${audioSrcRef.current}` : 'speech';
     const utter = new SpeechSynthesisUtterance(scriptRef.current);
-    utter.rate = 0.95;
+    utter.rate = Math.min(0.95 * speedRef.current, 4);
     utter.pitch = 1;
     utter.onend = () => {
       if (ignoreEndRef.current) return;
@@ -147,6 +152,11 @@ export default function SpeakButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioSrc]);
 
+  // Change speed live on the playing file. Speech fallback picks it up on the next utterance.
+  useEffect(() => {
+    if (audioRef.current) applyPlaybackSpeed(audioRef.current, speed);
+  }, [speed]);
+
   useEffect(() => {
     return () => {
       ignoreEndRef.current = true;
@@ -172,18 +182,35 @@ export default function SpeakButton({
   }
 
   return (
-    <button
-      type="button"
-      className={`speak-btn ${playing ? 'speak-btn--playing' : ''} ${className}`.trim()}
-      onClick={toggle}
-      aria-pressed={playing}
-      aria-label={playing ? `Stop ${label}` : label}
-      title={playing ? 'Stop' : label}
-    >
-      <span className="speak-btn-icon" aria-hidden="true">
-        {playing ? '■' : '▶'}
-      </span>
-      <span className="speak-btn-text">{playing ? 'Stop' : 'Play'}</span>
-    </button>
+    <span className="speak-group">
+      <button
+        type="button"
+        className={`speak-btn ${playing ? 'speak-btn--playing' : ''} ${className}`.trim()}
+        onClick={toggle}
+        aria-pressed={playing}
+        aria-label={playing ? `Stop ${label}` : label}
+        title={playing ? 'Stop' : label}
+      >
+        <span className="speak-btn-icon" aria-hidden="true">
+          {playing ? '■' : '▶'}
+        </span>
+        <span className="speak-btn-text">{playing ? 'Stop' : 'Play'}</span>
+      </button>
+      <select
+        className="speak-speed-select"
+        value={String(speed)}
+        onChange={(event) => setSpeed(Number(event.target.value))}
+        onClick={(event) => event.stopPropagation()}
+        onKeyDown={(event) => event.stopPropagation()}
+        aria-label={`Playback speed for ${label}`}
+        title="Playback speed"
+      >
+        {PLAYBACK_SPEEDS.map((option) => (
+          <option key={option} value={String(option)}>
+            {speedLabel(option)}
+          </option>
+        ))}
+      </select>
+    </span>
   );
 }
