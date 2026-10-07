@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { TransformWrapper, TransformComponent, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 import SpacedRepetitionDeck from '@/app/components/SpacedRepetitionDeck';
 
@@ -58,9 +58,9 @@ const countries: Country[] = [
   { country: "Dominican Republic", capital: "Santo Domingo", continent: "North America" },
   { country: "East Timor", capital: "Dili", continent: "Asia" },
   { country: "Ecuador", capital: "Quito", continent: "South America" },
-  { country: "Egypt", capital: "Cairo", continent: "Africa" },
+  { country: "Egypt", capital: "Cairo (government now sits in the New Capital, inside Cairo Governorate)", continent: "Africa" },
   { country: "El Salvador", capital: "San Salvador", continent: "North America" },
-  { country: "Equatorial Guinea", capital: "Malabo", continent: "Africa" },
+  { country: "Equatorial Guinea", capital: "Ciudad de la Paz (official since January 2026) / Malabo (former capital, largest city)", continent: "Africa" },
   { country: "Eritrea", capital: "Asmara", continent: "Africa" },
   { country: "Estonia", capital: "Tallinn", continent: "Europe" },
   { country: "Eswatini", capital: "Mbabane (administrative) / Lobamba (legislative)", continent: "Africa" },
@@ -84,11 +84,11 @@ const countries: Country[] = [
   { country: "Hungary", capital: "Budapest", continent: "Europe" },
   { country: "Iceland", capital: "Reykjavik", continent: "Europe" },
   { country: "India", capital: "New Delhi", continent: "Asia" },
-  { country: "Indonesia", capital: "Jakarta", continent: "Asia" },
+  { country: "Indonesia", capital: "Jakarta (Nusantara is the planned new capital; Jakarta stays capital until a presidential decree)", continent: "Asia" },
   { country: "Iran", capital: "Tehran", continent: "Asia" },
   { country: "Iraq", capital: "Baghdad", continent: "Asia" },
   { country: "Ireland", capital: "Dublin", continent: "Europe" },
-  { country: "Israel", capital: "Jerusalem (declared) / Tel Aviv (recognized)", continent: "Asia" },
+  { country: "Israel", capital: "Jerusalem (claimed by Israel, not recognised by Pakistan or most countries) / Tel Aviv (where most embassies are)", continent: "Asia" },
   { country: "Italy", capital: "Rome", continent: "Europe" },
   { country: "Ivory Coast", capital: "Yamoussoukro (official) / Abidjan (economic)", continent: "Africa" },
   { country: "Jamaica", capital: "Kingston", continent: "North America" },
@@ -141,7 +141,7 @@ const countries: Country[] = [
   { country: "Oman", capital: "Muscat", continent: "Asia" },
   { country: "Pakistan", capital: "Islamabad", continent: "Asia" },
   { country: "Palau", capital: "Ngerulmud", continent: "Oceania" },
-  { country: "Palestine", capital: "Ramallah (administrative) / Jerusalem (claimed)", continent: "Asia" },
+  { country: "Palestine", capital: "East Jerusalem (proclaimed capital, Al-Quds) / Ramallah (administrative seat)", continent: "Asia" },
   { country: "Panama", capital: "Panama City", continent: "North America" },
   { country: "Papua New Guinea", capital: "Port Moresby", continent: "Oceania" },
   { country: "Paraguay", capital: "Asuncion", continent: "South America" },
@@ -173,7 +173,7 @@ const countries: Country[] = [
   { country: "South Korea", capital: "Seoul", continent: "Asia" },
   { country: "South Sudan", capital: "Juba", continent: "Africa" },
   { country: "Spain", capital: "Madrid", continent: "Europe" },
-  { country: "Sri Lanka", capital: "Sri Jayawardenepura Kotte (legislative) / Colombo (executive)", continent: "Asia" },
+  { country: "Sri Lanka", capital: "Sri Jayawardenepura Kotte (official, legislative) / Colombo (executive, judicial and commercial)", continent: "Asia" },
   { country: "Sudan", capital: "Khartoum", continent: "Africa" },
   { country: "Suriname", capital: "Paramaribo", continent: "South America" },
   { country: "Sweden", capital: "Stockholm", continent: "Europe" },
@@ -187,7 +187,7 @@ const countries: Country[] = [
   { country: "Tonga", capital: "Nuku'alofa", continent: "Oceania" },
   { country: "Trinidad and Tobago", capital: "Port of Spain", continent: "North America" },
   { country: "Tunisia", capital: "Tunis", continent: "Africa" },
-  { country: "Turkey", capital: "Ankara", continent: "Asia/Europe" },
+  { country: "Türkiye (Turkey)", capital: "Ankara", continent: "Asia/Europe" },
   { country: "Turkmenistan", capital: "Ashgabat", continent: "Asia" },
   { country: "Tuvalu", capital: "Funafuti", continent: "Oceania" },
   { country: "Uganda", capital: "Kampala", continent: "Africa" },
@@ -206,6 +206,74 @@ const countries: Country[] = [
   { country: "Zimbabwe", capital: "Harare", continent: "Africa" },
 ];
 
+/**
+ * Countries that come up most in ISSB initial, GTO and Deputy President interviews.
+ * The user's own list, plus countries added from ISSB prep sources and Pakistan's
+ * neighbours, OIC/SCO/ECO partners, G20 and P5 members, Gulf diaspora hosts,
+ * UN peacekeeping missions and today's conflict zones.
+ */
+const SIGNIFICANT_COUNTRY_NAMES = [
+  // User's list
+  'Pakistan', 'India', 'Sri Lanka', 'Bangladesh', 'Nepal', 'China', 'Myanmar', 'Indonesia', 'Malaysia',
+  'Australia', 'New Zealand', 'Zimbabwe', 'Kenya', 'Uganda', 'Egypt', 'Sudan', 'Algeria', 'Russia', 'Ukraine',
+  'France', 'Spain', 'United Kingdom', 'United States', 'Canada', 'Mexico', 'Brazil', 'Argentina', 'Peru',
+  'Saudi Arabia', 'Yemen', 'Oman', 'Palestine', 'Jordan', 'Syria', 'Iraq', 'Türkiye (Turkey)', 'Georgia',
+  'Romania', 'Poland', 'Sweden', 'Norway', 'Finland', 'Bosnia and Herzegovina', 'Croatia', 'Cuba', 'Iceland',
+  'Nigeria', 'South Africa', 'Maldives', 'Japan', 'South Korea', 'North Korea', 'Taiwan',
+  // Neighbours and South Asia
+  'Afghanistan', 'Iran', 'Bhutan',
+  // Gulf and Middle East
+  'Qatar', 'United Arab Emirates', 'Kuwait', 'Bahrain', 'Israel', 'Lebanon',
+  // Central Asia and the Caucasus (SCO, ECO)
+  'Azerbaijan', 'Armenia', 'Kazakhstan', 'Uzbekistan', 'Turkmenistan', 'Tajikistan', 'Kyrgyzstan',
+  // Europe
+  'Germany', 'Italy', 'Netherlands', 'Belgium', 'Switzerland', 'Austria', 'Greece', 'Portugal', 'Ireland',
+  'Denmark', 'Hungary', 'Czech Republic', 'Serbia', 'Kosovo', 'Belarus', 'Vatican City',
+  // Africa
+  'Libya', 'Morocco', 'Tunisia', 'Ethiopia', 'Somalia', 'Djibouti', 'Congo (DRC)', 'South Sudan',
+  'Central African Republic',
+  // East and South-East Asia
+  'Thailand', 'Vietnam', 'Philippines', 'Singapore', 'Mongolia', 'Brunei',
+  // Americas
+  'Venezuela', 'Colombia', 'Chile',
+] as const;
+
+const significantCountries: Country[] = SIGNIFICANT_COUNTRY_NAMES.map((name) => {
+  const found = countries.find((country) => country.country === name);
+  if (!found) throw new Error(`Significant country missing from data: ${name}`);
+  return found;
+}).sort((a, b) => a.country.localeCompare(b.country));
+
+type DeckId = 'significant' | 'all';
+const DECK_STORAGE_KEY = 'issb-countries-deck';
+const DECK_EVENT = 'issb-countries-deck-change';
+
+function readDeck(): DeckId {
+  try {
+    return window.localStorage.getItem(DECK_STORAGE_KEY) === 'all' ? 'all' : 'significant';
+  } catch {
+    return 'significant';
+  }
+}
+
+function writeDeck(deck: DeckId) {
+  try {
+    window.localStorage.setItem(DECK_STORAGE_KEY, deck);
+  } catch {
+    // Private browsing may block storage; the choice still applies on this page.
+  }
+  window.dispatchEvent(new Event(DECK_EVENT));
+}
+
+function subscribeDeck(onChange: () => void) {
+  window.addEventListener(DECK_EVENT, onChange);
+  window.addEventListener('storage', onChange);
+  return () => {
+    window.removeEventListener(DECK_EVENT, onChange);
+    window.removeEventListener('storage', onChange);
+  };
+}
+
 const mapNameAliases: Record<string, string> = {
   'Brunei Darussalam': 'Brunei',
   "Cote d'Ivoire": 'Ivory Coast',
@@ -221,6 +289,8 @@ const mapNameAliases: Record<string, string> = {
   'Swaziland': 'Eswatini',
   'The Gambia': 'Gambia',
   'Timor-Leste': 'East Timor',
+  Turkey: 'Türkiye (Turkey)',
+  'Türkiye': 'Türkiye (Turkey)',
 };
 
 function normalizeMapName(name: string): string {
@@ -484,15 +554,18 @@ export default function CountriesPage() {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(
     countries.find((country) => country.country === 'Pakistan') ?? countries[0],
   );
-  const [studyPool, setStudyPool] = useState<Country[]>(countries);
+  const deck = useSyncExternalStore<DeckId>(subscribeDeck, readDeck, () => 'significant');
+  const deckCountries = deck === 'all' ? countries : significantCountries;
+  const [studyFilter, setStudyFilter] = useState<Country[] | null>(null);
+  const studyPool = studyFilter ?? deckCountries;
 
   const continents = useMemo(() => {
-    const set = new Set(countries.map((country) => country.continent));
+    const set = new Set(deckCountries.map((country) => country.continent));
     return ['All', ...Array.from(set).sort()];
-  }, []);
+  }, [deckCountries]);
 
   const filtered = useMemo(() => {
-    let result = [...countries];
+    let result = [...deckCountries];
 
     if (filterContinent !== 'All') {
       result = result.filter((country) => country.continent === filterContinent);
@@ -508,7 +581,7 @@ export default function CountriesPage() {
     }
 
     return result;
-  }, [search, filterContinent]);
+  }, [search, filterContinent, deckCountries]);
 
   const displayedCountry = hoveredCountry ?? selectedCountry;
 
@@ -517,9 +590,16 @@ export default function CountriesPage() {
   }, []);
 
   const openStudyMode = useCallback(() => {
-    setStudyPool(filtered.length ? filtered : countries);
+    const isFiltered = filtered.length > 0 && filtered.length < deckCountries.length;
+    setStudyFilter(isFiltered ? filtered : null);
     setMode('study');
-  }, [filtered]);
+  }, [filtered, deckCountries]);
+
+  const chooseDeck = useCallback((next: DeckId) => {
+    writeDeck(next);
+    setStudyFilter(null);
+    setFilterContinent('All');
+  }, []);
 
   return (
     <div className="neo-page neo-page--atlas min-h-screen p-4">
@@ -556,6 +636,38 @@ export default function CountriesPage() {
           </div>
         </div>
 
+        <div className="mb-6 flex flex-col items-center gap-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500" id="countries-deck-label">
+            Deck
+          </p>
+          <div
+            className="flex flex-wrap justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 p-1"
+            role="radiogroup"
+            aria-labelledby="countries-deck-label"
+          >
+            {([
+              ['significant', `Significant (${significantCountries.length})`],
+              ['all', `All ${countries.length} countries`],
+            ] as const).map(([id, text]) => (
+              <button
+                key={id}
+                type="button"
+                role="radio"
+                aria-checked={deck === id}
+                onClick={() => chooseDeck(id)}
+                className={deck === id ? 'rounded-lg bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950' : 'rounded-lg px-4 py-2 text-sm text-slate-400 transition hover:text-white'}
+              >
+                {text}
+              </button>
+            ))}
+          </div>
+          <p className="max-w-xl text-center text-xs text-slate-500">
+            {deck === 'significant'
+              ? 'The countries ISSB interviewers ask about most: neighbours, Gulf and OIC partners, major powers and conflict zones.'
+              : 'Every UN member and observer state, plus Kosovo and Taiwan.'}
+          </p>
+        </div>
+
         {mode === 'explore' ? (
           <>
             <div className="mb-5 flex flex-col gap-4 md:flex-row">
@@ -585,7 +697,7 @@ export default function CountriesPage() {
                   <div>
                     <h2 className="font-semibold text-white">Explore the atlas</h2>
                     <p className="text-sm text-slate-500">
-                      {filtered.length} of {countries.length} countries in view
+                      {filtered.length} of {deckCountries.length} countries in view
                     </p>
                   </div>
                   <span className="w-fit rounded-full border border-cyan-900/70 bg-cyan-950/40 px-3 py-1 text-xs text-cyan-300">
@@ -631,14 +743,20 @@ export default function CountriesPage() {
         ) : (
           <div>
             <p className="mb-5 text-center text-sm text-slate-500">
-              Studying {studyPool.length === countries.length ? 'all countries' : studyPool.length + ' filtered countries'}.{' '}
+              Studying{' '}
+              {studyFilter
+                ? `${studyPool.length} filtered countries`
+                : deck === 'all'
+                  ? `all ${countries.length} countries`
+                  : `${significantCountries.length} significant countries`}
+              .{' '}
               <button type="button" onClick={() => setMode('explore')} className="text-cyan-400 underline-offset-2 hover:underline">
                 Back to the map
               </button>
             </p>
             <SpacedRepetitionDeck
-              key="countries"
-              storageKey="issb-sm2-countries"
+              key={`countries-${deck}-${studyFilter ? studyFilter.length : 'deck'}`}
+              storageKey={deck === 'all' ? 'issb-sm2-countries' : 'issb-sm2-countries-significant'}
               items={studyPool}
               getId={(country) => country.country}
               accentColor="cyan"
