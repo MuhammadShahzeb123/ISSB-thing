@@ -1563,6 +1563,28 @@ a {
 }
 .speak-btn-icon { font-size: 0.75rem; line-height: 1; }
 .speak-btn:focus-visible { outline: 3px solid #0057a8; outline-offset: 3px; }
+.speak-group {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0.35rem;
+  max-width: 100%;
+}
+.speak-speed-select {
+  min-height: 44px;
+  min-width: 3.4rem;
+  padding: 0.3rem 0.4rem;
+  border: 2px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+  border-radius: 0;
+}
+.speak-speed-select:focus-visible { outline: 3px solid #0057a8; outline-offset: 3px; }
 
 /* —— Question-first hierarchy —— */
 .prep-ask-block {
