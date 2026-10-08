@@ -65,6 +65,9 @@ function providerErrorResponse(error: ProviderError): NextResponse {
   if (error.kind === "timeout") {
     return jsonResponse({ error: { code: "coach_timeout", message: "The plan check took too long. Please try again." } }, 504);
   }
+  if (error.kind === "unavailable" && error.detail?.startsWith("HTTP 429")) {
+    return jsonResponse({ error: { code: "coach_busy", message: "Too many plan checks right now. Wait a minute, then press Check my plan again. Your plan is saved." } }, 429);
+  }
   return jsonResponse({ error: { code: error.kind === "invalid-response" ? "coach_invalid_response" : "coach_unavailable", message: "The plan checker is busy right now. Please try again." } }, 502);
 }
 
