@@ -283,7 +283,7 @@ function TaskBody({ titleId, task }: { titleId: string; task: RealGtoModel }) {
         </button>
       </div>
       {loading ? (
-        <p className="rgto-loading" role="status">The AI GTO is checking your plan and redoing your sums. This usually takes 35 to 55 seconds. Keep this window open.</p>
+        <p className="rgto-loading" role="status">The AI GTO is checking your plan and redoing your sums. This usually takes 35 to 60 seconds, sometimes up to 2 minutes when Google is busy. Keep this window open.</p>
       ) : null}
       {error ? <p className="rgto-error" role="alert">{error}</p> : null}
       {result ? <Feedback result={result} /> : null}

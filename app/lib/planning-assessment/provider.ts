@@ -3,11 +3,16 @@ import {
   extractJsonObject,
   extractProviderText,
   MODEL_PATTERN,
-  PROVIDER_TIMEOUT_MS,
   ProviderError,
 } from "@/app/lib/writing-assessment/provider";
 import { realGtoBriefText, type RealGtoModel } from "@/app/lib/realGtoModels";
 import type { PlanningCalculationCheck, PlanningVerdict } from "./types";
+
+// Gemma 4 31B on AI Studio is often slow (35-55s) and sometimes overloaded, and
+// a planning brief is long. Give it more room than the writing coach; the route
+// sets maxDuration to match.
+export const PLANNING_PROVIDER_TIMEOUT_MS = 100_000;
+const RETRY_WINDOW_MS = 45_000;
 
 export type PlanningProviderAssessment = {
   verdict: PlanningVerdict;
@@ -107,7 +112,7 @@ export function buildPlanningPrompt(model: RealGtoModel, plan: string): string {
 
   return `You are a strict but fair Group Testing Officer (GTO) checking a candidate's written solution to an ISSB group planning task for an unofficial practice website. Write in easy, short English a 16 year old understands.
 
-Judge the plan only against the problem below. Do not invent map details, distances, speeds or times that are not in the problem. When the problem says something is not given, accept a clearly stated reasonable assumption, but point out any assumption that is unstated, unrealistic, or used inconsistently. Re-do every time, distance and speed sum yourself (distance = speed x time) and quote the corrected maths. Check: are priorities right (saving life and urgent safety first, then the rest), are all useful resources used and none misused or used twice at the same time, are limits respected (capacities, loading times, bridges, fuel, deadlines), is it practical, and does it finish in time. Be specific and name the exact step that is wrong. Do not praise weak work.
+Judge the plan only against the problem below. Do not invent map details, distances, speeds or times that are not in the problem. When the problem says something is not given, accept a clearly stated reasonable assumption, but point out any assumption that is unstated, unrealistic, or used inconsistently. Re-do every time, distance and speed sum yourself (distance = speed x time) and quote the corrected maths. Check: are priorities right (saving life and urgent safety first, then the rest), are all useful resources used and none misused or used twice at the same time, are limits respected (capacities, loading times, bridges, fuel, deadlines), is it practical, and does it finish in time (check any backup plan against the deadline too, and count any delay the candidate adds). Be specific and name the exact step that is wrong. Do not praise weak work.
 
 Verdict rules: "correct" = right priorities, workable, maths right, meets the deadline. "partly-correct" = the main idea works but with real errors or gaps. "incorrect" = wrong priorities, misses the deadline, breaks a limit, or is too vague to carry out. A plan with no timings or routes cannot be "correct".
 
@@ -140,7 +145,7 @@ export async function assessPlanWithGemma(input: {
   if (!MODEL_PATTERN.test(model)) throw new ProviderError("configuration");
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), PROVIDER_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), PLANNING_PROVIDER_TIMEOUT_MS);
   const started = Date.now();
   const body = JSON.stringify({
     contents: [{ role: "user", parts: [{ text: buildPlanningPrompt(input.task, input.plan) }] }],
@@ -153,7 +158,7 @@ export async function assessPlanWithGemma(input: {
 
   try {
     // Google's free tier sometimes answers 429/5xx for a moment. Retry quickly
-    // while there is still time left inside the 55s budget.
+    // while there is still time left inside the budget.
     for (let attempt = 1; ; attempt += 1) {
       let response: Response | null = null;
       let failure: ProviderError;
@@ -199,7 +204,7 @@ export async function assessPlanWithGemma(input: {
       }
 
       const waitMs = response?.status === 429 ? 4000 * attempt : 1500 * attempt;
-      if (!retryable || attempt >= 3 || Date.now() - started + waitMs > 30_000) throw failure;
+      if (!retryable || attempt >= 3 || Date.now() - started + waitMs > RETRY_WINDOW_MS) throw failure;
       console.warn("[planning-assessment] retrying Gemma", attempt, failure.detail ?? "");
       await new Promise((resolve) => setTimeout(resolve, waitMs));
     }
