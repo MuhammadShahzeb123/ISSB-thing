@@ -63,3 +63,13 @@ response modality is rejected), so written text comes from its own transcription
 - The review screens on `/psychological/wat` and `/psychological/story-writing` call
   `WritingAssessmentPanel`, which shows scores plus sentence rewrites (weak original →
   stronger practice wording). Do not wire this coach into the live interview.
+
+## Real GTO planning models + plan checker
+
+- `app/lib/realGtoModels.ts` holds the three problems imported from the user's real GTO slides (Hiking track injury,
+  Prison break, Security guards) plus the "How to solve a group planning task" guide. Keep them faithful to the slides:
+  speaker notes are copied verbatim, anything the slides do not say goes in `notGiven`, our own working stays in `reference`.
+- Maps are the original slides rendered with LibreOffice and cropped: `public/images/gto/real-models/*.webp`.
+- `POST /api/planning-assessment` (`{version:"1", taskId, plan}`) looks the problem up by id on the server and asks Gemma
+  (`gemma-4-31b-it`, same `GEMINI_API_KEY`, optional `GEMMA_MODEL`) for a strict GTO verdict. Nothing is stored; drafts live in
+  localStorage (`issb-real-gto-plans-v1`).

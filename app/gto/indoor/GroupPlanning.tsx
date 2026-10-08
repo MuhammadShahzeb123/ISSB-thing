@@ -11,6 +11,7 @@ import {
   type PlanningDifficulty,
   type PlanningTask,
 } from '../../lib/groupPlanningTasks';
+import RealGtoModels from './RealGtoModels';
 
 const planningFields = [
   'Problems and priority',
@@ -39,6 +40,7 @@ export default function GroupPlanning() {
 
   return (
     <div id="group-planning">
+      <RealGtoModels />
       <section className="prep-panel">
         <h2>ISSB group planning</h2>
         <p>Ten original practice tasks. Each one is a full briefing with a sketch map, road types, distances and a worked plan. These are not past papers from the Inter Services Selection Board.</p>
