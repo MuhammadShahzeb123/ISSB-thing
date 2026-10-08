@@ -15,8 +15,8 @@ import {
 } from "@/app/lib/writing-assessment/validation";
 
 export const dynamic = "force-dynamic";
-// Leave room for the 55s Gemma call (see PROVIDER_TIMEOUT_MS).
-export const maxDuration = 60;
+// Leave room for the 100s Gemma budget (see PLANNING_PROVIDER_TIMEOUT_MS).
+export const maxDuration = 120;
 
 const MAX_BODY_BYTES = 32_768;
 
@@ -68,7 +68,9 @@ function providerErrorResponse(error: ProviderError): NextResponse {
   if (error.kind === "unavailable" && error.detail?.startsWith("HTTP 429")) {
     return jsonResponse({ error: { code: "coach_busy", message: "Too many plan checks right now. Wait a minute, then press Check my plan again. Your plan is saved." } }, 429);
   }
-  return jsonResponse({ error: { code: error.kind === "invalid-response" ? "coach_invalid_response" : "coach_unavailable", message: "The plan checker is busy right now. Please try again." } }, 502);
+  // Only the upstream HTTP status number is exposed, to make outages easy to spot.
+  const upstream = /^HTTP (\d{3})/u.exec(error.detail ?? "")?.[1];
+  return jsonResponse({ error: { code: error.kind === "invalid-response" ? "coach_invalid_response" : "coach_unavailable", message: "The plan checker is busy right now. Please try again.", ...(upstream ? { upstream: Number(upstream) } : {}) } }, 502);
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
