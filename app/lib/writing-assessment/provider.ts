@@ -22,7 +22,7 @@ export const WRITING_CRITERIA = [
   "leadershipBehaviors",
 ] as const satisfies readonly WritingCriterionId[];
 
-const MODEL_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
+export const MODEL_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
 
 export type ProviderAssessment = {
   scores: WritingCriterionScore[];
@@ -113,7 +113,7 @@ function invalid(detail: string): never {
 }
 
 /** Pull the JSON object out of plain JSON, a ```json fence, or stray prose. */
-function extractJsonObject(text: string): unknown {
+export function extractJsonObject(text: string): unknown {
   const trimmed = text.trim();
   const candidates = [trimmed];
   const fenced = /```(?:json)?\s*([\s\S]*?)```/iu.exec(trimmed);
@@ -221,7 +221,7 @@ ${untrustedWriting}
 END_UNTRUSTED_WRITING_JSON`;
 }
 
-function extractProviderText(value: unknown): string {
+export function extractProviderText(value: unknown): string {
   if (!isRecord(value) || !Array.isArray(value.candidates) || value.candidates.length === 0) {
     throw new ProviderError("invalid-response", "no candidates");
   }

@@ -2046,3 +2046,29 @@ button.gk-tile { font: inherit; }
     min-height: 300px;
   }
 }
+
+/* Real GTO planning models (group planning tab) */
+.gp-badge--real { background: #cfe3ff; }
+.gk-modal--wide { width: min(62rem, 100%); }
+.rgto-map { margin: 0.75rem 0 1rem; }
+.rgto-map-frame { position: relative; border: 2px solid var(--ink); background: #fff; overflow: hidden; }
+.rgto-map-img { display: block; width: 100%; height: auto; }
+.rgto-map figcaption { margin-top: 0.35rem; font-size: 0.85rem; }
+.rgto-map figcaption a { color: #0057a8; text-decoration: underline; }
+.rgto-verbatim { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; background: #f6f1e6; border: 1px dashed var(--ink); padding: 0.5rem 0.65rem; overflow-wrap: anywhere; }
+.gk-modal-body ol.rgto-ol, .rgto-ol { list-style: decimal; padding-inline-start: 1.4rem; margin: 0.35rem 0 0.75rem; }
+.rgto-ol li { margin-bottom: 0.45rem; line-height: 1.6; }
+.rgto-plan { min-height: 14rem; font-size: 0.95rem; line-height: 1.55; }
+.rgto-loading { border: 2px solid var(--ink); background: #fff7cc; padding: 0.65rem 0.8rem; font-weight: 700; margin-top: 0.75rem; }
+.rgto-error { border: 2px solid #7f1d1d; background: #fef2f2; color: #7f1d1d; padding: 0.65rem 0.8rem; font-weight: 700; margin-top: 0.75rem; }
+.rgto-feedback { border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); background: #fff; padding: 0.85rem 1rem; margin: 1rem 0; }
+.rgto-feedback h4 { margin: 0.85rem 0 0.3rem; font-weight: 900; }
+.rgto-feedback ul { list-style: disc; padding-inline-start: 1.25rem; }
+.rgto-verdict { display: flex; justify-content: space-between; gap: 0.75rem; font-weight: 900; font-size: 1.15rem; padding: 0.4rem 0.6rem; border: 2px solid var(--ink); margin: 0 0 0.6rem; }
+.rgto-feedback--correct .rgto-verdict { background: #e3f1ce; }
+.rgto-feedback--partly-correct .rgto-verdict { background: #fff1bc; }
+.rgto-feedback--incorrect .rgto-verdict { background: #ffd0c8; }
+.rgto-model-answer { white-space: pre-wrap; }
+.rgto-zoom-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; margin-top: 0.5rem; }
+.rgto-zoom-bar button { min-width: 2.6rem; min-height: 2.4rem; border: 2px solid var(--ink); background: var(--yellow); box-shadow: 2px 2px 0 var(--ink); font-weight: 900; cursor: pointer; padding: 0 0.6rem; }
+.rgto-zoom-bar a { margin-left: auto; color: #0057a8; text-decoration: underline; font-weight: 700; font-size: 0.9rem; }
