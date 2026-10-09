@@ -5,9 +5,14 @@ import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import WritingAssessmentPanel from "@/app/components/WritingAssessmentPanel";
 import {
+  drawStorySession,
   storyPracticeTiming,
   storyWritingContent,
 } from "@/app/content/psychological-tests/story-writing";
+import {
+  PICTURES_PER_SESSION,
+  storyPictures,
+} from "@/app/content/psychological-tests/story-pictures";
 import type { StoryPrompt } from "@/app/lib/psychological-tests/content";
 import {
   type SessionPhase,
@@ -59,15 +64,15 @@ function PromptPreview({ prompt }: { prompt: StoryPrompt }) {
   }
 
   return (
-    <figure className="border-2 border-slate-950 bg-neutral-200">
+    <figure className="flex justify-center border-2 border-slate-950 bg-neutral-200">
       <Image
         alt={prompt.alt}
-        className="block h-auto w-full"
-        height={520}
+        className="block h-auto max-h-[70vh] w-full object-contain"
+        height={prompt.height ?? 520}
         priority
         src={prompt.imageUrl}
         unoptimized
-        width={800}
+        width={prompt.width ?? 800}
       />
     </figure>
   );
@@ -161,9 +166,10 @@ export default function StoryWritingPractice() {
                 </span>
               </TitleWithAudio>
               <p className="mt-5 max-w-2xl text-lg font-semibold leading-8 text-slate-700">
-                One fixed session: four pictures followed by two opening
-                sentences. The editor is hidden while observing; the stimulus
-                is hidden while writing.
+                Each session: {PICTURES_PER_SESSION} pictures drawn at random
+                from {storyPictures.length}, then two opening sentences. The
+                editor is hidden while observing; the picture is hidden while
+                writing.
               </p>
               <div className="mt-8">
                 <MethodologyNote>
@@ -178,11 +184,17 @@ export default function StoryWritingPractice() {
             </section>
             <section className="border-2 border-slate-950 bg-white p-6 shadow-[7px_7px_0_#171717]">
               <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-800">
-                Fixed six-prompt session
+                Six-prompt session
               </p>
               <ol className="mt-5 space-y-3 font-bold">
-                <li>1–4. Picture prompts · original practice illustrations</li>
-                <li>5–6. Original sentence prompts · practice only</li>
+                <li>
+                  1–{PICTURES_PER_SESSION}. Picture prompts · drawn at random
+                  from {storyPictures.length} sketches
+                </li>
+                <li>
+                  {PICTURES_PER_SESSION + 1}–{PICTURES_PER_SESSION + 2}.
+                  Original sentence prompts · practice only
+                </li>
               </ol>
               <div className="mt-6 border-2 border-slate-950 bg-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">
                 {storyWritingContent.pendingNotice}
@@ -193,10 +205,10 @@ export default function StoryWritingPractice() {
               </p>
               <button
                 className="mt-8 w-full border-2 border-slate-950 bg-blue-700 px-5 py-3 font-black text-white shadow-[4px_4px_0_#171717] transition hover:-translate-y-0.5"
-                onClick={() => start()}
+                onClick={() => start(drawStorySession())}
                 type="button"
               >
-                Start fixed session
+                Start session
               </button>
             </section>
           </div>
@@ -228,6 +240,16 @@ export default function StoryWritingPractice() {
                   <p className="text-xs font-black uppercase tracking-wide text-blue-800">
                     Prompt {index + 1} · {prompt?.kind}
                   </p>
+                  {prompt?.kind === "picture" && prompt.imageUrl ? (
+                    <Image
+                      alt={prompt.alt}
+                      className="mt-3 block h-auto max-h-40 w-auto border border-slate-400"
+                      height={prompt.height ?? 520}
+                      src={prompt.imageUrl}
+                      unoptimized
+                      width={prompt.width ?? 800}
+                    />
+                  ) : null}
                   <p className="mt-3 whitespace-pre-wrap leading-7 text-slate-700">
                     {session.answers[id]?.trim() || "No response"}
                   </p>

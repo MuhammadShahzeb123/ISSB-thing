@@ -21,12 +21,19 @@ export type WatPrompt = {
 };
 
 export type StoryPicturePrompt = {
-  id: `story-picture-${number}`;
+  id: `story-picture-${string}`;
   kind: "picture";
   sequence: number;
   imageUrl: string | null;
+  /** Neutral description of what is visible; also sent to the writing coach. */
   alt: string;
-  provenance: "user-asset-pending" | "original-practice-illustration";
+  width?: number;
+  height?: number;
+  provenance:
+    | "user-asset-pending"
+    | "original-practice-illustration"
+    | "user-supplied-pdf"
+    | "ai-generated";
 };
 
 export type StorySentencePrompt = {
