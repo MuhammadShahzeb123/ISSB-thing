@@ -1,4 +1,5 @@
 import type { GkCategory } from './generalKnowledge';
+import { gkWorldTopics } from './gkWorldTopics';
 
 // General Knowledge topics for the study tab.
 // Each summary is a spoken-style story in simple English, written to be read aloud.
@@ -1712,4 +1713,5 @@ The honest lesson is that Kashmir's grievance was real, but the gun did not solv
       { title: `Frontline: Deadlock at Agra (2001)`, url: `https://frontline.thehindu.com/cover-story/article30251264.ece` },
     ],
   },
+  ...gkWorldTopics,
 ];
