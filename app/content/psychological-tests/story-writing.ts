@@ -15,11 +15,11 @@ export const storyPracticeTiming = {
 
 export const storyWritingContent: VersionedContentPack<StoryPrompt> = {
   schemaVersion: 1,
-  contentVersion: "story-writing-practice-v3",
+  contentVersion: "story-writing-practice-v4",
   title: "Four pictures followed by two opening sentences",
   readiness: "practice-ready",
   pendingNotice:
-    "Each session draws four pictures at random from a pool of hazy pencil and charcoal sketches, the kind used in picture story tests. They are practice pictures, not official ISSB stimuli. They are deliberately unclear, so you decide what happened and how it ends.",
+    "Each session draws four pictures at random from a pool of hazy pencil and charcoal sketches, the kind used in picture story tests (some from a practice set, some AI-generated in the same style). They are practice pictures, not official ISSB stimuli. They are deliberately unclear, so you decide what happened and how it ends.",
   prompts: [
     ...storyPictures.map(
       (picture, index): StoryPrompt => ({
