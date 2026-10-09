@@ -151,6 +151,196 @@ export const storyPictures: readonly StoryPictureAsset[] = [
       "Close-up charcoal drawing of two men's faces. An older man with grey hair and a moustache looks downward. A younger man in a shirt and tie is in front of him, looking straight ahead.",
     source: "user-supplied-pdf",
   },
+  // AI-generated pictures in the same hazy pencil style.
+  {
+    id: "story-picture-ai-01",
+    src: "/story-pictures/ai-01.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Rainy street seen from under a building. A man in the foreground looks back over his shoulder at a young woman standing against a pillar, holding a handbag and looking down. On the wet pavement a third man walks away towards a parked car.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-02",
+    src: "/story-pictures/ai-02.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Village road with huts and trees. A bicycle with a bent front wheel lies on the ground. A young man stands beside it looking at an older man in a turban and shawl who is walking towards him with a stick.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-03",
+    src: "/story-pictures/ai-03.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Two boys at a river bank. One stands and points out at the water, where a small dark shape breaks the surface; the other crouches beside him. Trees line the far bank.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-04",
+    src: "/story-pictures/ai-04.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Hospital corridor. A woman sits alone on a bench, turned to look down the corridor, where a doctor in a white coat carrying a file walks away. A trolley bed stands against the wall.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-05",
+    src: "/story-pictures/ai-05.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Crowded market street with fruit and vegetable stalls under awnings. A man crouches on the ground in the middle while several men and women stand around him looking down.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-06",
+    src: "/story-pictures/ai-06.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Railway platform in the rain beside a train. A young man in a uniform and peaked cap, with a kitbag on his back and a suitcase in his hand, stands facing an older woman in a shawl. Other travellers walk on the platform behind.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-07",
+    src: "/story-pictures/ai-07.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "A room with a window. A young man sits at a desk with books and papers, holding a pen and looking round at an open door, where a man in a suit and tie stands in the doorway.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-08",
+    src: "/story-pictures/ai-08.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Roadside with an old car parked further up the road. A man on the edge of a ditch holds the hand of another man who is down in the ditch, pulling him up. A milestone stands by the road.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-09",
+    src: "/story-pictures/ai-09.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Three people around a table with a map spread on it. A man standing points at the map, another man leans over it, and a young woman sits with her chin on her hand. A lantern and a bag are nearby; a window shows hills.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-10",
+    src: "/story-pictures/ai-10.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "A young woman holding an envelope stands at an open window, looking out at a garden gate, where a man with a small bag stands with his back to her. A house is beyond the gate.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-11",
+    src: "/story-pictures/ai-11.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "A farmer in a turban and shawl leans on a stick at the edge of a dry, cracked field with a few dead plants. A hut and a tree are behind him. Far across the field a lone figure walks away.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-12",
+    src: "/story-pictures/ai-12.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Two men stand facing each other on a dirt road beside a parked truck. One holds out an open hand towards the other; the other has a hand on his hip. Bushes and hills are behind them.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-13",
+    src: "/story-pictures/ai-13.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Heavy rain on a muddy path. A boy carries an old man on his back, walking towards the viewer. A fence, water and a small hut are in the background.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-14",
+    src: "/story-pictures/ai-14.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Four young men with backpacks on a grassy hilltop overlooking a valley with a river. Three stand or sit together; one has stepped a little away and looks down the slope.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-15",
+    src: "/story-pictures/ai-15.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "A woman with her hand on a small boy's shoulder stands outside a cottage, both looking towards a column of dark smoke rising from buildings in the distance. A wooden gate is in front of them.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-16",
+    src: "/story-pictures/ai-16.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "A man sits on outdoor stone steps with his head in his hands. At the top of the steps another person stands with their back half turned, walking away.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-17",
+    src: "/story-pictures/ai-17.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Classroom. A teacher holding chalk or paper and a boy stand at a blackboard. Other students sit at desks in the foreground, watching them.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-18",
+    src: "/story-pictures/ai-18.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "A house with flames and smoke coming from its roof. A young man runs towards it while several men and women stand back watching.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-19",
+    src: "/story-pictures/ai-19.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "A rowing boat on a calm lake. One person holds an oar and looks at the other, who leans over the side with a hand in the water. Hills and pine trees are in the background.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-20",
+    src: "/story-pictures/ai-20.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "An office with a desk, filing cabinet, telephone and window. Two men in suits sit at the desk; under the desk one passes an envelope or paper to the other's hand.",
+    source: "ai-generated",
+  },
+  {
+    id: "story-picture-ai-21",
+    src: "/story-pictures/ai-21.webp",
+    width: 1200,
+    height: 900,
+    description:
+      "Night camp under a moon. A soldier in a helmet sits alone on a box beside a tent, looking at a photograph in his hands. A rifle leans against the tent; other tents and a small fire are in the distance.",
+    source: "ai-generated",
+  },
 ];
 
 /** Pictures drawn for each session, as in the ISSB format of four picture stories. */
