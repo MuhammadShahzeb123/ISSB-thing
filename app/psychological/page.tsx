@@ -7,7 +7,7 @@ export default function PsychologicalOverviewPage() {
     <DimensionOverview
       dimension="psychological"
       title="Psychological tests"
-      summary="Word association, picture stories, sentence completion, self-reflection and mechanical aptitude. Timed sessions use fixed deadlines and save drafts automatically."
+      summary="Word association, picture stories, essay writing, sentence completion, self-reflection and mechanical aptitude. Timed sessions use fixed deadlines and save drafts automatically."
       resources={[
         {
           label: 'Bio data',
@@ -40,7 +40,7 @@ export default function PsychologicalOverviewPage() {
           </article>
           <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
             <strong className="gk-tile-title">Main indoor set</strong>
-            <span className="gk-tile-teaser">Word Association (WAT), Picture Story Writing, Sentence Completion, and related self-description tasks. Use each simulator’s published timing note.</span>
+            <span className="gk-tile-teaser">Word Association (WAT), Picture Story Writing, Sentence Completion, an essay, and related self-description tasks. Use each simulator’s published timing note.</span>
           </article>
           <article className="gk-tile gk-tile--qa" style={{ cursor: 'default' }}>
             <strong className="gk-tile-title">Safe answer habit</strong>

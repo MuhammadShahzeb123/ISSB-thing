@@ -41,6 +41,11 @@ export const siteNavigation = [
         description: "Practise picture association and opening-sentence stories.",
       },
       {
+        label: "Essay Writing",
+        href: "/psychological/essay",
+        description: "A 30 minute essay with a step-by-step writing guide and AI marking.",
+      },
+      {
         label: "Sentence Completion",
         href: "/psychological/sentence-completion",
         description: "Timed completions from the photo-transcribed sets and the original practice bank.",

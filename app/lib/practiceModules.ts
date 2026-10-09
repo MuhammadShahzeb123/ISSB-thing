@@ -29,6 +29,7 @@ export const outdoorObstacleIds = ['long-jump', 'high-jump', 'rope-climb', 'doub
 export const practiceModules: readonly PracticeModule[] = [
   { id: 'psych-wat', dimension: 'psychological', title: 'Word Association Test', description: 'Timed word responses from the legacy bank and photo-transcribed words.', href: '/psychological/wat', minutes: 15 },
   { id: 'psych-story-writing', dimension: 'psychological', title: 'Picture Story Writing', description: 'Four picture prompts and two opening sentences, observe then write.', href: '/psychological/story-writing', minutes: 25 },
+  { id: 'psych-essay', dimension: 'psychological', title: 'Essay Writing', description: 'Plan and write a 30 minute essay, then get AI marking against a proven essay method.', href: '/psychological/essay', minutes: 35 },
   { id: 'psych-sentence-completion', dimension: 'psychological', title: 'Sentence Completion', description: 'Timed completions from the photo-transcribed sets.', href: '/psychological/sentence-completion', minutes: 10 },
   { id: 'psych-opi', dimension: 'psychological', title: 'OPI self-reflection', description: 'Local-only, non-diagnostic work-behaviour reflection.', href: '/opi', minutes: 20 },
   { id: 'psych-mechanical', dimension: 'psychological', title: 'Mechanical Aptitude', description: '50 questions in 15 minutes, in the published format.', href: '/mechanical-aptitude', minutes: 15 },
