@@ -7,7 +7,9 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "narration": "node --experimental-strip-types --no-warnings scripts/build-tts.mjs"
+    "narration": "node --experimental-strip-types --no-warnings scripts/build-tts.mjs",
+    "essay-course:check": "node scripts/check-essay-course-scripts.mjs",
+    "essay-course:catalog": "node scripts/build-essay-course-catalog.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
