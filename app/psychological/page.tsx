@@ -1,4 +1,6 @@
 import DimensionOverview from "@/app/components/DimensionOverview";
+import GuideNotes from '@/app/components/GuideNotes';
+import { psychGuideNotes } from '@/app/lib/guideBookNotes';
 import MethodologyNote from "@/app/components/psychological-tests/MethodologyNote";
 import PsychAudioHeader from "@/app/components/psychological-tests/PsychAudioHeader";
 
@@ -52,6 +54,7 @@ export default function PsychologicalOverviewPage() {
           </article>
         </div>
       </section>
+      <GuideNotes id="psych-guide" title="From the guide books: psych tests, ISSB days and interviews" notes={psychGuideNotes} />
     </DimensionOverview>
   );
 }

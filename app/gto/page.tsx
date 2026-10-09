@@ -1,4 +1,6 @@
 import DimensionOverview from '../components/DimensionOverview';
+import GuideNotes from '@/app/components/GuideNotes';
+import { gtoGuideNotes } from '@/app/lib/guideBookNotes';
 
 export default function GtoOverviewPage() {
   return (
@@ -33,6 +35,7 @@ export default function GtoOverviewPage() {
           </article>
         </div>
       </section>
+      <GuideNotes id="gto-guide" title="From the guide books: rules and tips for GTO tasks" notes={gtoGuideNotes} />
     </DimensionOverview>
   );
 }
