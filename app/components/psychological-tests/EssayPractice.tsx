@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import PracticeTimer from "@/app/components/PracticeTimer";
+import EssayCourse from "@/app/components/psychological-tests/EssayCourse";
 import { downloadText } from "@/app/lib/practice";
 import {
   ESSAY_BOOK_CREDIT,
@@ -180,12 +181,19 @@ export default function EssayPractice() {
           <p>
             Pick a title, plan for {essayTiming.planMinutes} minutes, then write about {min} to {max} words
             in {essayTiming.minutes} minutes. When you finish, the AI examiner marks your essay against the
-            rules below and shows you exactly what to fix.
+            rules below and shows you exactly what to fix. New to essays? Start with the audio course below.
           </p>
         </header>
 
+        <EssayCourse
+          onStartTest={() => {
+            const target = document.getElementById("essay-write-heading");
+            target?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+        />
+
         <section className="prep-panel" aria-labelledby="essay-guide-heading">
-          <p className="gk-tile-kicker">Read first</p>
+          <p className="gk-tile-kicker">Quick reference</p>
           <h2 id="essay-guide-heading">How to write the essay</h2>
           <p>
             Eleven steps from a well-known essay guide. Tap a card to read it. The AI examiner marks

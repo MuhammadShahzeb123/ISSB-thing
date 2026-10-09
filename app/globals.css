@@ -2108,3 +2108,25 @@ button.gk-tile { font: inherit; }
 .essay-rewrites p { line-height: 1.55; margin: 0.15rem 0; font-size: 0.93rem; }
 .essay-label { font-weight: 900; color: #7a3b00; }
 .essay-label--good { color: #14532d; }
+
+/* Essay course (audio lessons) */
+.essay-course-progress { height: 0.7rem; border: 2px solid var(--ink); background: #fff; margin: 0.75rem 0; }
+.essay-course-progress-bar { height: 100%; background: #6aa84f; transition: width 0.3s ease; }
+.essay-course-actions { flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; }
+.essay-course-toggle { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 700; font-size: 0.9rem; }
+.essay-course-toggle input { width: 1.1rem; height: 1.1rem; }
+.essay-course-example-heading { font-weight: 800; margin: 0.25rem 0 0.5rem; line-height: 1.5; }
+.essay-course-example { display: grid; gap: 0.75rem; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .essay-course-example { grid-template-columns: 1fr 1fr; } }
+.essay-course-version { border: 2px solid var(--ink); padding: 0.6rem 0.8rem; background: #fff; }
+.essay-course-version p { white-space: pre-line; line-height: 1.6; margin: 0.35rem 0 0; font-size: 0.95rem; }
+.essay-course-version--weak { background: #fff1ef; }
+.essay-course-version--better { background: #eef7e6; }
+.essay-course-tag { display: inline-block; border: 2px solid var(--ink); padding: 0 0.4rem; font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; background: #fff; }
+.essay-course-task { border-top: 2px dashed #c9bfa9; margin-top: 1.25rem; padding-top: 0.75rem; }
+.essay-course-given { white-space: pre-line; border-inline-start: 4px solid var(--ink); background: #f6f1e6; padding: 0.6rem 0.85rem; line-height: 1.6; margin: 0.6rem 0; }
+.essay-course-answer { width: 100%; min-height: 8rem; border: 2px solid var(--ink); padding: 0.6rem; font: inherit; line-height: 1.55; margin: 0.35rem 0 0.6rem; background: #fff; }
+.essay-course-final { border: 2px solid var(--ink); background: #fff7cc; padding: 0.85rem 1rem; margin-top: 1.25rem; }
+.essay-course-nav { display: flex; justify-content: space-between; gap: 0.75rem; margin: 1.25rem 0 0.5rem; }
+#essay-write-heading { scroll-margin-top: 6rem; }
+.essay-course-grid { margin-top: 1rem; }
