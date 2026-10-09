@@ -2072,3 +2072,39 @@ button.gk-tile { font: inherit; }
 .rgto-zoom-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; margin-top: 0.5rem; }
 .rgto-zoom-bar button { min-width: 2.6rem; min-height: 2.4rem; border: 2px solid var(--ink); background: var(--yellow); box-shadow: 2px 2px 0 var(--ink); font-weight: 900; cursor: pointer; padding: 0 0.6rem; }
 .rgto-zoom-bar a { margin-left: auto; color: #0057a8; text-decoration: underline; font-weight: 700; font-size: 0.9rem; }
+
+/* Essay writing test (psychological) */
+.essay-back { display: inline-block; margin-top: 0.5rem; font-weight: 900; color: #0057a8; }
+.essay-quote { border-inline-start: 4px solid var(--ink); background: #f6f1e6; padding: 0.6rem 0.85rem; font-style: italic; margin: 0.75rem 0; line-height: 1.6; }
+.essay-credit { margin-top: 0.75rem; font-size: 0.85rem; }
+.essay-topic-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem; }
+.essay-topic-select { flex: 1 1 18rem; margin-bottom: 0; }
+.essay-topic-row > .prep-button { margin-bottom: 0; }
+.essay-topic-row + .prep-field, .essay-topic-row + .prep-ask-block { margin-top: 1rem; }
+.essay-helper .prep-button { margin-top: 0.5rem; }
+.prep-details ul.essay-checklist { list-style: none; padding-inline-start: 0; }
+.essay-checklist li { margin-bottom: 0.35rem; }
+.essay-checklist label { display: flex; gap: 0.55rem; align-items: flex-start; line-height: 1.5; cursor: pointer; }
+.essay-checklist input { width: 1.15rem; height: 1.15rem; margin-top: 0.2rem; flex: none; accent-color: #1d4ed8; }
+.prep-field textarea.essay-plan { min-height: 9rem; font-size: 0.95rem; }
+.prep-field textarea.essay-text { min-height: 22rem; font-size: 1rem; }
+.essay-counter { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: -0.35rem 0 0.6rem; }
+.essay-counter span { border: 2px solid var(--ink); background: #fff; padding: 0.25rem 0.6rem; font-size: 0.9rem; }
+.essay-counter .essay-ok { background: #e3f1ce; }
+.prep-panel ul.essay-hints { list-style: none; padding: 0.55rem 0.8rem; border: 2px dashed #875500; background: #fff8dc; font-size: 0.9rem; }
+.essay-hints li { line-height: 1.5; }
+.gk-modal-body ul.essay-guide-list, .gk-modal-body ul.essay-phrases { list-style: disc; padding-inline-start: 1.3rem; margin: 0.4rem 0 0.8rem; }
+.essay-guide-list li, .essay-phrases li { margin-bottom: 0.45rem; line-height: 1.6; }
+.essay-phrases li { font-style: italic; }
+.essay-feedback ul.essay-scores { list-style: none; padding-inline-start: 0; }
+.essay-scores li { border: 1px solid #c9bfa9; background: #fbf8f1; padding: 0.55rem 0.7rem; margin-bottom: 0.5rem; }
+.essay-scores p { margin-top: 0.35rem; font-size: 0.92rem; line-height: 1.55; }
+.essay-score-head { display: flex; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+.essay-score-head small { font-weight: 600; color: var(--muted); }
+.essay-bar { height: 0.5rem; border: 1px solid var(--ink); background: #fff; margin-top: 0.3rem; }
+.essay-bar span { display: block; height: 100%; background: #1d4ed8; }
+.essay-feedback ul.essay-rewrites { list-style: none; padding-inline-start: 0; }
+.essay-rewrites li { border: 2px solid var(--ink); background: #fff; padding: 0.6rem 0.75rem; margin-bottom: 0.6rem; }
+.essay-rewrites p { line-height: 1.55; margin: 0.15rem 0; font-size: 0.93rem; }
+.essay-label { font-weight: 900; color: #7a3b00; }
+.essay-label--good { color: #14532d; }
