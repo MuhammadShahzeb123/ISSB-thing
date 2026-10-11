@@ -101,7 +101,7 @@ function TaskDetail({
       <p className="gk-tile-kicker">ISSB group planning · {difficultyLabel(task.difficulty)} · {task.setting}</p>
       <div className="gp-title-row">
         <h2>{task.title}</h2>
-        <SpeakButton script={task.script} label={`Play ${task.title}`} />
+        <SpeakButton script={task.script} audioSrc={`/audio/gto/planning/${task.id}.mp3`} label={`Play ${task.title}`} />
       </div>
       <div className="prep-ask-block">
         <p className="prep-ask-label">Planning time limit</p>
