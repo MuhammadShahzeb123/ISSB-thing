@@ -224,6 +224,18 @@ function GkModal({
               <strong>Why this matters: </strong>
               {state.topic.whyIssb}
             </p>
+            {state.topic.counterpoint ? (
+              <p>
+                <strong>What the other side says: </strong>
+                {state.topic.counterpoint}
+              </p>
+            ) : null}
+            {state.topic.sayIt ? (
+              <div className="prep-note">
+                <strong>How to say it in an interview</strong>
+                <p>{state.topic.sayIt}</p>
+              </div>
+            ) : null}
             {state.topic.watch && state.topic.watch.length > 0 && (
               <>
                 <h3>Watch next</h3>
