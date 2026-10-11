@@ -1,5 +1,6 @@
 import type { GkCategory } from './generalKnowledge';
 import { gkWorldTopics } from './gkWorldTopics';
+import { gkAbrahamAccords } from './gkAbrahamAccords';
 
 // General Knowledge topics for the study tab.
 // Each summary is a spoken-style story in simple English, written to be read aloud.
@@ -28,11 +29,16 @@ export type GkTopic = {
   whyIssb: string;
   watch?: readonly string[];
   sources: readonly { title: string; url?: string }[];
+  /** Optional line a candidate can say in an interview. */
+  sayIt?: string;
+  /** Optional opposing view with a short rebuttal. */
+  counterpoint?: string;
   /** Optional verified aircraft gallery for PAF topics. */
   aircraft?: readonly GkAircraft[];
 };
 
 export const gkTopics: readonly GkTopic[] = [
+  gkAbrahamAccords,
   {
     id: 'indus-waters-treaty',
     category: 'pakistan',
