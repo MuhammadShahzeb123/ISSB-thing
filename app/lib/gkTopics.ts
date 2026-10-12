@@ -1,6 +1,7 @@
 import type { GkCategory } from './generalKnowledge';
 import { gkWorldTopics } from './gkWorldTopics';
 import { gkAbrahamAccords } from './gkAbrahamAccords';
+import { gkBookletTopics } from './gkBookletTopics';
 
 // General Knowledge topics for the study tab.
 // Each summary is a spoken-style story in simple English, written to be read aloud.
@@ -39,6 +40,7 @@ export type GkTopic = {
 
 export const gkTopics: readonly GkTopic[] = [
   gkAbrahamAccords,
+  ...gkBookletTopics,
   {
     id: 'indus-waters-treaty',
     category: 'pakistan',
