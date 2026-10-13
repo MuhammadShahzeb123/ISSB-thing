@@ -19,8 +19,8 @@ import {
 } from "@/app/lib/writing-assessment/types";
 
 export const dynamic = "force-dynamic";
-// Leave room for the 55s Gemma call (see PROVIDER_TIMEOUT_MS).
-export const maxDuration = 60;
+// Leave room for the 100s model-chain budget (see PROVIDER_TIMEOUT_MS).
+export const maxDuration = 120;
 
 const NO_STORE_HEADERS = {
   "Cache-Control": "no-store, max-age=0",
@@ -140,7 +140,9 @@ export async function POST(request: Request): Promise<NextResponse> {
       writingPromptRegistry,
     );
     const metrics = calculateWritingMetrics(assessmentRequest.responses);
+    let answeredBy = "";
     const coaching = await assessWritingWithGemma({
+      onModel: (model: string) => { answeredBy = model; },
       // Same Google AI Studio key as the Live interview. `Gemma_API` is only a
       // legacy fallback for older deployments; it is not required.
       apiKey: process.env.GEMINI_API_KEY?.trim() || process.env.Gemma_API,
@@ -167,7 +169,9 @@ export async function POST(request: Request): Promise<NextResponse> {
       disclaimer: WRITING_COACH_DISCLAIMER,
     };
 
-    return jsonResponse(result, 200);
+    const ok = jsonResponse(result, 200);
+    if (answeredBy) ok.headers.set("x-text-model", answeredBy);
+    return ok;
   } catch (error) {
     if (error instanceof RequestValidationError) {
       return jsonResponse(

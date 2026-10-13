@@ -77,13 +77,17 @@ export async function POST(request: Request): Promise<NextResponse> {
       requestUrl: request.url,
     });
     const { lesson, answer } = parseBody(await request.text());
+    let answeredBy = "";
     const result = await checkEssayCourseAnswer({
+      onModel: (model: string) => { answeredBy = model; },
       apiKey: process.env.GEMINI_API_KEY?.trim() || process.env.Gemma_API,
       model: process.env.GEMMA_MODEL?.trim() || undefined,
       lesson,
       answer,
     });
-    return jsonResponse(result, 200);
+    const ok = jsonResponse(result, 200);
+    if (answeredBy) ok.headers.set("x-text-model", answeredBy);
+    return ok;
   } catch (error) {
     if (error instanceof RequestValidationError) {
       return jsonResponse({ error: { code: error.code, message: error.message } }, error.status);

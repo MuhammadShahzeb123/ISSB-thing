@@ -114,7 +114,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     const metrics = essayMetrics(essay);
     if (metrics.words < ESSAY_MIN_WORDS) fail("essay_too_short", `Write at least ${ESSAY_MIN_WORDS} words first. The target is 300 to 400.`);
 
+    let answeredBy = "";
+
     const assessment = await assessEssayWithGemma({
+
+      onModel: (model: string) => { answeredBy = model; },
       apiKey: process.env.GEMINI_API_KEY?.trim() || process.env.Gemma_API,
       model: process.env.GEMMA_MODEL?.trim() || undefined,
       topic,
@@ -139,7 +143,11 @@ export async function POST(request: Request): Promise<NextResponse> {
       },
       disclaimer: ESSAY_COACH_DISCLAIMER,
     };
-    return jsonResponse(result, 200);
+    const ok = jsonResponse(result, 200);
+
+    if (answeredBy) ok.headers.set("x-text-model", answeredBy);
+
+    return ok;
   } catch (error) {
     if (error instanceof RequestValidationError) {
       return jsonResponse({ error: { code: error.code, message: error.message } }, error.status);

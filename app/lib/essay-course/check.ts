@@ -1,11 +1,10 @@
 import type { EssayCourseLesson } from "@/app/content/psychological-tests/essay-course";
-import { generateGemmaJson } from "@/app/lib/gemma/generate";
+import { generateJsonWithFallback } from "@/app/lib/gemma/generate";
 import { extractJsonObject, ProviderError } from "@/app/lib/writing-assessment/provider";
 import { essayCourseRubrics } from "./rubrics";
 
 // Same budget as the essay checker: Gemma 4 31B can be slow or busy.
 export const ESSAY_COURSE_TIMEOUT_MS = 100_000;
-const RETRY_WINDOW_MS = 45_000;
 
 export const ESSAY_COURSE_MIN_ANSWER = 10;
 export const ESSAY_COURSE_MAX_ANSWER = 3_000;
@@ -105,14 +104,15 @@ export async function checkEssayCourseAnswer(input: {
   model?: string;
   lesson: EssayCourseLesson;
   answer: string;
+  onModel?: (model: string) => void;
 }): Promise<EssayCourseCheckResult> {
-  const raw = await generateGemmaJson({
+  return generateJsonWithFallback({
     apiKey: input.apiKey,
     model: input.model,
     prompt: buildEssayCoursePrompt(input.lesson, input.answer),
     timeoutMs: ESSAY_COURSE_TIMEOUT_MS,
-    retryWindowMs: RETRY_WINDOW_MS,
     logTag: "essay-course",
+    parse: (raw) => parseEssayCourseCheck(raw, input.lesson.id),
+    onModel: input.onModel,
   });
-  return parseEssayCourseCheck(raw, input.lesson.id);
 }

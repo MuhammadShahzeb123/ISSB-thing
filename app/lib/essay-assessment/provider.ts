@@ -1,5 +1,5 @@
 import { extractJsonObject, ProviderError } from "@/app/lib/writing-assessment/provider";
-import { generateGemmaJson } from "@/app/lib/gemma/generate";
+import { generateJsonWithFallback } from "@/app/lib/gemma/generate";
 import { ESSAY_RUBRIC } from "./rubric";
 import type { EssayMetrics } from "./metrics";
 import {
@@ -12,7 +12,6 @@ import {
 // Same budget as the GTO plan checker (PRs #42/#43): Gemma 4 31B is slow and
 // sometimes overloaded. The route sets maxDuration to match.
 export const ESSAY_PROVIDER_TIMEOUT_MS = 100_000;
-const RETRY_WINDOW_MS = 45_000;
 
 export type EssayProviderAssessment = {
   summary: string;
@@ -165,14 +164,15 @@ export async function assessEssayWithGemma(input: {
   essay: string;
   plan: string;
   metrics: EssayMetrics;
+  onModel?: (model: string) => void;
 }): Promise<EssayProviderAssessment> {
-  const raw = await generateGemmaJson({
+  return generateJsonWithFallback({
     apiKey: input.apiKey,
     model: input.model,
     prompt: buildEssayPrompt(input),
     timeoutMs: ESSAY_PROVIDER_TIMEOUT_MS,
-    retryWindowMs: RETRY_WINDOW_MS,
     logTag: "essay-assessment",
+    parse: parseEssayAssessment,
+    onModel: input.onModel,
   });
-  return parseEssayAssessment(raw);
 }
