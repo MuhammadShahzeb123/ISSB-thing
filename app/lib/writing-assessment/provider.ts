@@ -8,8 +8,8 @@ import type {
 } from "./types";
 
 export const DEFAULT_GEMMA_MODEL = "gemma-4-31b-it";
-// Gemma 4 31B routinely needs more than 15s for a full coaching pass.
-export const PROVIDER_TIMEOUT_MS = 55_000;
+// Whole budget for the model chain (fast Flash-Lite first, Gemma last). The route sets maxDuration to match.
+export const PROVIDER_TIMEOUT_MS = 100_000;
 
 export const WRITING_CRITERIA = [
   "effectiveWordUse",
@@ -250,71 +250,16 @@ export async function assessWritingWithGemma(input: {
   metrics: WritingMetrics;
   model?: string | undefined;
   request: ResolvedWritingAssessmentRequest;
+  onModel?: (model: string) => void;
 }): Promise<ProviderAssessment> {
-  const apiKey = input.apiKey?.trim();
-  if (!apiKey) {
-    throw new ProviderError("configuration");
-  }
-
-  const model = input.model || DEFAULT_GEMMA_MODEL;
-  if (!MODEL_PATTERN.test(model)) {
-    throw new ProviderError("configuration");
-  }
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), PROVIDER_TIMEOUT_MS);
-
-  try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: buildProviderPrompt(input.request, input.metrics) }],
-            },
-          ],
-          generationConfig: {
-            temperature: 0,
-            responseMimeType: "application/json",
-            thinkingConfig: {
-              thinkingLevel: "minimal",
-            },
-          },
-        }),
-        cache: "no-store",
-        signal: controller.signal,
-      },
-    );
-
-    if (!response.ok) {
-      let upstream = "";
-      try {
-        upstream = (await response.text()).slice(0, 300);
-      } catch {
-        // ignore
-      }
-      throw new ProviderError("unavailable", `HTTP ${response.status} ${upstream}`);
-    }
-
-    let payload: unknown;
-    try {
-      payload = await response.json();
-    } catch {
-      throw new ProviderError("invalid-response", "body not JSON");
-    }
-    return parseProviderAssessment(extractProviderText(payload));
-  } catch (error) {
-    if (error instanceof ProviderError) throw error;
-    if (controller.signal.aborted) throw new ProviderError("timeout");
-    throw new ProviderError("unavailable");
-  } finally {
-    clearTimeout(timeout);
-  }
+  const { generateJsonWithFallback } = await import("@/app/lib/gemma/generate");
+  return generateJsonWithFallback({
+    apiKey: input.apiKey,
+    model: input.model,
+    prompt: buildProviderPrompt(input.request, input.metrics),
+    timeoutMs: PROVIDER_TIMEOUT_MS,
+    logTag: "writing-assessment",
+    parse: parseProviderAssessment,
+    onModel: input.onModel,
+  });
 }

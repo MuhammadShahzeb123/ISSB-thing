@@ -1,8 +1,6 @@
+import { generateJsonWithFallback } from "@/app/lib/gemma/generate";
 import {
-  DEFAULT_GEMMA_MODEL,
   extractJsonObject,
-  extractProviderText,
-  MODEL_PATTERN,
   ProviderError,
 } from "@/app/lib/writing-assessment/provider";
 import { realGtoBriefText, type RealGtoModel } from "@/app/lib/realGtoModels";
@@ -12,7 +10,6 @@ import type { PlanningCalculationCheck, PlanningVerdict } from "./types";
 // a planning brief is long. Give it more room than the writing coach; the route
 // sets maxDuration to match.
 export const PLANNING_PROVIDER_TIMEOUT_MS = 100_000;
-const RETRY_WINDOW_MS = 45_000;
 
 export type PlanningProviderAssessment = {
   verdict: PlanningVerdict;
@@ -137,82 +134,15 @@ export async function assessPlanWithGemma(input: {
   model?: string | undefined;
   task: RealGtoModel;
   plan: string;
+  onModel?: (model: string) => void;
 }): Promise<PlanningProviderAssessment> {
-  const apiKey = input.apiKey?.trim();
-  if (!apiKey) throw new ProviderError("configuration");
-
-  const model = input.model || DEFAULT_GEMMA_MODEL;
-  if (!MODEL_PATTERN.test(model)) throw new ProviderError("configuration");
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), PLANNING_PROVIDER_TIMEOUT_MS);
-  const started = Date.now();
-  const body = JSON.stringify({
-    contents: [{ role: "user", parts: [{ text: buildPlanningPrompt(input.task, input.plan) }] }],
-    generationConfig: {
-      temperature: 0,
-      responseMimeType: "application/json",
-      thinkingConfig: { thinkingLevel: "minimal" },
-    },
+  return generateJsonWithFallback({
+    apiKey: input.apiKey,
+    model: input.model,
+    prompt: buildPlanningPrompt(input.task, input.plan),
+    timeoutMs: PLANNING_PROVIDER_TIMEOUT_MS,
+    logTag: "planning-assessment",
+    parse: parsePlanningAssessment,
+    onModel: input.onModel,
   });
-
-  try {
-    // Google's free tier sometimes answers 429/5xx for a moment. Retry quickly
-    // while there is still time left inside the budget.
-    for (let attempt = 1; ; attempt += 1) {
-      let response: Response | null = null;
-      let failure: ProviderError;
-      try {
-        response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-            body,
-            cache: "no-store",
-            signal: controller.signal,
-          },
-        );
-      } catch {
-        if (controller.signal.aborted) throw new ProviderError("timeout");
-        response = null;
-      }
-
-      if (response?.ok) {
-        let payload: unknown;
-        try {
-          payload = await response.json();
-        } catch {
-          if (controller.signal.aborted) throw new ProviderError("timeout");
-          throw new ProviderError("invalid-response", "body not JSON");
-        }
-        return parsePlanningAssessment(extractProviderText(payload));
-      }
-
-      let retryable = true;
-      if (response) {
-        let upstream = "";
-        try {
-          upstream = (await response.text()).slice(0, 300);
-        } catch {
-          // ignore
-        }
-        retryable = response.status === 429 || response.status >= 500;
-        failure = new ProviderError("unavailable", `HTTP ${response.status} ${upstream}`);
-      } else {
-        failure = new ProviderError("unavailable", "network");
-      }
-
-      const waitMs = response?.status === 429 ? 4000 * attempt : 1500 * attempt;
-      if (!retryable || attempt >= 3 || Date.now() - started + waitMs > RETRY_WINDOW_MS) throw failure;
-      console.warn("[planning-assessment] retrying Gemma", attempt, failure.detail ?? "");
-      await new Promise((resolve) => setTimeout(resolve, waitMs));
-    }
-  } catch (error) {
-    if (controller.signal.aborted) throw new ProviderError("timeout");
-    if (error instanceof ProviderError) throw error;
-    throw new ProviderError("unavailable");
-  } finally {
-    clearTimeout(timeout);
-  }
 }

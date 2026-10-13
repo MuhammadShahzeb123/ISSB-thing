@@ -88,7 +88,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     const task = findRealGtoModel(taskId);
     if (!task) fail("invalid_task", "Unknown planning task.", 404);
 
+    let answeredBy = "";
+
     const assessment = await assessPlanWithGemma({
+
+      onModel: (model: string) => { answeredBy = model; },
       apiKey: process.env.GEMINI_API_KEY?.trim() || process.env.Gemma_API,
       model: process.env.GEMMA_MODEL?.trim() || undefined,
       task,
@@ -101,7 +105,11 @@ export async function POST(request: Request): Promise<NextResponse> {
       ...assessment,
       disclaimer: PLANNING_COACH_DISCLAIMER,
     };
-    return jsonResponse(result, 200);
+    const ok = jsonResponse(result, 200);
+
+    if (answeredBy) ok.headers.set("x-text-model", answeredBy);
+
+    return ok;
   } catch (error) {
     if (error instanceof RequestValidationError) {
       return jsonResponse({ error: { code: error.code, message: error.message } }, error.status);
