@@ -12,18 +12,20 @@ import {
  * Override with GEMINI_TEXT_MODELS="model-a,model-b,..." (no env change needed).
  */
 export const DEFAULT_TEXT_MODELS = [
-  "gemini-3.5-flash-lite",
+  // Live tests (13 Oct 2026): 3.1 Flash-Lite answered in about 3 to 7 s. 3.5 Flash-Lite kept
+  // running out its 15 s cap on this key, so it sits near the end as an extra fallback.
   "gemini-3.1-flash-lite",
   "gemini-2.5-flash-lite",
   "gemini-3.6-flash",
   "gemini-2.5-flash",
+  "gemini-3.5-flash-lite",
   DEFAULT_GEMMA_MODEL,
 ] as const;
 
 /** Per-model time cap. Gemma, the last resort, gets whatever time is left. */
 function modelCapMs(model: string): number {
   if (model.startsWith("gemma")) return Number.POSITIVE_INFINITY;
-  if (model.includes("flash-lite")) return 15_000;
+  if (model.includes("flash-lite")) return 12_000;
   return 25_000;
 }
 
