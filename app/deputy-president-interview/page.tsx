@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 const resources = [
+  { label: "Quick maths drill", href: "/deputy-president-interview/quick-maths", description: "Rapid-fire mental sums against the clock: percentages, ages, speed, ratios, interest, clocks. Like the deputy president asks." },
   { label: "Bio data", href: "/biodata", description: "See every question on the civilian personal information form, plus the 24 events from item 15. A local draft only — nothing is sent to ISSB." },
   { label: "Interview preparation room", href: "/interview", description: "Introduction notes, quick maths, current affairs, and gallantry stories." },
   { label: "Nishan-e-Haider martyrs", href: "/nishan-e-haider", description: "Photo cards and compact stories for all eleven recipients." },

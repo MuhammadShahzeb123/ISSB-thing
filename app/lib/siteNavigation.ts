@@ -96,6 +96,11 @@ export const siteNavigation = [
         description: "Eight deputy-president styles. Record your answer in the browser and play it back. Nothing is uploaded.",
       },
       {
+        label: "Quick maths drill",
+        href: "/deputy-president-interview/quick-maths",
+        description: "Rapid-fire mental maths with a timer: percentages, ages, speed, ratios, interest, clocks and more.",
+      },
+      {
         label: "Interview preparation",
         href: "/interview",
         description: "Introduction practice, quick mental maths, sourced current affairs, and gallantry stories.",
