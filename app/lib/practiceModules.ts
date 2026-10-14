@@ -40,7 +40,7 @@ export const practiceModules: readonly PracticeModule[] = [
   { id: 'gto-outdoor', dimension: 'gto', title: 'Outdoor obstacles', description: 'Animated technique walkthroughs for the nine individual obstacles.', href: '/gto/outdoor', minutes: 10 },
 
   { id: 'interview-introduction', dimension: 'deputy-president-interview', title: 'Your introduction', description: 'Rehearse a clear, honest introduction.', href: '/interview?tab=introduction', minutes: 10 },
-  { id: 'interview-maths', dimension: 'deputy-president-interview', title: 'Quick mental maths', description: 'Short calculations of the kind asked in the interview.', href: '/interview?tab=maths', minutes: 5 },
+  { id: 'interview-maths', dimension: 'deputy-president-interview', title: 'Quick mental maths', description: 'Short calculations of the kind asked in the interview.', href: '/deputy-president-interview/quick-maths', minutes: 5 },
   { id: 'interview-affairs', dimension: 'deputy-president-interview', title: 'Current affairs', description: 'Sourced briefings and likely interview questions.', href: '/interview?tab=affairs', minutes: 15 },
   { id: 'interview-stories', dimension: 'deputy-president-interview', title: 'Gallantry stories', description: 'Recall the 11 Nishan-e-Haider stories.', href: '/interview?tab=stories', minutes: 10 },
   { id: 'interview-knowledge', dimension: 'deputy-president-interview', title: 'General knowledge', description: 'Categorised, fact-checked knowledge cards.', href: '/interview?tab=knowledge', minutes: 10 },
